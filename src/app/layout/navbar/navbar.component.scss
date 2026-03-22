@@ -27,24 +27,51 @@
   &__logo {
     display: flex;
     align-items: center;
+    gap: $space-2;
     text-decoration: none;
     flex-shrink: 0;
-    transition: opacity $transition-fast, transform $transition-fast;
 
     &:hover {
-      opacity: 0.8;
-      transform: scale(1.04);
+      .navbar__logo-dot     { transform: rotate(135deg) scale(1.15); }
+      .navbar__logo-wordmark { transform: translateX(2px); }
     }
   }
 
-  &__logo-img {
-    height: 36px;
-    width: auto;
+  // Yellow square accent — rotates on hover
+  &__logo-dot {
     display: block;
-    // In dark mode: invert the black logo to white
-    [data-theme='dark'] & {
-      filter: invert(1);
-    }
+    width: 9px;
+    height: 9px;
+    background: $color-accent;
+    border-radius: 2px;
+    flex-shrink: 0;
+    transform: rotate(0deg);
+    transition: transform 400ms $ease-out-cubic;
+    animation: logoDot 500ms $ease-out-cubic both;
+  }
+
+  // Wordmark container
+  &__logo-wordmark {
+    font-family: $font-display;
+    font-size: $text-xl;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    display: flex;
+    align-items: baseline;
+    transition: transform $transition-base;
+    animation: logoText 500ms $ease-out-cubic 100ms both;
+  }
+
+  // "Til" — lighter, muted
+  &__logo-til {
+    font-weight: $font-medium;
+    color: var(--color-text-muted);
+  }
+
+  // "Stack" — heavy, full color
+  &__logo-stack {
+    font-weight: $font-black;
+    color: var(--color-text);
   }
 
   // --- Desktop links ---
@@ -166,4 +193,16 @@
       padding-left: $space-2;
     }
   }
+}
+
+// ===== LOGO ANIMATIONS =====
+@keyframes logoDot {
+  0%   { opacity: 0; transform: scale(0) rotate(-90deg); }
+  60%  { transform: scale(1.3) rotate(20deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+@keyframes logoText {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0); }
 }

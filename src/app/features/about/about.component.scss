@@ -104,7 +104,7 @@ $accent: $color-accent;
   }
 }
 
-.about-accent { color: $accent; }
+.about-accent { color: var(--color-accent-text); }
 
 // ===== SKILLS =====
 .skills-section {
@@ -219,7 +219,7 @@ $accent: $color-accent;
     display: inline-block;
     font-size: $text-sm;
     font-weight: $font-semibold;
-    color: $accent;
+    color: var(--color-accent-text);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: $space-3;

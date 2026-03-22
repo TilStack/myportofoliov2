@@ -52,8 +52,19 @@
     &-line  { display: inline; }
     &-accent {
       display: inline;
-      color: $color-accent;
-      -webkit-text-stroke: 2px $color-accent;
+      color: var(--color-accent-text);
+    }
+  }
+
+  &__alias {
+    font-size: $text-lg;
+    color: var(--color-text-muted);
+    margin-bottom: $space-3;
+
+    strong {
+      color: var(--color-accent-text);
+      font-weight: $font-black;
+      font-family: $font-display;
     }
   }
 
@@ -273,7 +284,7 @@
   &__author {
     font-size: $text-sm;
     font-weight: $font-semibold;
-    color: $color-accent;
+    color: var(--color-accent-text);
     display: block;
     margin-bottom: $space-3;
   }

@@ -23,6 +23,8 @@
   --color-navbar-bg:    rgba(255, 255, 255, 0.85);
   --color-card-bg:      #{$color-bg};
   --shadow-card:        #{$shadow-md};
+  // Accent used as TEXT — dark in light mode (readable), yellow in dark mode
+  --color-accent-text:  #{$color-primary};
 }
 
 // ============================================================
@@ -37,6 +39,8 @@
   --color-navbar-bg:    rgba(15, 15, 15, 0.85);
   --color-card-bg:      #{$color-surface-dark};
   --shadow-card:        0 4px 16px rgba(0,0,0,0.4);
+  // Yellow accent text is readable on dark backgrounds
+  --color-accent-text:  #{$color-accent};
 }
 
 // ============================================================

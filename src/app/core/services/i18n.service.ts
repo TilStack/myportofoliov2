@@ -13,7 +13,7 @@ const EN: Translations = {
   },
   hero: {
     greeting:  "Hello, I'm",
-    role:      'Full-Stack Developer & Educator',
+    role:      'Full-Stack Developer · Mobile & Web',
     cta:       'Download CV',
     scroll:    'Scroll down',
   },
@@ -68,7 +68,7 @@ const FR: Translations = {
   },
   hero: {
     greeting:  'Bonjour, je suis',
-    role:      'Développeur Full-Stack & Formateur',
+    role:      'Développeur Full-Stack · Mobile & Web',
     cta:       'Télécharger le CV',
     scroll:    'Défiler vers le bas',
   },

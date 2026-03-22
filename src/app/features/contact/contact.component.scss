@@ -54,6 +54,21 @@
   max-width: 460px;
 }
 
+.contact-email {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $text-base;
+  font-weight: $font-semibold;
+  color: var(--color-text);
+  margin-bottom: $space-6;
+  transition: color $transition-fast;
+
+  &:hover { color: $color-accent; }
+
+  svg { flex-shrink: 0; }
+}
+
 .contact-socials {
   display: flex;
   flex-direction: column;

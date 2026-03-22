@@ -24,10 +24,12 @@ export class ContactComponent {
   sent    = signal(false);
   error   = signal(false);
 
+  readonly email = 'israel01tientcheu@gmail.com';
+
   socials = [
-    { label: 'GitHub',   href: 'https://github.com/',    icon: 'github'   },
-    { label: 'LinkedIn', href: 'https://linkedin.com/',  icon: 'linkedin' },
-    { label: 'Twitter',  href: 'https://twitter.com/',   icon: 'twitter'  },
+    { label: 'GitHub',   href: 'https://github.com/tilstack',                       icon: 'github'   },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/israel-tientcheu/',      icon: 'linkedin' },
+    { label: 'Twitter',  href: 'https://x.com/tilstack',                             icon: 'twitter'  },
   ];
 
   submit(): void {
