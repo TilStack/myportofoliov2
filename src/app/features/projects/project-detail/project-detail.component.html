@@ -1,0 +1,82 @@
+<div class="detail-page">
+  <div class="container">
+    <a routerLink="/projects" class="detail-page__back">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Back to projects
+    </a>
+
+    @if (loading()) {
+      <div class="detail-skeleton">
+        <app-skeleton height="400px" radius="1rem"></app-skeleton>
+        <app-skeleton width="60%" height="2rem" style="margin-top:2rem"></app-skeleton>
+        <app-skeleton height="1rem" style="margin-top:1rem"></app-skeleton>
+        <app-skeleton height="1rem" style="margin-top:0.5rem"></app-skeleton>
+        <app-skeleton width="80%" height="1rem" style="margin-top:0.5rem"></app-skeleton>
+      </div>
+    } @else if (notFound()) {
+      <div class="detail-not-found">
+        <h2>Project not found</h2>
+        <a routerLink="/projects">← Back to projects</a>
+      </div>
+    } @else if (project()) {
+      <div class="detail-content">
+        @if (project()!.images.length) {
+          <div class="detail-gallery">
+            <div class="detail-gallery__main">
+              <img [src]="project()!.images[activeImg()]" [alt]="project()!.title" class="detail-gallery__img" />
+            </div>
+            @if (project()!.images.length > 1) {
+              <div class="detail-gallery__thumbs">
+                @for (img of project()!.images; track img; let i = $index) {
+                  <button class="detail-gallery__thumb" [class.active]="activeImg() === i" (click)="setActiveImg(i)">
+                    <img [src]="img" [alt]="'Image ' + (i + 1)" />
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <div class="detail-meta">
+          <div class="detail-meta__left">
+            <h1 class="detail-meta__title">{{ project()!.title }}</h1>
+            <div class="detail-meta__tags">
+              @for (t of project()!.techStack; track t) {
+                <span class="tag">{{ t }}</span>
+              }
+            </div>
+            <div class="detail-meta__desc">{{ project()!.description }}</div>
+          </div>
+
+          <div class="detail-meta__links">
+            @if (project()!.liveUrl) {
+              <app-button variant="accent" size="md">
+                <a [href]="project()!.liveUrl" target="_blank" rel="noopener" class="link-btn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="3"></line>
+                  </svg>
+                  Live demo
+                </a>
+              </app-button>
+            }
+            @if (project()!.githubUrl) {
+              <app-button variant="secondary" size="md">
+                <a [href]="project()!.githubUrl" target="_blank" rel="noopener" class="link-btn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/>
+                  </svg>
+                  Source code
+                </a>
+              </app-button>
+            }
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,70 @@
+<div class="projects-page">
+  <header class="projects-page__header section">
+    <div class="container">
+      <div class="fade-up" appFadeOnScroll>
+        <h1 class="section__title">Projects</h1>
+        <p class="section__subtitle">A curated selection of things I've designed and built.</p>
+      </div>
+
+      @if (!loading()) {
+        <div class="filter-bar fade-up" appFadeOnScroll [delay]="100">
+          <button class="filter-btn" [class.active]="filter() === 'all'" (click)="setFilter('all')">All</button>
+          @for (tech of allTechs(); track tech) {
+            <button class="filter-btn" [class.active]="filter() === tech" (click)="setFilter(tech)">{{ tech }}</button>
+          }
+        </div>
+      }
+    </div>
+  </header>
+
+  <main class="container projects-grid-wrapper">
+    @if (loading()) {
+      <div class="projects-grid">
+        @for (_ of [1,2,3,4,5,6]; track $index) {
+          <div class="project-card-skeleton">
+            <app-skeleton height="220px" radius="1rem"></app-skeleton>
+            <div style="padding: 1.25rem">
+              <app-skeleton width="70%" height="1.25rem" style="margin-bottom:0.75rem"></app-skeleton>
+              <app-skeleton height="0.875rem" style="margin-bottom:0.5rem"></app-skeleton>
+              <app-skeleton width="50%" height="0.875rem"></app-skeleton>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="projects-grid">
+        @for (project of filtered; track project.id; let i = $index) {
+          <article
+            class="project-card fade-up"
+            appFadeOnScroll
+            [delay]="i * 80"
+            [routerLink]="['/projects', project.id]"
+            role="link"
+            tabindex="0"
+          >
+            <div class="project-card__img-wrap">
+              @if (project.imageUrl) {
+                <img [src]="project.imageUrl" [alt]="project.title" class="project-card__img" loading="lazy" />
+              } @else {
+                <div class="project-card__img-placeholder">
+                  <span>{{ project.title.charAt(0) }}</span>
+                </div>
+              }
+              <div class="project-card__overlay"><span>View details →</span></div>
+            </div>
+
+            <div class="project-card__body">
+              <h3 class="project-card__title">{{ project.title }}</h3>
+              <p class="project-card__desc">{{ project.shortDesc }}</p>
+              <div class="project-card__tags">
+                @for (tech of project.techStack.slice(0, 4); track tech) {
+                  <span class="tag">{{ tech }}</span>
+                }
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </main>
+</div>

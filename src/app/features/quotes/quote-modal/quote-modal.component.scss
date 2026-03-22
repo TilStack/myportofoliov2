@@ -1,0 +1,228 @@
+@use '../../../../assets/styles/variables' as *;
+@use '../../../../assets/styles/mixins'    as *;
+
+// ===== BACKDROP =====
+.qmodal__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: $z-modal;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-4;
+  backdrop-filter: blur(0px);
+  transition: background 280ms $ease-out-cubic,
+              backdrop-filter 280ms $ease-out-cubic;
+
+  &.visible {
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(6px);
+  }
+}
+
+// ===== CARD =====
+.qmodal__card {
+  position: relative;
+  background: var(--color-bg);
+  border-radius: $radius-2xl;
+  padding: $space-8;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90svh;
+  overflow-y: auto;
+  box-shadow: $shadow-xl;
+
+  opacity: 0;
+  transform: translateY(24px) scale(0.97);
+  transition: opacity 280ms $ease-out-cubic,
+              transform 280ms $ease-out-cubic;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  // Scrollbar inside card
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: $radius-full;
+  }
+}
+
+// ===== CLOSE BUTTON =====
+.qmodal__close {
+  position: absolute;
+  top: $space-5;
+  right: $space-5;
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-md;
+  @include flex-center;
+  color: var(--color-text-muted);
+  transition: background $transition-fast, color $transition-fast;
+
+  &:hover {
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+}
+
+// ===== TOP / CATEGORY =====
+.qmodal__top {
+  margin-bottom: $space-5;
+}
+
+.qmodal__category {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  padding: $space-1 $space-3;
+  background: $color-accent;
+  color: $color-primary;
+  font-size: $text-xs;
+  font-weight: $font-bold;
+  border-radius: $radius-full;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+// ===== QUOTE MARK + TEXT =====
+.qmodal__quote-wrap {
+  position: relative;
+  margin-bottom: $space-6;
+}
+
+.qmodal__mark {
+  font-family: $font-display;
+  font-size: 5rem;
+  font-weight: $font-black;
+  line-height: 1;
+  color: $color-accent;
+  opacity: 0.18;
+  display: block;
+  margin-bottom: -$space-6;
+
+  &--close {
+    margin-top: -$space-6;
+    margin-bottom: 0;
+    text-align: right;
+  }
+}
+
+.qmodal__text {
+  font-size: clamp($text-lg, 2.5vw, $text-2xl);
+  font-style: italic;
+  font-weight: $font-medium;
+  color: var(--color-text);
+  line-height: 1.65;
+  padding-inline: $space-4;
+  position: relative;
+  z-index: 1;
+}
+
+// ===== AUTHOR ROW =====
+.qmodal__author-row {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  margin-bottom: $space-6;
+}
+
+.qmodal__avatar {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: $color-primary;
+  color: $color-accent;
+  font-size: $text-sm;
+  font-weight: $font-black;
+  @include flex-center;
+}
+
+.qmodal__author-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.qmodal__author-name {
+  font-size: $text-base;
+  font-weight: $font-semibold;
+  color: var(--color-text);
+}
+
+.qmodal__date {
+  font-size: $text-xs;
+  color: var(--color-text-muted);
+}
+
+.qmodal__likes {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+  font-size: $text-sm;
+  font-weight: $font-semibold;
+  color: #e74c3c;
+  flex-shrink: 0;
+}
+
+// ===== DIVIDER =====
+.qmodal__divider {
+  height: 1px;
+  background: var(--color-border);
+  margin-bottom: $space-6;
+}
+
+// ===== EXPLANATION =====
+.qmodal__explanation {
+  margin-bottom: $space-6;
+
+  &-title {
+    font-size: $text-sm;
+    font-weight: $font-bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    margin-bottom: $space-3;
+
+    &::before {
+      content: '✦ ';
+      color: $color-accent;
+    }
+  }
+
+  &-text {
+    font-size: $text-base;
+    color: var(--color-text-muted);
+    line-height: 1.85;
+  }
+}
+
+// ===== TAGS =====
+.qmodal__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.qmodal__tag {
+  padding: $space-1 $space-3;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-full;
+  font-size: $text-xs;
+  font-weight: $font-medium;
+  color: var(--color-text-muted);
+  transition: border-color $transition-fast, color $transition-fast,
+              background $transition-fast;
+
+  &:hover {
+    border-color: $color-accent;
+    color: $color-primary;
+    background: rgba(255, 222, 89, 0.08);
+  }
+}

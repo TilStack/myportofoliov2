@@ -1,0 +1,301 @@
+@use '../../../assets/styles/variables' as *;
+@use '../../../assets/styles/mixins'    as *;
+
+// ===== HERO =====
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: $navbar-height;
+  overflow: hidden;
+
+  // Subtle dot-grid background
+  &__bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--color-border) 1px, transparent 1px);
+    background-size: 32px 32px;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &__content {
+    display: grid;
+    gap: $space-12;
+    align-items: center;
+    padding-block: $space-20;
+
+    @include lg {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  &__text {}
+
+  &__greeting {
+    font-size: $text-lg;
+    color: var(--color-text-muted);
+    margin-bottom: $space-3;
+    font-weight: $font-medium;
+  }
+
+  &__name {
+    font-family: $font-display;
+    font-size: clamp(3.5rem, 10vw, 6rem);
+    font-weight: $font-black;
+    line-height: 1;
+    margin-bottom: $space-4;
+    color: var(--color-text);
+
+    &-line  { display: inline; }
+    &-accent {
+      display: inline;
+      color: $color-accent;
+      -webkit-text-stroke: 2px $color-accent;
+    }
+  }
+
+  &__role {
+    font-size: clamp($text-lg, 3vw, $text-2xl);
+    color: var(--color-text-muted);
+    margin-bottom: $space-10;
+    max-width: 480px;
+  }
+
+  &__cta {
+    display: flex;
+    align-items: center;
+    gap: $space-6;
+    flex-wrap: wrap;
+
+    &-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: $space-2;
+      font-size: $text-base;
+      font-weight: $font-semibold;
+      color: var(--color-text);
+      transition: gap $transition-base, color $transition-fast;
+
+      &:hover {
+        gap: $space-3;
+        color: $color-primary;
+      }
+    }
+  }
+
+  // Decorative card
+  &__deco {
+    display: none;
+    @include lg { display: flex; justify-content: center; }
+
+    &-card {
+      background: var(--color-card-bg);
+      border: 1px solid var(--color-border);
+      border-radius: $radius-2xl;
+      padding: $space-8;
+      width: 280px;
+      box-shadow: $shadow-xl;
+      position: relative;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    &-dot {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: $color-accent;
+      margin-bottom: $space-4;
+      animation: pulse-ring 2s ease-out infinite;
+    }
+
+    &-lines {
+      display: flex;
+      flex-direction: column;
+      gap: $space-2;
+
+      span {
+        height: 8px;
+        background: var(--color-surface);
+        border-radius: $radius-full;
+
+        &:nth-child(1) { width: 80%; }
+        &:nth-child(2) { width: 60%; }
+        &:nth-child(3) { width: 70%; }
+      }
+    }
+
+    &-badge {
+      position: absolute;
+      top: -12px;
+      right: $space-4;
+      background: $color-primary;
+      color: $color-accent;
+      padding: $space-1 $space-3;
+      border-radius: $radius-full;
+      font-size: $text-xs;
+      font-weight: $font-semibold;
+      display: flex;
+      align-items: center;
+      gap: $space-1;
+    }
+  }
+
+  // Scroll indicator
+  &__scroll {
+    position: absolute;
+    bottom: $space-8;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space-2;
+    color: var(--color-text-muted);
+    font-size: $text-xs;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: color $transition-fast;
+
+    &:hover { color: var(--color-text); }
+
+    &-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--color-text-muted), transparent);
+      animation: fadeInDown 1.5s ease-in-out infinite;
+    }
+  }
+}
+
+// ===== MOODBOARD =====
+.moodboard {
+  &__header {
+    margin-bottom: $space-10;
+  }
+
+  &__grid {
+    display: grid;
+    gap: $space-4;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+
+    @include lg {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__skeleton {
+    padding: $space-6;
+    border-radius: $radius-xl;
+    border: 1px solid var(--color-border);
+  }
+
+  &__cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed var(--color-border);
+    border-radius: $radius-xl;
+    min-height: 120px;
+    transition: border-color $transition-base, background $transition-base;
+
+    &:hover { border-color: $color-accent; background: rgba(255, 222, 89, 0.04); }
+
+    &-link {
+      display: flex;
+      align-items: center;
+      gap: $space-2;
+      font-weight: $font-semibold;
+      color: var(--color-text-muted);
+      transition: color $transition-fast, gap $transition-base;
+
+      &:hover {
+        color: var(--color-text);
+        gap: $space-3;
+      }
+    }
+  }
+}
+
+// ===== QUOTE CARD =====
+.quote-card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-xl;
+  padding: $space-6;
+  cursor: pointer;
+  transition: border-color $transition-base, box-shadow $transition-base,
+              transform $transition-base, background $transition-base;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '"';
+    position: absolute;
+    top: -$space-4;
+    left: $space-4;
+    font-size: 8rem;
+    font-family: $font-display;
+    font-weight: $font-black;
+    color: $color-accent;
+    opacity: 0.08;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  &:hover {
+    border-color: $color-accent;
+    box-shadow: var(--shadow-card);
+    transform: translateY(-4px);
+  }
+
+  &.expanded {
+    border-color: $color-accent;
+    background: rgba(255, 222, 89, 0.04);
+  }
+
+  &__text {
+    font-style: italic;
+    font-size: $text-base;
+    color: var(--color-text);
+    line-height: 1.7;
+    margin-bottom: $space-3;
+    @include line-clamp(3);
+  }
+
+  &.expanded &__text {
+    -webkit-line-clamp: unset;
+    display: block;
+  }
+
+  &__author {
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    color: $color-accent;
+    display: block;
+    margin-bottom: $space-3;
+  }
+
+  &__explanation {
+    font-size: $text-sm;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-top: $space-3;
+    padding-top: $space-3;
+    border-top: 1px solid var(--color-border);
+    animation: fadeInUp 300ms both;
+  }
+
+  &__hint {
+    display: block;
+    font-size: $text-xs;
+    color: var(--color-text-muted);
+    opacity: 0.6;
+    margin-top: $space-2;
+    text-align: right;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}

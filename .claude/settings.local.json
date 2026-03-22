@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(ng version:*)",
+      "Read(//home/tilstack/Bureau/**)",
+      "Bash(ng new:*)",
+      "Bash(bun add:*)",
+      "Bash(bun run:*)",
+      "WebFetch(domain:lndev.me)",
+      "WebFetch(domain:tilstack.me)"
+    ]
+  }
+}

@@ -1,0 +1,148 @@
+<!-- ===== ABOUT HERO ===== -->
+<section class="about-hero">
+  <div class="container about-hero__inner">
+    <div class="about-hero__text fade-left" appFadeOnScroll>
+      <span class="about-hero__tag">About me</span>
+      <h1 class="about-hero__name">Developer.<br><span class="about-accent">Educator.</span><br>Explorer.</h1>
+      <p class="about-hero__desc">
+        I'm a full-stack developer passionate about building products that are both beautiful
+        and functional. I teach programming, share knowledge openly, and love exploring how
+        technology can create positive impact.
+      </p>
+    </div>
+
+    <div class="about-hero__visual fade-right" appFadeOnScroll [delay]="150">
+      <div class="about-hero__img-wrapper">
+        <div class="about-hero__img-placeholder">
+          <div class="about-hero__avatar"><span>IT</span></div>
+        </div>
+        <div class="about-hero__accent-block" aria-hidden="true"></div>
+        <div class="about-hero__floating-badge"><span>🎓</span> Educator</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SKILLS ===== -->
+<section class="skills-section section">
+  <div class="container">
+    <div class="skills-section__header fade-up" appFadeOnScroll>
+      <h2 class="section__title">My Stack</h2>
+      <p class="section__subtitle">Tools and technologies I use daily.</p>
+    </div>
+    <div class="skills-grid">
+      @for (skill of skills; track skill; let i = $index) {
+        <span class="skill-tag fade-up" appFadeOnScroll [delay]="i * 50">{{ skill }}</span>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ===== MY SETUP ===== -->
+<section class="setup-section">
+  <div class="setup-section__inner">
+    <div class="setup-section__label"><span>My Setup</span></div>
+    <div class="container">
+      <div class="setup-grid">
+        @for (item of setupItems; track item.label; let i = $index) {
+          <div class="setup-card fade-up" appFadeOnScroll [delay]="i * 60">
+            <span class="setup-card__icon">{{ item.icon }}</span>
+            <div>
+              <p class="setup-card__label">{{ item.label }}</p>
+              <p class="setup-card__value">{{ item.value }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EDUCATOR ===== -->
+<section class="educator-section section">
+  <div class="container educator-section__inner">
+    <div class="educator-section__text fade-left" appFadeOnScroll>
+      <span class="educator-section__eyebrow">Teaching & sharing</span>
+      <h2 class="section__title">The Educator Role</h2>
+      <p>
+        Beyond building software, I'm deeply passionate about teaching. I believe that
+        knowledge shared is knowledge multiplied. I run workshops, create tutorials, and
+        mentor junior developers — because the best way to master something is to explain it.
+      </p>
+      <ul class="educator-section__list">
+        <li><span class="educator-section__list-dot"></span>Programming workshops (HTML, CSS, JavaScript, Angular)</li>
+        <li><span class="educator-section__list-dot"></span>Open-source contributions and code reviews</li>
+        <li><span class="educator-section__list-dot"></span>Technical blog posts and live coding sessions</li>
+      </ul>
+    </div>
+
+    <div class="educator-section__visual fade-right" appFadeOnScroll [delay]="150">
+      <div class="educator-card">
+        <div class="educator-card__stat">
+          <span class="educator-card__number">50+</span>
+          <span class="educator-card__caption">Students mentored</span>
+        </div>
+        <div class="educator-card__stat">
+          <span class="educator-card__number">30+</span>
+          <span class="educator-card__caption">Articles & tutorials</span>
+        </div>
+        <div class="educator-card__stat">
+          <span class="educator-card__number">5+</span>
+          <span class="educator-card__caption">Years of teaching</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CAMEROON TRAVELS ===== -->
+<section class="travels-section">
+  <div class="travels-section__bg-accent" aria-hidden="true"></div>
+  <div class="container travels-section__inner">
+    <div class="travels-section__header fade-up" appFadeOnScroll>
+      <h2 class="section__title">Cameroon</h2>
+      <p class="section__subtitle">Exploring the beauty and culture of my homeland.</p>
+    </div>
+
+    <div class="travels-gallery">
+      <div class="travels-gallery__main fade-left" appFadeOnScroll [delay]="100">
+        <div class="travels-gallery__img-wrap">
+          @for (img of travelImages; track img.src; let i = $index) {
+            <div
+              class="travels-gallery__img"
+              [class.active]="activeImageIndex() === i"
+              [style.background-image]="'url(' + img.src + ')'"
+              role="img"
+              [attr.aria-label]="img.alt"
+            >
+              <div class="travels-gallery__caption">{{ img.caption }}</div>
+            </div>
+          }
+        </div>
+
+        <div class="travels-gallery__dots">
+          @for (img of travelImages; track img.src; let i = $index) {
+            <button
+              class="travels-gallery__dot"
+              [class.active]="activeImageIndex() === i"
+              (click)="setImage(i)"
+              [attr.aria-label]="'View image ' + (i + 1)"
+            ></button>
+          }
+        </div>
+      </div>
+
+      <div class="travels-gallery__text fade-right" appFadeOnScroll [delay]="200">
+        <p>
+          Cameroon is a land of contrasts — dense rainforests, volcanic highlands, vibrant
+          cities and ancient traditions. Growing up with this diversity shaped how I think
+          about problems: with curiosity, creativity, and deep respect for context.
+        </p>
+        <p>
+          Every trip back reminds me of what truly matters: community, resilience, and the
+          stories we carry forward.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,208 @@
+@use '../../../assets/styles/variables' as *;
+@use '../../../assets/styles/mixins'    as *;
+
+.blog-page {
+  min-height: 100svh;
+  padding-top: $navbar-height;
+
+  &__header { padding-bottom: $space-4; }
+  &__main    { padding-bottom: $space-12; }
+}
+
+.blog-grid {
+  display: grid;
+  gap: $space-6;
+  grid-template-columns: 1fr;
+
+  @include md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.blog-skeleton {
+  border: 1px solid var(--color-border);
+  border-radius: $radius-xl;
+  overflow: hidden;
+}
+
+.blog-card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-xl;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform $transition-base, box-shadow $transition-base,
+              border-color $transition-base;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card);
+    border-color: $color-accent;
+
+    .blog-card__cover img { transform: scale(1.04); }
+  }
+
+  &__cover {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--color-surface);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform $transition-slow;
+      display: block;
+    }
+
+    &-placeholder {
+      width: 100%;
+      height: 100%;
+      @include flex-center;
+      font-size: $text-4xl;
+      background: linear-gradient(135deg, $color-surface 0%, var(--color-border) 100%);
+    }
+  }
+
+  &__body {
+    padding: $space-5;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+    margin-bottom: $space-3;
+  }
+
+  &__title {
+    font-size: $text-lg;
+    font-weight: $font-bold;
+    color: var(--color-text);
+    margin-bottom: $space-2;
+    @include line-clamp(2);
+  }
+
+  &__excerpt {
+    font-size: $text-sm;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    @include line-clamp(3);
+    margin-bottom: $space-4;
+  }
+
+  &__footer {
+    @include flex-between;
+    padding-top: $space-3;
+    border-top: 1px solid var(--color-border);
+  }
+
+  &__date {
+    font-size: $text-xs;
+    color: var(--color-text-muted);
+  }
+
+  &__actions {
+    display: flex;
+    gap: $space-2;
+  }
+
+  &__action {
+    display: flex;
+    align-items: center;
+    gap: $space-1;
+    font-size: $text-xs;
+    color: var(--color-text-muted);
+    padding: $space-1 $space-2;
+    border-radius: $radius-sm;
+    transition: color $transition-fast, background $transition-fast;
+
+    &:hover:not(:disabled) {
+      background: var(--color-surface);
+      color: #e74c3c;
+    }
+
+    &.liked { color: #e74c3c; }
+    &:disabled { cursor: default; }
+  }
+}
+
+.tag {
+  padding: $space-1 $space-2;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-sm;
+  font-size: $text-xs;
+  font-weight: $font-medium;
+  color: var(--color-text-muted);
+}
+
+// Newsletter
+.newsletter {
+  background: $color-primary;
+  padding-block: $space-16;
+  margin-top: $space-8;
+
+  &__inner {
+    display: grid;
+    gap: $space-8;
+    align-items: center;
+
+    @include lg {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  &__title {
+    font-size: $text-2xl;
+    font-weight: $font-black;
+    color: #fff;
+    margin-bottom: $space-2;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: $text-base;
+  }
+
+  &__success {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: $radius-lg;
+    padding: $space-4;
+    color: $color-accent;
+    font-weight: $font-semibold;
+  }
+
+  &__input-row {
+    display: flex;
+    gap: $space-3;
+    flex-wrap: wrap;
+  }
+
+  &__input {
+    flex: 1;
+    min-width: 200px;
+    padding: $space-3 $space-4;
+    border-radius: $radius-lg;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-size: $text-base;
+
+    &::placeholder { color: rgba(255, 255, 255, 0.4); }
+    &:focus {
+      outline: none;
+      border-color: $color-accent;
+    }
+  }
+
+  &__error {
+    font-size: $text-xs;
+    color: #f87171;
+    margin-top: $space-2;
+  }
+}

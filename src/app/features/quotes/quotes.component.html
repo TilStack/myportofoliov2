@@ -1,0 +1,102 @@
+<div class="quotes-page">
+
+  <!-- Header -->
+  <header class="quotes-page__header section">
+    <div class="container">
+      <div class="fade-up" appFadeOnScroll>
+        <h1 class="section__title">Quotes</h1>
+        <p class="section__subtitle">
+          Des pensées qui me trottent dans la tête. Cliquez sur une citation pour en savoir plus.
+        </p>
+      </div>
+
+      <!-- Category filter -->
+      <div class="quotes-filter fade-up" appFadeOnScroll [delay]="100">
+        @for (cat of categories; track cat) {
+          <button
+            class="quotes-filter__btn"
+            [class.active]="activeCategory() === cat"
+            (click)="setCategory(cat)"
+          >{{ cat }}</button>
+        }
+      </div>
+    </div>
+  </header>
+
+  <!-- Grid -->
+  <main class="container quotes-page__main">
+    <div class="quotes-grid">
+      @for (quote of filtered; track quote.id; let i = $index) {
+        <article
+          class="qcard fade-up"
+          appFadeOnScroll
+          [delay]="i * 60"
+          (click)="openModal(quote)"
+          role="button"
+          tabindex="0"
+          (keyup.enter)="openModal(quote)"
+          [attr.aria-label]="'Read more about this quote by ' + quote.author"
+        >
+          <!-- Decorative mark -->
+          <div class="qcard__mark" aria-hidden="true">&ldquo;</div>
+
+          <!-- Category badge -->
+          @if (quote.category) {
+            <span class="qcard__category">{{ quote.category }}</span>
+          }
+
+          <!-- Quote text -->
+          <blockquote class="qcard__text">{{ quote.text }}</blockquote>
+
+          <!-- Author + date -->
+          <div class="qcard__meta">
+            <div class="qcard__author-avatar" aria-hidden="true">
+              {{ initials(quote.author) }}
+            </div>
+            <div>
+              <cite class="qcard__author">{{ quote.author }}</cite>
+              <span class="qcard__date">{{ quote.date | date:'dd/MM/yyyy' }}</span>
+            </div>
+            <div class="qcard__likes">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+              {{ quote.likes }}
+            </div>
+          </div>
+
+          <!-- Tags preview (first 2) -->
+          @if (quote.tags.length) {
+            <div class="qcard__tags">
+              @for (tag of quote.tags.slice(0, 2); track tag) {
+                <span class="qcard__tag"># {{ tag }}</span>
+              }
+              @if (quote.tags.length > 2) {
+                <span class="qcard__tag-more">+{{ quote.tags.length - 2 }}</span>
+              }
+            </div>
+          }
+
+          <!-- CTA hint -->
+          <div class="qcard__cta">
+            <span>Lire ma lecture</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </div>
+        </article>
+      }
+    </div>
+  </main>
+
+  <!-- Modal -->
+  @if (activeQuote()) {
+    <app-quote-modal
+      [quote]="activeQuote()!"
+      (close)="closeModal()"
+    ></app-quote-modal>
+  }
+
+</div>

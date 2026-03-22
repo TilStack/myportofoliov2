@@ -1,0 +1,121 @@
+// ============================================================
+// GLOBAL STYLES ENTRY POINT
+// ============================================================
+@use 'assets/styles/variables' as *;
+@use 'assets/styles/mixins'    as *;
+@use 'assets/styles/reset';
+@use 'assets/styles/animations';
+
+// Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Poppins:wght@400;500;600;700;900&display=swap');
+
+// ============================================================
+// CSS CUSTOM PROPERTIES — LIGHT THEME (default)
+// ============================================================
+:root {
+  --color-primary:      #{$color-primary};
+  --color-accent:       #{$color-accent};
+  --color-bg:           #{$color-bg};
+  --color-surface:      #{$color-surface};
+  --color-text:         #{$color-text};
+  --color-text-muted:   #{$color-text-muted};
+  --color-border:       #{$color-border};
+  --color-navbar-bg:    rgba(255, 255, 255, 0.85);
+  --color-card-bg:      #{$color-bg};
+  --shadow-card:        #{$shadow-md};
+}
+
+// ============================================================
+// DARK THEME
+// ============================================================
+[data-theme='dark'] {
+  --color-bg:           #{$color-bg-dark};
+  --color-surface:      #{$color-surface-dark};
+  --color-text:         #{$color-text-dark};
+  --color-text-muted:   #9ca3af;
+  --color-border:       #{$color-border-dark};
+  --color-navbar-bg:    rgba(15, 15, 15, 0.85);
+  --color-card-bg:      #{$color-surface-dark};
+  --shadow-card:        0 4px 16px rgba(0,0,0,0.4);
+}
+
+// ============================================================
+// UTILITY CLASSES
+// ============================================================
+.container {
+  @include container;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+// Section base
+.section {
+  padding-block: $space-20;
+
+  @include lg {
+    padding-block: $space-32;
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: clamp(#{$text-2xl}, 4vw, #{$text-4xl});
+    font-weight: $font-black;
+    color: var(--color-text);
+    margin-bottom: $space-4;
+  }
+
+  &__subtitle {
+    font-size: $text-lg;
+    color: var(--color-text-muted);
+    max-width: 560px;
+    margin-bottom: $space-12;
+  }
+}
+
+// Accent mark
+.accent { color: $color-accent; }
+.accent-bg { background: $color-accent; }
+
+// Fade-up scroll animation classes (driven by IntersectionObserver)
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 600ms $ease-out-cubic, transform 600ms $ease-out-cubic;
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-left {
+  opacity: 0;
+  transform: translateX(-24px);
+  transition: opacity 600ms $ease-out-cubic, transform 600ms $ease-out-cubic;
+
+  &.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.fade-right {
+  opacity: 0;
+  transform: translateX(24px);
+  transition: opacity 600ms $ease-out-cubic, transform 600ms $ease-out-cubic;
+
+  &.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

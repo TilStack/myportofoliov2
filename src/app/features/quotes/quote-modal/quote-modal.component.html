@@ -1,0 +1,70 @@
+<div
+  class="qmodal__backdrop"
+  [class.visible]="visible"
+  (click)="onBackdropClick($event)"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-label]="'Quote by ' + quote.author"
+>
+  <div class="qmodal__card" [class.visible]="visible" #dialog>
+
+    <!-- Close button -->
+    <button class="qmodal__close" (click)="dismiss()" aria-label="Close">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <!-- Category badge -->
+    <div class="qmodal__top">
+      @if (quote.category) {
+        <span class="qmodal__category">{{ quote.category }}</span>
+      }
+    </div>
+
+    <!-- Quote mark + text -->
+    <div class="qmodal__quote-wrap">
+      <div class="qmodal__mark" aria-hidden="true">&ldquo;</div>
+      <blockquote class="qmodal__text">{{ quote.text }}</blockquote>
+      <div class="qmodal__mark qmodal__mark--close" aria-hidden="true">&rdquo;</div>
+    </div>
+
+    <!-- Author row -->
+    <div class="qmodal__author-row">
+      <div class="qmodal__avatar" aria-hidden="true">{{ initials }}</div>
+      <div class="qmodal__author-info">
+        <span class="qmodal__author-name">{{ quote.author }}</span>
+        <span class="qmodal__date">{{ formattedDate }}</span>
+      </div>
+      <div class="qmodal__likes">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <span>{{ quote.likes }}</span>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <div class="qmodal__divider"></div>
+
+    <!-- Explanation -->
+    @if (quote.explanation) {
+      <div class="qmodal__explanation">
+        <h4 class="qmodal__explanation-title">Ma lecture</h4>
+        <p class="qmodal__explanation-text">{{ quote.explanation }}</p>
+      </div>
+    }
+
+    <!-- Tags -->
+    @if (quote.tags.length) {
+      <div class="qmodal__tags">
+        @for (tag of quote.tags; track tag) {
+          <span class="qmodal__tag"># {{ tag }}</span>
+        }
+      </div>
+    }
+
+  </div>
+</div>

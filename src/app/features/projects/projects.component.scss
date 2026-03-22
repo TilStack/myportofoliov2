@@ -1,0 +1,155 @@
+@use 'sass:color';
+@use '../../../assets/styles/variables' as *;
+@use '../../../assets/styles/mixins'    as *;
+
+.projects-page {
+  min-height: 100svh;
+  padding-top: $navbar-height;
+
+  &__header {
+    padding-bottom: $space-8;
+  }
+}
+
+// Filter bar
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin-top: $space-8;
+}
+
+.filter-btn {
+  padding: $space-2 $space-4;
+  border-radius: $radius-full;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  font-size: $text-sm;
+  font-weight: $font-medium;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    border-color: $color-primary;
+    color: $color-primary;
+  }
+
+  &.active {
+    background: $color-primary;
+    border-color: $color-primary;
+    color: #fff;
+  }
+}
+
+// Grid
+.projects-grid-wrapper {
+  padding-bottom: $space-20;
+}
+
+.projects-grid {
+  display: grid;
+  gap: $space-6;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+  @include lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.project-card-skeleton {
+  border-radius: $radius-xl;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+// Project card
+.project-card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-xl;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform $transition-base, box-shadow $transition-base,
+              border-color $transition-base;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-card);
+    border-color: $color-accent;
+
+    .project-card__overlay { opacity: 1; }
+    .project-card__img     { transform: scale(1.04); }
+  }
+
+  &__img-wrap {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--color-surface);
+  }
+
+  &__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $transition-slow;
+  }
+
+  &__img-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, $color-primary 0%, color.adjust($color-primary, $lightness: 15%) 100%);
+    @include flex-center;
+    font-size: $text-4xl;
+    font-weight: $font-black;
+    color: $color-accent;
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba($color-primary, 0.85);
+    @include flex-center;
+    color: #fff;
+    font-weight: $font-semibold;
+    font-size: $text-sm;
+    opacity: 0;
+    transition: opacity $transition-base;
+  }
+
+  &__body {
+    padding: $space-5 $space-6;
+  }
+
+  &__title {
+    font-size: $text-lg;
+    font-weight: $font-bold;
+    color: var(--color-text);
+    margin-bottom: $space-2;
+  }
+
+  &__desc {
+    font-size: $text-sm;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin-bottom: $space-4;
+    @include line-clamp(2);
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+  }
+}
+
+.tag {
+  padding: $space-1 $space-2;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-sm;
+  font-size: $text-xs;
+  font-weight: $font-medium;
+  color: var(--color-text-muted);
+}

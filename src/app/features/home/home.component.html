@@ -1,0 +1,114 @@
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero__bg-grid" aria-hidden="true"></div>
+
+  <div class="hero__content container">
+    <div class="hero__text">
+      <p class="hero__greeting anim-fade-in delay-1">{{ i18n.t('hero.greeting') }}</p>
+
+      <h1 class="hero__name anim-fade-in-up delay-2">
+        <span class="hero__name-line">Tils</span><span class="hero__name-accent">tack</span>
+      </h1>
+
+      <p class="hero__role anim-fade-in-up delay-3">{{ i18n.t('hero.role') }}</p>
+
+      <div class="hero__cta anim-fade-in-up delay-4">
+        <app-button variant="accent" size="lg">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          {{ i18n.t('hero.cta') }}
+        </app-button>
+
+        <a routerLink="/projects" class="hero__cta-secondary">
+          {{ i18n.t('nav.projects') }}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Decorative accent block -->
+    <div class="hero__deco anim-fade-in-right delay-3" aria-hidden="true">
+      <div class="hero__deco-card">
+        <div class="hero__deco-dot"></div>
+        <div class="hero__deco-lines">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="hero__deco-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+          </svg>
+          Open to work
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <a href="#moodboard" class="hero__scroll anim-fade-in delay-5" aria-label="Scroll down">
+    <span>{{ i18n.t('hero.scroll') }}</span>
+    <div class="hero__scroll-line"></div>
+  </a>
+</section>
+
+<!-- ===== MOODBOARD — Quote Grid ===== -->
+<section class="moodboard section" id="moodboard">
+  <div class="container">
+    <div class="moodboard__header fade-up" appFadeOnScroll>
+      <h2 class="section__title">{{ i18n.t('quotes.title') }}</h2>
+      <p class="section__subtitle">{{ i18n.t('quotes.subtitle') }}</p>
+    </div>
+
+    @if (quotesLoading()) {
+      <div class="moodboard__grid">
+        @for (_ of [1,2,3,4,5,6]; track $index) {
+          <div class="moodboard__skeleton">
+            <app-skeleton height="8rem"></app-skeleton>
+            <app-skeleton width="60%" height="0.875rem" style="margin-top:0.75rem"></app-skeleton>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="moodboard__grid">
+        @for (quote of quotes(); track quote.id; let i = $index) {
+          <article
+            class="quote-card fade-up"
+            [class.expanded]="quote.expanded"
+            appFadeOnScroll
+            [delay]="i * 80"
+            (click)="toggleQuote(quote)"
+            role="button"
+            [attr.aria-expanded]="quote.expanded"
+            tabindex="0"
+            (keyup.enter)="toggleQuote(quote)"
+          >
+            <blockquote class="quote-card__text">"{{ quote.text }}"</blockquote>
+            <cite class="quote-card__author">— {{ quote.author }}</cite>
+            @if (quote.expanded) {
+              <p class="quote-card__explanation">{{ quote.explanation }}</p>
+            }
+            <span class="quote-card__hint">
+              {{ quote.expanded ? 'Click to close' : 'Click to expand' }}
+            </span>
+          </article>
+        }
+
+        <!-- CTA card -->
+        <div class="moodboard__cta fade-up" appFadeOnScroll [delay]="quotes().length * 80">
+          <a routerLink="/quotes" class="moodboard__cta-link">
+            See all quotes
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,19 @@
+<footer class="footer">
+  <div class="footer__inner container">
+
+    <!-- Nav links -->
+    <nav class="footer__nav" aria-label="Footer navigation">
+      <a routerLink="/about"    class="footer__link">{{ i18n.t('nav.about') }}</a>
+      <a routerLink="/projects" class="footer__link">{{ i18n.t('nav.projects') }}</a>
+      <a routerLink="/blog"     class="footer__link">{{ i18n.t('nav.blog') }}</a>
+      <a routerLink="/quotes"   class="footer__link">{{ i18n.t('nav.quotes') }}</a>
+      <a routerLink="/contact"  class="footer__link">{{ i18n.t('nav.contact') }}</a>
+    </nav>
+
+    <!-- Copyright -->
+    <p class="footer__copy">
+      &copy; {{ year }} Israel Tientcheu. All rights reserved.
+    </p>
+
+  </div>
+</footer>

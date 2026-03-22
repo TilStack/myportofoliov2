@@ -1,0 +1,103 @@
+<div class="blog-page">
+  <header class="blog-page__header section">
+    <div class="container">
+      <div class="fade-up" appFadeOnScroll>
+        <h1 class="section__title">Blog</h1>
+        <p class="section__subtitle">Thoughts, notes, and tutorials on web development.</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container blog-page__main">
+    @if (loading()) {
+      <div class="blog-grid">
+        @for (_ of [1,2,3]; track $index) {
+          <div class="blog-skeleton">
+            <app-skeleton height="200px" radius="1rem"></app-skeleton>
+            <div style="padding:1.25rem; display:flex; flex-direction:column; gap:0.75rem">
+              <app-skeleton width="80%" height="1.25rem"></app-skeleton>
+              <app-skeleton height="0.875rem"></app-skeleton>
+              <app-skeleton width="60%" height="0.875rem"></app-skeleton>
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <div class="blog-grid">
+        @for (post of posts(); track post.id; let i = $index) {
+          <article
+            class="blog-card fade-up"
+            appFadeOnScroll
+            [delay]="i * 80"
+            [routerLink]="['/blog', post.id]"
+            role="link"
+            tabindex="0"
+          >
+            <div class="blog-card__cover">
+              @if (post.coverUrl) {
+                <img [src]="post.coverUrl" [alt]="post.title" loading="lazy" />
+              } @else {
+                <div class="blog-card__cover-placeholder"><span>✍️</span></div>
+              }
+            </div>
+
+            <div class="blog-card__body">
+              <div class="blog-card__tags">
+                @for (tag of post.tags.slice(0,3); track tag) {
+                  <span class="tag">{{ tag }}</span>
+                }
+              </div>
+
+              <h2 class="blog-card__title">{{ post.title }}</h2>
+              <p class="blog-card__excerpt">{{ post.excerpt }}</p>
+
+              <div class="blog-card__footer">
+                <span class="blog-card__date">{{ post.createdAt | date:'mediumDate' }}</span>
+                <div class="blog-card__actions">
+                  <button
+                    class="blog-card__action"
+                    [class.liked]="likedPosts().has(post.id!)"
+                    (click)="likePost(post, $event)"
+                    [title]="isLoggedIn ? 'Like' : 'Login to like'"
+                    [disabled]="!isLoggedIn || likedPosts().has(post.id!)"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                    {{ post.likes }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </main>
+
+  <!-- Newsletter -->
+  <section class="newsletter">
+    <div class="container newsletter__inner">
+      <div class="newsletter__text fade-left" appFadeOnScroll>
+        <h2 class="newsletter__title">Stay in the loop</h2>
+        <p>Get new articles straight to your inbox. No spam, ever.</p>
+      </div>
+
+      <div class="newsletter__form fade-right" appFadeOnScroll [delay]="100">
+        @if (subscribed()) {
+          <div class="newsletter__success">✅ You're subscribed! Thanks.</div>
+        } @else {
+          <form [formGroup]="newsletterForm" (ngSubmit)="subscribeNewsletter()">
+            <div class="newsletter__input-row">
+              <input type="email" formControlName="email" placeholder="your@email.com" class="newsletter__input" />
+              <app-button type="submit" variant="accent" [loading]="subscribing()">Subscribe</app-button>
+            </div>
+            @if (newsletterForm.controls.email.invalid && newsletterForm.controls.email.touched) {
+              <p class="newsletter__error">Please enter a valid email.</p>
+            }
+          </form>
+        }
+      </div>
+    </div>
+  </section>
+</div>

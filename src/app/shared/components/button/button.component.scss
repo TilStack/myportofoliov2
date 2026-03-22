@@ -1,0 +1,78 @@
+@use 'sass:color';
+@use '../../../../assets/styles/variables' as *;
+@use '../../../../assets/styles/mixins'    as *;
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  font-family: $font-sans;
+  font-weight: $font-semibold;
+  border-radius: $radius-lg;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: background $transition-fast, color $transition-fast,
+              transform $transition-fast, box-shadow $transition-fast,
+              border-color $transition-fast;
+  white-space: nowrap;
+  text-decoration: none;
+
+  &:hover:not(:disabled) { transform: translateY(-2px); }
+  &:active:not(:disabled) { transform: translateY(0); }
+  &:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  // --- Sizes ---
+  &--sm  { padding: $space-2 $space-4;  font-size: $text-sm; }
+  &--md  { padding: $space-3 $space-6;  font-size: $text-base; }
+  &--lg  { padding: $space-4 $space-8;  font-size: $text-lg; }
+  &--full { width: 100%; }
+
+  // --- Variants ---
+  &--primary {
+    background: $color-primary;
+    color: #fff;
+    &:hover:not(:disabled) {
+      background: color.adjust($color-primary, $lightness: 8%);
+      box-shadow: $shadow-md;
+    }
+  }
+
+  &--accent {
+    background: $color-accent;
+    color: $color-primary;
+    border-color: $color-accent;
+    &:hover:not(:disabled) {
+      background: color.adjust($color-accent, $lightness: -5%);
+      box-shadow: 0 4px 16px rgba(255, 222, 89, 0.4);
+    }
+  }
+
+  &--secondary {
+    background: transparent;
+    border-color: var(--color-border);
+    color: var(--color-text);
+    &:hover:not(:disabled) {
+      border-color: $color-primary;
+      background: var(--color-surface);
+    }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: var(--color-text);
+    &:hover:not(:disabled) {
+      background: var(--color-surface);
+    }
+  }
+
+  // --- Spinner ---
+  &__spinner {
+    width: 1em;
+    height: 1em;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 600ms linear infinite;
+  }
+}

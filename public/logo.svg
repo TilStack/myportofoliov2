@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 215" fill="currentColor" aria-label="Israel Tientcheu logo">
+  <!-- Top wide bar (T crossbar) -->
+  <polygon points="27,57 173,57 153,80 27,80"/>
+  <!-- Second bar (S-element, upper) -->
+  <polygon points="87,87 153,87 133,108 87,108"/>
+  <!-- T vertical stem (with pointed bottom) -->
+  <polygon points="55,57 78,57 78,172 66,200 55,172"/>
+  <!-- Right diagonal (S-element, lower — converges to bottom point) -->
+  <polygon points="87,108 133,108 66,200"/>
+</svg>
