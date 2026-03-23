@@ -1,70 +1,243 @@
 <div class="projects-page">
-  <header class="projects-page__header section">
+
+  <!-- ===== PAGE HEADER ===== -->
+  <header class="projects-page__header">
     <div class="container">
       <div class="fade-up" appFadeOnScroll>
-        <h1 class="section__title">Projects</h1>
-        <p class="section__subtitle">A curated selection of things I've designed and built.</p>
+        <span class="projects-page__eyebrow">{{ i18n.t('projects.eyebrow') }}</span>
+        <h1 class="projects-page__title">{{ i18n.t('projects.title') }}</h1>
+        <p class="projects-page__subtitle">{{ i18n.t('projects.subtitle') }}</p>
       </div>
-
-      @if (!loading()) {
-        <div class="filter-bar fade-up" appFadeOnScroll [delay]="100">
-          <button class="filter-btn" [class.active]="filter() === 'all'" (click)="setFilter('all')">All</button>
-          @for (tech of allTechs(); track tech) {
-            <button class="filter-btn" [class.active]="filter() === tech" (click)="setFilter(tech)">{{ tech }}</button>
-          }
-        </div>
-      }
     </div>
   </header>
 
-  <main class="container projects-grid-wrapper">
-    @if (loading()) {
-      <div class="projects-grid">
-        @for (_ of [1,2,3,4,5,6]; track $index) {
-          <div class="project-card-skeleton">
-            <app-skeleton height="220px" radius="1rem"></app-skeleton>
-            <div style="padding: 1.25rem">
-              <app-skeleton width="70%" height="1.25rem" style="margin-bottom:0.75rem"></app-skeleton>
-              <app-skeleton height="0.875rem" style="margin-bottom:0.5rem"></app-skeleton>
-              <app-skeleton width="50%" height="0.875rem"></app-skeleton>
-            </div>
-          </div>
-        }
-      </div>
-    } @else {
-      <div class="projects-grid">
-        @for (project of filtered; track project.id; let i = $index) {
-          <article
-            class="project-card fade-up"
-            appFadeOnScroll
-            [delay]="i * 80"
-            [routerLink]="['/projects', project.id]"
-            role="link"
-            tabindex="0"
-          >
-            <div class="project-card__img-wrap">
-              @if (project.imageUrl) {
-                <img [src]="project.imageUrl" [alt]="project.title" class="project-card__img" loading="lazy" />
-              } @else {
-                <div class="project-card__img-placeholder">
-                  <span>{{ project.title.charAt(0) }}</span>
-                </div>
-              }
-              <div class="project-card__overlay"><span>View details →</span></div>
-            </div>
+  <!-- ===== PROJECT GRID ===== -->
+  <main class="container projects-page__main">
+    <ul class="projects-grid" role="list">
+      @for (p of projects; track p.id; let i = $index) {
+        <li
+          class="pcard fade-up"
+          appFadeOnScroll
+          [delay]="i * 80"
+          (click)="openModal(p)"
+          role="button"
+          tabindex="0"
+          (keyup.enter)="openModal(p)"
+          [attr.aria-label]="p.name"
+        >
+          <!-- Hover reveal background -->
+          <div class="pcard__hover-bg" aria-hidden="true"></div>
 
-            <div class="project-card__body">
-              <h3 class="project-card__title">{{ project.title }}</h3>
-              <p class="project-card__desc">{{ project.shortDesc }}</p>
-              <div class="project-card__tags">
-                @for (tech of project.techStack.slice(0, 4); track tech) {
-                  <span class="tag">{{ tech }}</span>
-                }
-              </div>
-            </div>
-          </article>
-        }
-      </div>
-    }
+          <!-- Icon badge -->
+          <div class="pcard__icon" aria-hidden="true">{{ p.icon }}</div>
+
+          <!-- Name + company -->
+          <div class="pcard__header">
+            <h3 class="pcard__name">{{ p.name }}</h3>
+            <span class="pcard__company">{{ p.company }}</span>
+          </div>
+
+          <!-- Description (translated) -->
+          <p class="pcard__desc">{{ desc(p) }}</p>
+
+          <!-- Tech pills -->
+          <div class="pcard__tech">
+            @for (t of p.tech; track t) {
+              <span class="pcard__tag">{{ t }}</span>
+            }
+          </div>
+
+          <!-- Footer: status + link hint -->
+          <div class="pcard__footer">
+            <span
+              class="pcard__status"
+              [class.pcard__status--done]="p.status === 'finished'"
+              [class.pcard__status--wip]="p.status === 'in-progress'"
+            >
+              <span class="pcard__status-dot" aria-hidden="true"></span>
+              {{ p.status === 'finished' ? i18n.t('projects.finished') : i18n.t('projects.inProgress') }}
+            </span>
+            <span class="pcard__open-hint" aria-hidden="true">Open ↗</span>
+          </div>
+        </li>
+      }
+    </ul>
   </main>
+
 </div>
+
+
+<!-- ===== PROJECT MODAL ===== -->
+@if (selected()) {
+  <div
+    class="pmodal__backdrop"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="selected()!.name"
+    (click)="onBackdropClick($event)"
+  >
+    <div class="pmodal__card">
+
+      <!-- Close button -->
+      <button class="pmodal__close" (click)="closeModal()" [attr.aria-label]="i18n.t('projects.closeModal')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+
+      <!-- ─── HERO BANNER ─── -->
+      <div class="pmodal__hero">
+        <div class="pmodal__hero-grid" aria-hidden="true"></div>
+
+        <!-- Status badge (top-right) -->
+        <span
+          class="pmodal__hero-status"
+          [class.pmodal__hero-status--done]="selected()!.status === 'finished'"
+          [class.pmodal__hero-status--wip]="selected()!.status === 'in-progress'"
+        >
+          <span class="pmodal__status-dot" aria-hidden="true"></span>
+          {{ selected()!.status === 'finished' ? i18n.t('projects.finished') : i18n.t('projects.inProgress') }}
+        </span>
+
+        <!-- Large icon -->
+        <div class="pmodal__hero-icon" aria-hidden="true">{{ selected()!.icon }}</div>
+
+        <!-- Floating tech pills -->
+        <div class="pmodal__hero-pills" aria-hidden="true">
+          @for (t of selected()!.tech; track t) {
+            <span class="pmodal__hero-pill">{{ t }}</span>
+          }
+        </div>
+      </div>
+
+      <!-- ─── CONTENT ─── -->
+      <div class="pmodal__content">
+
+        <!-- Title row -->
+        <div class="pmodal__title-row">
+          <div>
+            <h2 class="pmodal__name">{{ selected()!.name }}</h2>
+            <p class="pmodal__company">{{ selected()!.company }}</p>
+          </div>
+        </div>
+
+        <!-- Full description -->
+        <p class="pmodal__desc">{{ detail(selected()!) }}</p>
+
+        <!-- Divider -->
+        <div class="pmodal__divider"></div>
+
+        <!-- Tech stack section -->
+        <section class="pmodal__section">
+          <h4 class="pmodal__section-title">
+            <span class="pmodal__section-dot" aria-hidden="true"></span>
+            {{ i18n.t('projects.techStack') }}
+          </h4>
+          <div class="pmodal__tags">
+            @for (t of selected()!.tech; track t) {
+              <span class="pmodal__tag">{{ t }}</span>
+            }
+          </div>
+        </section>
+
+        <!-- Divider -->
+        <div class="pmodal__divider"></div>
+
+        <!-- Contributors section -->
+        <section class="pmodal__section">
+          <h4 class="pmodal__section-title">
+            <span class="pmodal__section-dot" aria-hidden="true"></span>
+            {{ i18n.t('projects.contributors') }}
+          </h4>
+
+          <div class="pmodal__contributors">
+            @for (c of selected()!.contributors; track c.name) {
+              <div class="contributor">
+
+                <!-- Profile video preview -->
+                <div class="contributor__video" [attr.aria-label]="i18n.t('projects.profileVideo') + ' — ' + c.name">
+                  <div class="contributor__video-thumb">
+                    <span class="contributor__video-initials">{{ c.initials }}</span>
+                  </div>
+                  <div class="contributor__video-play" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
+                  <span class="contributor__video-label">{{ i18n.t('projects.profileVideo') }}</span>
+                </div>
+
+                <!-- Info -->
+                <div class="contributor__info">
+                  <div
+                    class="contributor__avatar"
+                    [class.contributor__avatar--primary]="c.variant === 'primary'"
+                    [class.contributor__avatar--accent]="c.variant === 'accent'"
+                    aria-hidden="true"
+                  >{{ c.initials }}</div>
+                  <div>
+                    <p class="contributor__name">{{ c.name }}</p>
+                    <p class="contributor__role">{{ role(c) }}</p>
+                  </div>
+                </div>
+
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- Divider -->
+        <div class="pmodal__divider"></div>
+
+        <!-- Links section -->
+        <section class="pmodal__section pmodal__section--links">
+          <h4 class="pmodal__section-title">
+            <span class="pmodal__section-dot" aria-hidden="true"></span>
+            {{ i18n.t('projects.links') }}
+          </h4>
+
+          <div class="pmodal__links">
+            @if (selected()!.youtubeUrl) {
+              <a
+                [href]="selected()!.youtubeUrl"
+                class="pmodal__btn pmodal__btn--youtube"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <!-- YouTube icon -->
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M21.8 8s-.2-1.4-.8-2c-.7-.8-1.5-.8-1.9-.9C16.8 5 12 5 12 5s-4.8 0-7.1.2c-.4 0-1.2.1-1.9.9-.6.6-.8 2-.8 2S2 9.5 2 11v1.4c0 1.5.2 3 .2 3s.2 1.4.8 2c.7.8 1.7.7 2.1.8C6.4 18.2 12 18.2 12 18.2s4.8 0 7.1-.2c.4 0 1.2-.1 1.9-.8.6-.7.8-2 .8-2s.2-1.5.2-3V11c0-1.5-.2-3-.2-3zM9.7 14.4V9.6l5.2 2.4-5.2 2.4z"/>
+                </svg>
+                {{ i18n.t('projects.watchVideo') }}
+              </a>
+            }
+
+            @if (selected()!.liveUrl) {
+              <a
+                [href]="selected()!.liveUrl"
+                class="pmodal__btn pmodal__btn--primary"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+                {{ i18n.t('projects.viewSite') }}
+              </a>
+            } @else {
+              <span class="pmodal__private">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+                {{ i18n.t('projects.private') }}
+              </span>
+            }
+          </div>
+        </section>
+
+      </div><!-- /content -->
+    </div><!-- /card -->
+  </div><!-- /backdrop -->
+}

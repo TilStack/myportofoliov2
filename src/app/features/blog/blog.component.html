@@ -1,103 +1,290 @@
 <div class="blog-page">
-  <header class="blog-page__header section">
-    <div class="container">
+
+  <!-- ═══════════════════════════════════ HEADER ═══ -->
+  <header class="blog-page__header">
+    <div class="container blog-page__header-inner">
       <div class="fade-up" appFadeOnScroll>
-        <h1 class="section__title">Blog</h1>
-        <p class="section__subtitle">Thoughts, notes, and tutorials on web development.</p>
+        <span class="blog-page__eyebrow">{{ i18n.t('blog.eyebrow') }}</span>
+        <h1 class="blog-page__title">{{ i18n.t('blog.title') }}</h1>
+        <p class="blog-page__subtitle">{{ i18n.t('blog.subtitle') }}</p>
+      </div>
+      <div class="blog-page__header-cta fade-up" appFadeOnScroll [delay]="100">
+        <button class="write-btn" (click)="openContribute()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <path d="M12 20h9"/>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+          </svg>
+          {{ i18n.t('blog.writeBtn') }}
+        </button>
       </div>
     </div>
   </header>
 
-  <main class="container blog-page__main">
-    @if (loading()) {
-      <div class="blog-grid">
-        @for (_ of [1,2,3]; track $index) {
-          <div class="blog-skeleton">
-            <app-skeleton height="200px" radius="1rem"></app-skeleton>
-            <div style="padding:1.25rem; display:flex; flex-direction:column; gap:0.75rem">
-              <app-skeleton width="80%" height="1.25rem"></app-skeleton>
-              <app-skeleton height="0.875rem"></app-skeleton>
-              <app-skeleton width="60%" height="0.875rem"></app-skeleton>
+  <!-- ═══════════════════════════════════ FILTERS ═══ -->
+  <div class="container">
+    <div class="blog-filters fade-up" appFadeOnScroll [delay]="120">
+      <button
+        class="blog-filter-btn"
+        [class.active]="activeFilter() === 'all'"
+        (click)="setFilter('all')"
+      >{{ i18n.t('blog.filterAll') }}</button>
+      <button
+        class="blog-filter-btn"
+        [class.active]="activeFilter() === 'mine'"
+        (click)="setFilter('mine')"
+      >{{ i18n.t('blog.filterMine') }}</button>
+      <button
+        class="blog-filter-btn blog-filter-btn--external"
+        [class.active]="activeFilter() === 'zerofiltre'"
+        (click)="setFilter('zerofiltre')"
+      >
+        <span class="zf-dot" aria-hidden="true"></span>
+        {{ i18n.t('blog.filterZerofiltre') }}
+      </button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════ FEATURED ═══ -->
+  @if (featuredArticle(); as featured) {
+    <div class="container">
+      <article class="blog-featured fade-up" appFadeOnScroll [delay]="160">
+
+        <!-- Cover -->
+        <div class="blog-featured__cover">
+          @if (featured.coverUrl) {
+            <img [src]="featured.coverUrl" [alt]="featured.title" loading="eager" />
+          } @else {
+            <div
+              class="blog-featured__cover-placeholder"
+              [style.background]="featured.coverGradient"
+            >
+              <span>{{ featured.coverIcon }}</span>
             </div>
+          }
+          <span class="blog-featured__badge">{{ i18n.t('blog.featured') }}</span>
+        </div>
+
+        <!-- Content -->
+        <div class="blog-featured__body">
+          <div class="blog-featured__tags">
+            @for (tag of featured.tags; track tag) {
+              <span class="btag">{{ tag }}</span>
+            }
           </div>
-        }
-      </div>
-    } @else {
-      <div class="blog-grid">
-        @for (post of posts(); track post.id; let i = $index) {
+
+          <h2 class="blog-featured__title">{{ featured.title }}</h2>
+          <p class="blog-featured__excerpt">{{ featured.excerpt }}</p>
+
+          <div class="blog-featured__footer">
+            <span class="blog-meta">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
+              {{ featured.readTime }} {{ i18n.t('blog.minRead') }}
+            </span>
+            <span class="blog-meta">{{ formatDate(featured.date) }}</span>
+            <span class="blog-featured__cta">{{ i18n.t('blog.readMore') }}</span>
+          </div>
+        </div>
+
+      </article>
+    </div>
+  }
+
+  <!-- ═══════════════════════════════════ GRID ═══ -->
+  <main class="container blog-page__main">
+    <ul class="blog-grid" role="list">
+      @for (article of gridArticles(); track article.id; let i = $index) {
+        <li>
           <article
             class="blog-card fade-up"
             appFadeOnScroll
-            [delay]="i * 80"
-            [routerLink]="['/blog', post.id]"
-            role="link"
-            tabindex="0"
+            [delay]="i * 60"
+            [class.blog-card--external]="article.source === 'zerofiltre'"
           >
+
+            <!-- Cover image -->
             <div class="blog-card__cover">
-              @if (post.coverUrl) {
-                <img [src]="post.coverUrl" [alt]="post.title" loading="lazy" />
+              @if (article.coverUrl) {
+                <img [src]="article.coverUrl" [alt]="article.title" loading="lazy" />
               } @else {
-                <div class="blog-card__cover-placeholder"><span>✍️</span></div>
+                <div
+                  class="blog-card__cover-placeholder"
+                  [style.background]="article.coverGradient"
+                >
+                  <span>{{ article.coverIcon }}</span>
+                </div>
+              }
+
+              <!-- Zerofiltre badge -->
+              @if (article.source === 'zerofiltre') {
+                <span class="blog-card__source-badge">
+                  <span class="zf-dot zf-dot--sm" aria-hidden="true"></span>
+                  {{ i18n.t('blog.external') }}
+                </span>
               }
             </div>
 
+            <!-- Body -->
             <div class="blog-card__body">
               <div class="blog-card__tags">
-                @for (tag of post.tags.slice(0,3); track tag) {
-                  <span class="tag">{{ tag }}</span>
+                @for (tag of article.tags.slice(0, 3); track tag) {
+                  <span class="btag">{{ tag }}</span>
                 }
               </div>
 
-              <h2 class="blog-card__title">{{ post.title }}</h2>
-              <p class="blog-card__excerpt">{{ post.excerpt }}</p>
+              <h3 class="blog-card__title">{{ article.title }}</h3>
+              <p class="blog-card__excerpt">{{ article.excerpt }}</p>
 
               <div class="blog-card__footer">
-                <span class="blog-card__date">{{ post.createdAt | date:'mediumDate' }}</span>
-                <div class="blog-card__actions">
-                  <button
-                    class="blog-card__action"
-                    [class.liked]="likedPosts().has(post.id!)"
-                    (click)="likePost(post, $event)"
-                    [title]="isLoggedIn ? 'Like' : 'Login to like'"
-                    [disabled]="!isLoggedIn || likedPosts().has(post.id!)"
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                <div class="blog-card__meta">
+                  <span class="blog-meta">{{ formatDate(article.date) }}</span>
+                  <span class="blog-meta">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
                     </svg>
-                    {{ post.likes }}
-                  </button>
+                    {{ article.readTime }} {{ i18n.t('blog.minRead') }}
+                  </span>
                 </div>
+
+                @if (article.source === 'zerofiltre' && article.externalUrl) {
+                  <a
+                    [href]="article.externalUrl"
+                    class="blog-card__read-link blog-card__read-link--external"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    (click)="$event.stopPropagation()"
+                  >
+                    {{ i18n.t('blog.readOn') }}
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                      <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
+                    </svg>
+                  </a>
+                } @else {
+                  <span class="blog-card__read-link">{{ i18n.t('blog.readMore') }}</span>
+                }
               </div>
             </div>
+
           </article>
-        }
-      </div>
-    }
+        </li>
+      }
+    </ul>
   </main>
 
-  <!-- Newsletter -->
+  <!-- ═══════════════════════════════════ NEWSLETTER ═══ -->
   <section class="newsletter">
     <div class="container newsletter__inner">
       <div class="newsletter__text fade-left" appFadeOnScroll>
-        <h2 class="newsletter__title">Stay in the loop</h2>
-        <p>Get new articles straight to your inbox. No spam, ever.</p>
+        <h2 class="newsletter__title">{{ i18n.t('blog.newsletter') }}</h2>
+        <p>{{ i18n.t('blog.newsletterSub') }}</p>
       </div>
 
       <div class="newsletter__form fade-right" appFadeOnScroll [delay]="100">
         @if (subscribed()) {
-          <div class="newsletter__success">✅ You're subscribed! Thanks.</div>
+          <div class="newsletter__success">✅ {{ i18n.t('blog.subscribeOk') }}</div>
         } @else {
           <form [formGroup]="newsletterForm" (ngSubmit)="subscribeNewsletter()">
             <div class="newsletter__input-row">
-              <input type="email" formControlName="email" placeholder="your@email.com" class="newsletter__input" />
-              <app-button type="submit" variant="accent" [loading]="subscribing()">Subscribe</app-button>
+              <input
+                type="email"
+                formControlName="email"
+                [placeholder]="i18n.t('blog.emailHolder')"
+                class="newsletter__input"
+              />
+              <app-button type="submit" variant="accent" [loading]="subscribing()">
+                {{ i18n.t('blog.subscribe') }}
+              </app-button>
             </div>
-            @if (newsletterForm.controls.email.invalid && newsletterForm.controls.email.touched) {
-              <p class="newsletter__error">Please enter a valid email.</p>
+            @if (newsletterForm.controls['email'].invalid && newsletterForm.controls['email'].touched) {
+              <p class="newsletter__error">{{ i18n.t('blog.emailError') }}</p>
             }
           </form>
         }
       </div>
     </div>
   </section>
-</div>
+
+</div><!-- /blog-page -->
+
+
+<!-- ═══════════════════════════════════════════════════════ CONTRIBUTE MODAL ═══ -->
+@if (showContribute()) {
+  <div
+    class="contribute-backdrop"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="i18n.t('blog.contributeTitle')"
+    (click)="onBackdropClick($event)"
+  >
+    <div class="contribute-modal">
+
+      <!-- Close -->
+      <button class="contribute-modal__close" (click)="closeContribute()" [attr.aria-label]="i18n.t('blog.close')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+
+      <!-- Header -->
+      <div class="contribute-modal__header">
+        <div class="contribute-modal__icon" aria-hidden="true">✍️</div>
+        <h2 class="contribute-modal__title">{{ i18n.t('blog.contributeTitle') }}</h2>
+        <p class="contribute-modal__sub">{{ i18n.t('blog.contributeSub') }}</p>
+      </div>
+
+      <!-- Success state -->
+      @if (submitSuccess()) {
+        <div class="contribute-modal__success">
+          <span class="contribute-modal__success-icon">🎉</span>
+          <p>{{ i18n.t('blog.submitOk') }}</p>
+          <button class="write-btn write-btn--sm" (click)="closeContribute()">
+            {{ i18n.t('blog.close') }}
+          </button>
+        </div>
+
+      } @else {
+        <!-- Form -->
+        <form [formGroup]="contributeForm" (ngSubmit)="submitContribute()" class="contribute-form" novalidate>
+
+          <div class="contribute-form__row">
+            <div class="form-field">
+              <label class="form-label" for="c-name">{{ i18n.t('blog.yourName') }}</label>
+              <input id="c-name" type="text" formControlName="name" class="form-input"
+                     [class.invalid]="contributeForm.controls['name'].invalid && contributeForm.controls['name'].touched" />
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="c-email">{{ i18n.t('blog.yourEmail') }}</label>
+              <input id="c-email" type="email" formControlName="email" class="form-input"
+                     [class.invalid]="contributeForm.controls['email'].invalid && contributeForm.controls['email'].touched" />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" for="c-title">{{ i18n.t('blog.articleTitle') }}</label>
+            <input id="c-title" type="text" formControlName="title" class="form-input"
+                   [class.invalid]="contributeForm.controls['title'].invalid && contributeForm.controls['title'].touched" />
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" for="c-desc">{{ i18n.t('blog.shortDesc') }}</label>
+            <textarea id="c-desc" formControlName="desc" rows="3" class="form-input form-textarea"
+                      [class.invalid]="contributeForm.controls['desc'].invalid && contributeForm.controls['desc'].touched"></textarea>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label" for="c-content">{{ i18n.t('blog.yourContent') }} <span class="form-label__optional">(optional)</span></label>
+            <textarea id="c-content" formControlName="content" rows="5" class="form-input form-textarea"></textarea>
+          </div>
+
+          <div class="contribute-form__footer">
+            <app-button type="submit" variant="accent" [loading]="submitting()" [disabled]="contributeForm.invalid">
+              {{ i18n.t('blog.submitBtn') }}
+            </app-button>
+          </div>
+
+        </form>
+      }
+    </div><!-- /modal -->
+  </div><!-- /backdrop -->
+}

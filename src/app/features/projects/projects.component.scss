@@ -2,154 +2,650 @@
 @use '../../../assets/styles/variables' as *;
 @use '../../../assets/styles/mixins'    as *;
 
+// =====================================================
+// PAGE SHELL
+// =====================================================
 .projects-page {
   min-height: 100svh;
   padding-top: $navbar-height;
 
   &__header {
-    padding-bottom: $space-8;
-  }
-}
-
-// Filter bar
-.filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: $space-2;
-  margin-top: $space-8;
-}
-
-.filter-btn {
-  padding: $space-2 $space-4;
-  border-radius: $radius-full;
-  border: 1px solid var(--color-border);
-  background: transparent;
-  font-size: $text-sm;
-  font-weight: $font-medium;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition: all $transition-fast;
-
-  &:hover {
-    border-color: $color-primary;
-    color: $color-primary;
+    padding-block: $space-16 $space-12;
+    border-bottom: 1px solid var(--color-border);
   }
 
-  &.active {
-    background: $color-primary;
-    border-color: $color-primary;
-    color: #fff;
-  }
-}
-
-// Grid
-.projects-grid-wrapper {
-  padding-bottom: $space-20;
-}
-
-.projects-grid {
-  display: grid;
-  gap: $space-6;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-
-  @include lg {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.project-card-skeleton {
-  border-radius: $radius-xl;
-  overflow: hidden;
-  border: 1px solid var(--color-border);
-}
-
-// Project card
-.project-card {
-  background: var(--color-card-bg);
-  border: 1px solid var(--color-border);
-  border-radius: $radius-xl;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform $transition-base, box-shadow $transition-base,
-              border-color $transition-base;
-
-  &:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-card);
-    border-color: $color-accent;
-
-    .project-card__overlay { opacity: 1; }
-    .project-card__img     { transform: scale(1.04); }
-  }
-
-  &__img-wrap {
-    position: relative;
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
-    background: var(--color-surface);
-  }
-
-  &__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform $transition-slow;
-  }
-
-  &__img-placeholder {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, $color-primary 0%, color.adjust($color-primary, $lightness: 15%) 100%);
-    @include flex-center;
-    font-size: $text-4xl;
-    font-weight: $font-black;
-    color: $color-accent;
-  }
-
-  &__overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba($color-primary, 0.85);
-    @include flex-center;
-    color: #fff;
+  &__eyebrow {
+    display: inline-block;
+    font-size: $text-xs;
     font-weight: $font-semibold;
-    font-size: $text-sm;
-    opacity: 0;
-    transition: opacity $transition-base;
-  }
-
-  &__body {
-    padding: $space-5 $space-6;
+    color: var(--color-accent-text);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: $space-3;
   }
 
   &__title {
-    font-size: $text-lg;
+    font-family: $font-display;
+    font-size: clamp($text-3xl, 6vw, $text-5xl);
+    font-weight: $font-black;
+    color: var(--color-text);
+    line-height: 1.1;
+    margin-bottom: $space-4;
+  }
+
+  &__subtitle {
+    font-size: clamp($text-base, 2vw, $text-lg);
+    color: var(--color-text-muted);
+    max-width: 540px;
+    line-height: 1.7;
+  }
+
+  &__main {
+    padding-block: $space-16 $space-24;
+  }
+}
+
+// =====================================================
+// GRID
+// =====================================================
+.projects-grid {
+  list-style: none;
+  display: grid;
+  gap: $space-2;
+  grid-template-columns: 1fr;
+
+  @include sm { grid-template-columns: repeat(2, 1fr); gap: $space-4; }
+  @include lg { grid-template-columns: repeat(3, 1fr); gap: $space-6; }
+}
+
+// =====================================================
+// PROJECT CARD (lndev.me-inspired)
+// =====================================================
+.pcard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: $space-6;
+  border-radius: $radius-xl;
+  cursor: pointer;
+  outline: none;
+
+  &:focus-visible { box-shadow: 0 0 0 3px $color-accent; }
+
+  // ── hover reveal background ──
+  &__hover-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    border-radius: $radius-xl;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    opacity: 0;
+    transform: scale(0.96);
+    transition: opacity $transition-base $ease-out-cubic,
+                transform $transition-base $ease-out-cubic;
+  }
+
+  &:hover &__hover-bg { opacity: 1; transform: scale(1); }
+
+  // ── icon badge ──
+  &__icon {
+    position: relative;
+    z-index: 1;
+    width: 48px;
+    height: 48px;
+    border-radius: $radius-lg;
+    background: $color-primary;
+    @include flex-center;
+    font-size: 1.375rem;
+    margin-bottom: $space-5;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba($color-primary, 0.25);
+
+    [data-theme='dark'] & {
+      background: color.adjust($color-primary, $lightness: 6%);
+    }
+  }
+
+  // ── name + company row ──
+  &__header {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: $space-3;
+    margin-bottom: $space-2;
+    flex-wrap: wrap;
+  }
+
+  &__name {
+    font-size: $text-base;
     font-weight: $font-bold;
     color: var(--color-text);
-    margin-bottom: $space-2;
   }
 
+  &__company {
+    font-size: $text-xs;
+    font-weight: $font-medium;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+
+  // ── description ──
   &__desc {
+    position: relative;
+    z-index: 1;
     font-size: $text-sm;
     color: var(--color-text-muted);
-    line-height: 1.6;
-    margin-bottom: $space-4;
-    @include line-clamp(2);
+    line-height: 1.65;
+    @include line-clamp(3);
+    flex: 1;
+    margin-bottom: $space-5;
   }
 
+  // ── tech pills ──
+  &__tech {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+    margin-bottom: $space-6;
+  }
+
+  &__tag {
+    padding: 2px $space-2;
+    border: 1px solid var(--color-border);
+    border-radius: $radius-sm;
+    font-size: $text-xs;
+    font-weight: $font-medium;
+    color: var(--color-text-muted);
+    transition: border-color $transition-fast, color $transition-fast;
+  }
+
+  &:hover &__tag { border-color: $color-accent; color: var(--color-text); }
+
+  // ── footer ──
+  &__footer {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-3;
+    margin-top: auto;
+  }
+
+  // ── status badge ──
+  &__status {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    font-size: $text-xs;
+    font-weight: $font-semibold;
+    color: var(--color-text-muted);
+
+    &--done { color: #22c55e; }
+    &--wip  { color: $color-accent; }
+  }
+
+  &__status-dot {
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+
+    .pcard__status--wip & { animation: pulseDot 2s infinite; }
+  }
+
+  // ── open hint ──
+  &__open-hint {
+    font-size: $text-xs;
+    font-weight: $font-semibold;
+    color: var(--color-text-muted);
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity $transition-base, transform $transition-base,
+                color $transition-fast;
+  }
+
+  &:hover &__open-hint {
+    opacity: 1;
+    transform: translateX(0);
+    color: var(--color-accent-text);
+  }
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+
+// =====================================================
+// MODAL
+// =====================================================
+.pmodal {
+  // ── backdrop ──
+  &__backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: $z-modal;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: $space-4;
+    padding-top: $space-16;
+    overflow-y: auto;
+    animation: backdropIn 220ms $ease-out-cubic both;
+  }
+
+  // ── modal card ──
+  &__card {
+    position: relative;
+    width: 100%;
+    max-width: 660px;
+    background: var(--color-bg);
+    border-radius: $radius-2xl;
+    overflow: hidden;
+    box-shadow: $shadow-xl, 0 0 0 1px var(--color-border);
+    margin-bottom: $space-16;
+    animation: modalIn 260ms $ease-out-cubic both;
+
+    // scrollbar inside card on small screens
+    &::-webkit-scrollbar { width: 4px; }
+    &::-webkit-scrollbar-thumb {
+      background: var(--color-border);
+      border-radius: $radius-full;
+    }
+  }
+
+  // ── close button ──
+  &__close {
+    position: absolute;
+    top: $space-4;
+    right: $space-4;
+    z-index: 10;
+    width: 36px;
+    height: 36px;
+    border-radius: $radius-md;
+    @include flex-center;
+    background: rgba(0, 0, 0, 0.35);
+    color: #fff;
+    transition: background $transition-fast;
+
+    &:hover { background: rgba(0, 0, 0, 0.55); }
+  }
+
+  // ── hero banner ──
+  &__hero {
+    position: relative;
+    height: 220px;
+    background: linear-gradient(
+      145deg,
+      $color-primary 0%,
+      color.adjust($color-primary, $lightness: -4%) 100%
+    );
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  &__hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255, 222, 89, 0.12) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+  }
+
+  &__hero-status {
+    position: absolute;
+    top: $space-4;
+    left: $space-5;
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-1 $space-3;
+    border-radius: $radius-full;
+    font-size: $text-xs;
+    font-weight: $font-semibold;
+    background: rgba(0, 0, 0, 0.35);
+    color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(4px);
+
+    &--done { background: rgba(34, 197, 94, 0.2); color: #86efac; }
+    &--wip  { background: rgba(255, 222, 89, 0.2); color: $color-accent; }
+  }
+
+  &__status-dot {
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+
+    .pmodal__hero-status--wip & { animation: pulseDot 2s infinite; }
+  }
+
+  &__hero-icon {
+    font-size: 4rem;
+    line-height: 1;
+    filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.4));
+    position: relative;
+    z-index: 1;
+    margin-bottom: $space-4;
+  }
+
+  &__hero-pills {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: $space-2;
+    padding-inline: $space-6;
+  }
+
+  &__hero-pill {
+    padding: 2px $space-3;
+    border-radius: $radius-full;
+    font-size: $text-xs;
+    font-weight: $font-semibold;
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(4px);
+  }
+
+  // ── content area ──
+  &__content {
+    padding: $space-6 $space-6 $space-8;
+
+    @include sm { padding: $space-8 $space-10 $space-10; }
+  }
+
+  // ── title row ──
+  &__title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $space-4;
+    margin-bottom: $space-5;
+  }
+
+  &__name {
+    font-family: $font-display;
+    font-size: clamp($text-xl, 4vw, $text-2xl);
+    font-weight: $font-black;
+    color: var(--color-text);
+    line-height: 1.2;
+    margin-bottom: $space-1;
+  }
+
+  &__company {
+    font-size: $text-sm;
+    color: var(--color-text-muted);
+    font-weight: $font-medium;
+  }
+
+  // ── full description ──
+  &__desc {
+    font-size: $text-base;
+    color: var(--color-text-muted);
+    line-height: 1.85;
+    margin-bottom: 0;
+  }
+
+  // ── divider ──
+  &__divider {
+    height: 1px;
+    background: var(--color-border);
+    margin-block: $space-6;
+  }
+
+  // ── sections ──
+  &__section {
+    margin-bottom: 0;
+
+    &--links { margin-bottom: 0; }
+  }
+
+  &__section-title {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    font-size: $text-xs;
+    font-weight: $font-bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    margin-bottom: $space-4;
+  }
+
+  &__section-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: $color-accent;
+    flex-shrink: 0;
+    display: inline-block;
+  }
+
+  // ── tech tags in modal ──
   &__tags {
     display: flex;
     flex-wrap: wrap;
     gap: $space-2;
   }
+
+  &__tag {
+    padding: $space-1 $space-3;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: $radius-full;
+    font-size: $text-xs;
+    font-weight: $font-semibold;
+    color: var(--color-text);
+    transition: border-color $transition-fast, background $transition-fast;
+
+    &:hover {
+      border-color: $color-accent;
+      background: rgba($color-accent, 0.06);
+    }
+  }
+
+  // ── links ──
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-3;
+    align-items: center;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-3 $space-5;
+    border-radius: $radius-lg;
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    text-decoration: none;
+    transition: opacity $transition-fast, transform $transition-fast;
+
+    &:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    &--youtube {
+      background: #ff0000;
+      color: #fff;
+    }
+
+    &--primary {
+      background: $color-primary;
+      color: #fff;
+
+      [data-theme='dark'] & {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--color-border);
+        color: var(--color-text);
+      }
+    }
+  }
+
+  &__private {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    font-size: $text-sm;
+    color: var(--color-text-muted);
+    padding: $space-3 $space-5;
+    border: 1px dashed var(--color-border);
+    border-radius: $radius-lg;
+  }
 }
 
-.tag {
-  padding: $space-1 $space-2;
+
+// =====================================================
+// CONTRIBUTORS
+// =====================================================
+.pmodal__contributors {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.contributor {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  padding: $space-4;
+  border-radius: $radius-xl;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: $radius-sm;
-  font-size: $text-xs;
-  font-weight: $font-medium;
-  color: var(--color-text-muted);
+  flex-wrap: wrap;
+
+  // ── video preview thumbnail ──
+  &__video {
+    position: relative;
+    width: 80px;
+    height: 52px;
+    border-radius: $radius-md;
+    overflow: hidden;
+    flex-shrink: 0;
+    cursor: default;
+
+    &-thumb {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        135deg,
+        $color-primary 0%,
+        color.adjust($color-primary, $lightness: 12%) 100%
+      );
+      @include flex-center;
+    }
+
+    &-initials {
+      font-family: $font-display;
+      font-size: $text-base;
+      font-weight: $font-black;
+      color: $color-accent;
+    }
+
+    &-play {
+      position: absolute;
+      inset: 0;
+      @include flex-center;
+      background: rgba(0, 0, 0, 0.38);
+      color: #fff;
+      transition: background $transition-fast;
+
+      svg { filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4)); }
+    }
+
+    &-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.55);
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 0.6rem;
+      font-weight: $font-semibold;
+      text-align: center;
+      padding: 2px;
+      letter-spacing: 0.03em;
+    }
+
+    &:hover &-play { background: rgba(0, 0, 0, 0.55); }
+  }
+
+  // ── info block ──
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__avatar {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    @include flex-center;
+    font-size: $text-sm;
+    font-weight: $font-black;
+    font-family: $font-display;
+
+    &--primary {
+      background: $color-primary;
+      color: $color-accent;
+    }
+
+    &--accent {
+      background: $color-accent;
+      color: $color-primary;
+    }
+  }
+
+  &__name {
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    color: var(--color-text);
+    @include text-truncate;
+  }
+
+  &__role {
+    font-size: $text-xs;
+    color: var(--color-text-muted);
+    margin-top: 2px;
+  }
+}
+
+
+// =====================================================
+// ANIMATIONS
+// =====================================================
+@keyframes backdropIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: translateY(32px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
