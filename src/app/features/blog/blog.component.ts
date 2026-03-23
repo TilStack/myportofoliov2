@@ -151,10 +151,9 @@ export class BlogComponent {
       : null
   );
 
-  gridArticles = computed<Article[]>(() => {
-    const featured = this.featuredArticle();
-    return this.filteredArticles().filter(a => !a.featured);
-  });
+  gridArticles = computed<Article[]>(() =>
+    this.filteredArticles().filter(a => !a.featured)
+  );
 
   setFilter(f: 'all' | 'mine' | 'zerofiltre'): void {
     this.activeFilter.set(f);
@@ -186,9 +185,98 @@ export class BlogComponent {
     name:    ['', [Validators.required, Validators.minLength(2)]],
     email:   ['', [Validators.required, Validators.email]],
     title:   ['', [Validators.required, Validators.minLength(5)]],
+    tags:    [''],
     desc:    ['', [Validators.required, Validators.minLength(20)]],
     content: [''],
   });
+
+  // ── password gate ──
+  showPasswordModal = signal(false);
+  passwordError     = signal(false);
+  passwordValue     = '';
+
+  openPasswordModal(): void {
+    this.showPasswordModal.set(true);
+    this.passwordError.set(false);
+    this.passwordValue = '';
+  }
+
+  closePasswordModal(): void {
+    this.showPasswordModal.set(false);
+    this.passwordError.set(false);
+  }
+
+  checkPassword(): void {
+    if (this.passwordValue === '1Jesus1') {
+      this.closePasswordModal();
+      this.openContribute();
+    } else {
+      this.passwordError.set(true);
+    }
+  }
+
+  onPwBackdropClick(e: MouseEvent): void {
+    if ((e.target as HTMLElement).classList.contains('pw-backdrop')) {
+      this.closePasswordModal();
+    }
+  }
+
+  // ── article detail ──
+  articleDetail = signal<Article | null>(null);
+
+  openArticleDetail(article: Article): void {
+    if (article.source !== 'local') return;
+    this.articleDetail.set(article);
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeArticleDetail(): void {
+    this.articleDetail.set(null);
+    document.body.style.overflow = '';
+  }
+
+  onArticleBackdropClick(e: MouseEvent): void {
+    if ((e.target as HTMLElement).classList.contains('adetail-backdrop')) {
+      this.closeArticleDetail();
+    }
+  }
+
+  // ── rich-text toolbar ──
+  applyFormat(format: string): void {
+    const ta = document.getElementById('c-desc') as HTMLTextAreaElement;
+    if (!ta) return;
+    const start    = ta.selectionStart ?? 0;
+    const end      = ta.selectionEnd   ?? 0;
+    const selected = ta.value.substring(start, end) || 'text';
+
+    let formatted: string;
+    switch (format) {
+      case 'bold':       formatted = `**${selected}**`;                                          break;
+      case 'italic':     formatted = `*${selected}*`;                                           break;
+      case 'strike':     formatted = `~~${selected}~~`;                                         break;
+      case 'underline':  formatted = `<u>${selected}</u>`;                                      break;
+      case 'h1':         formatted = `\n# ${selected}\n`;                                       break;
+      case 'h2':         formatted = `\n## ${selected}\n`;                                      break;
+      case 'h3':         formatted = `\n### ${selected}\n`;                                     break;
+      case 'center':     formatted = `<center>${selected}</center>`;                            break;
+      case 'right':      formatted = `<p style="text-align:right">${selected}</p>`;             break;
+      case 'bullet':     formatted = selected.split('\n').map(l => `- ${l}`).join('\n');        break;
+      case 'numbered':   formatted = selected.split('\n').map((l,i) => `${i+1}. ${l}`).join('\n'); break;
+      case 'blockquote': formatted = selected.split('\n').map(l => `> ${l}`).join('\n');        break;
+      case 'code':       formatted = `\`${selected}\``;                                         break;
+      case 'codeblock':  formatted = `\`\`\`\n${selected}\n\`\`\``;                            break;
+      case 'link':       formatted = `[${selected}](url)`;                                      break;
+      case 'hr':         formatted = `\n\n---\n\n`;                                             break;
+      default:           formatted = selected;
+    }
+
+    const newVal = ta.value.substring(0, start) + formatted + ta.value.substring(end);
+    this.contributeForm.patchValue({ desc: newVal });
+    setTimeout(() => {
+      ta.focus();
+      ta.setSelectionRange(start + formatted.length, start + formatted.length);
+    });
+  }
 
   openContribute(): void {
     this.showContribute.set(true);
@@ -203,7 +291,11 @@ export class BlogComponent {
   }
 
   @HostListener('document:keydown.escape')
-  onEscape(): void { this.closeContribute(); }
+  onEscape(): void {
+    if (this.showContribute())    this.closeContribute();
+    if (this.articleDetail())     this.closeArticleDetail();
+    if (this.showPasswordModal()) this.closePasswordModal();
+  }
 
   onBackdropClick(event: MouseEvent): void {
     if ((event.target as HTMLElement).classList.contains('contribute-backdrop')) {
