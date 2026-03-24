@@ -39,12 +39,6 @@ export const routes: Routes = [
     title: 'Quotes | Portfolio',
   },
   {
-    path: 'contact',
-    loadComponent: () =>
-      import('./features/contact/contact.component').then(m => m.ContactComponent),
-    title: 'Contact | Portfolio',
-  },
-  {
     path: '**',
     redirectTo: '',
   },

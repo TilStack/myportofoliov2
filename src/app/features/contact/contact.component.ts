@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
+import { I18nService } from '../../core/services/i18n.service';
 
 @Component({
   selector: 'app-contact',
@@ -12,6 +13,7 @@ import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.di
   styleUrl: './contact.component.scss',
 })
 export class ContactComponent {
+  readonly i18n = inject(I18nService);
   fb = inject(FormBuilder);
 
   form = this.fb.group({

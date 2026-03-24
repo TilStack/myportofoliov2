@@ -25,6 +25,7 @@ export interface Project {
   detailEn: string;
   detailFr: string;
   contributors: Contributor[];
+  images?: string[];
 }
 
 const ISRAEL: Contributor = {
@@ -169,8 +170,13 @@ export class ProjectsComponent {
 
   selected = signal<Project | null>(null);
 
+  activeGalleryIdx = signal(0);
+
+  setGalleryIdx(i: number): void { this.activeGalleryIdx.set(i); }
+
   openModal(p: Project): void {
     this.selected.set(p);
+    this.activeGalleryIdx.set(0);
     document.body.style.overflow = 'hidden';
   }
 

@@ -29,7 +29,6 @@ export class NavbarComponent {
     { key: 'nav.projects', path: '/projects' },
     { key: 'nav.blog',     path: '/blog'     },
     { key: 'nav.quotes',   path: '/quotes'   },
-    { key: 'nav.contact',  path: '/contact'  },
   ];
 
   @HostListener('window:scroll')

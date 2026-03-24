@@ -11,7 +11,7 @@
       </h1>
 
       <p class="hero__alias anim-fade-in-up delay-3">
-        But you can call me <strong>TilStack</strong>
+        {{ i18n.t('hero.alias') }} <strong>TilStack</strong>
       </p>
 
       <p class="hero__role anim-fade-in-up delay-4">{{ i18n.t('hero.role') }}</p>
@@ -47,14 +47,14 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
           </svg>
-          Open to work
+          {{ i18n.t('hero.openToWork') }}
         </div>
       </div>
     </div>
   </div>
 
   <!-- Scroll indicator -->
-  <a href="#moodboard" class="hero__scroll anim-fade-in delay-5" aria-label="Scroll down">
+  <a href="#moodboard" class="hero__scroll anim-fade-in delay-5" [attr.aria-label]="i18n.t('hero.scroll')">
     <span>{{ i18n.t('hero.scroll') }}</span>
     <div class="hero__scroll-line"></div>
   </a>
@@ -97,7 +97,7 @@
               <p class="quote-card__explanation">{{ quote.explanation }}</p>
             }
             <span class="quote-card__hint">
-              {{ quote.expanded ? 'Click to close' : 'Click to expand' }}
+              {{ quote.expanded ? i18n.t('home.clickClose') : i18n.t('home.clickExpand') }}
             </span>
           </article>
         }
@@ -105,7 +105,7 @@
         <!-- CTA card -->
         <div class="moodboard__cta fade-up" appFadeOnScroll [delay]="quotes().length * 80">
           <a routerLink="/quotes" class="moodboard__cta-link">
-            See all quotes
+            {{ i18n.t('home.seeAllQuotes') }}
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
@@ -114,5 +114,164 @@
         </div>
       </div>
     }
+  </div>
+</section>
+
+<!-- ===== PAGE PREVIEWS ===== -->
+<section class="discover section">
+  <div class="container">
+    <div class="discover__header fade-up" appFadeOnScroll>
+      <h2 class="section__title">{{ i18n.t('home.discoverTitle') }}</h2>
+      <p class="section__subtitle">{{ i18n.t('home.discoverSub') }}</p>
+    </div>
+
+    <div class="discover__grid">
+
+      <!-- About card -->
+      <a routerLink="/about" class="page-card fade-up" appFadeOnScroll [delay]="0">
+        <div class="page-card__visual pv--about">
+          <div class="pm pm--about">
+            <div class="pm__avatar">IT</div>
+            <div class="pm__lines">
+              <span class="pm__line" style="width:75%"></span>
+              <span class="pm__line" style="width:55%"></span>
+              <span class="pm__line" style="width:65%"></span>
+            </div>
+          </div>
+        </div>
+        <div class="page-card__body">
+          <span class="page-card__eyebrow">{{ i18n.t('nav.about') }}</span>
+          <h3 class="page-card__title">{{ i18n.t('home.aboutCard') }}</h3>
+          <p class="page-card__desc">{{ i18n.t('home.aboutCardDesc') }}</p>
+          <span class="page-card__link">{{ i18n.t('home.explore') }} →</span>
+        </div>
+      </a>
+
+      <!-- Projects card -->
+      <a routerLink="/projects" class="page-card fade-up" appFadeOnScroll [delay]="80">
+        <div class="page-card__visual pv--projects">
+          <div class="pm pm--projects">
+            <div class="pm__proj"></div>
+            <div class="pm__proj"></div>
+            <div class="pm__proj"></div>
+          </div>
+        </div>
+        <div class="page-card__body">
+          <span class="page-card__eyebrow">{{ i18n.t('nav.projects') }}</span>
+          <h3 class="page-card__title">{{ i18n.t('home.projectsCard') }}</h3>
+          <p class="page-card__desc">{{ i18n.t('home.projectsCardDesc') }}</p>
+          <span class="page-card__link">{{ i18n.t('home.explore') }} →</span>
+        </div>
+      </a>
+
+      <!-- Blog card -->
+      <a routerLink="/blog" class="page-card fade-up" appFadeOnScroll [delay]="160">
+        <div class="page-card__visual pv--blog">
+          <div class="pm pm--blog">
+            <div class="pm__article">
+              <span class="pm__tag-pill"></span>
+              <span class="pm__row" style="width:80%"></span>
+              <span class="pm__row" style="width:60%"></span>
+            </div>
+            <div class="pm__article">
+              <span class="pm__tag-pill"></span>
+              <span class="pm__row" style="width:70%"></span>
+              <span class="pm__row" style="width:50%"></span>
+            </div>
+          </div>
+        </div>
+        <div class="page-card__body">
+          <span class="page-card__eyebrow">{{ i18n.t('nav.blog') }}</span>
+          <h3 class="page-card__title">{{ i18n.t('home.blogCard') }}</h3>
+          <p class="page-card__desc">{{ i18n.t('home.blogCardDesc') }}</p>
+          <span class="page-card__link">{{ i18n.t('home.explore') }} →</span>
+        </div>
+      </a>
+
+      <!-- Quotes card -->
+      <a routerLink="/quotes" class="page-card fade-up" appFadeOnScroll [delay]="240">
+        <div class="page-card__visual pv--quotes">
+          <div class="pm pm--quotes">
+            <span class="pm__bigquote">"</span>
+            <div class="pm__qlines">
+              <span style="width:85%"></span>
+              <span style="width:65%"></span>
+              <span style="width:75%"></span>
+            </div>
+          </div>
+        </div>
+        <div class="page-card__body">
+          <span class="page-card__eyebrow">{{ i18n.t('nav.quotes') }}</span>
+          <h3 class="page-card__title">{{ i18n.t('home.quotesCard') }}</h3>
+          <p class="page-card__desc">{{ i18n.t('home.quotesCardDesc') }}</p>
+          <span class="page-card__link">{{ i18n.t('home.explore') }} →</span>
+        </div>
+      </a>
+
+      <!-- Contact card -->
+      <a routerLink="/contact" class="page-card fade-up" appFadeOnScroll [delay]="320">
+        <div class="page-card__visual pv--contact">
+          <div class="pm pm--contact">
+            <svg class="pm__env" viewBox="0 0 48 36" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="1" width="46" height="34" rx="4"/>
+              <path d="M1 6 L24 22 L47 6"/>
+            </svg>
+            <div class="pm__cdots">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+        <div class="page-card__body">
+          <span class="page-card__eyebrow">{{ i18n.t('nav.contact') }}</span>
+          <h3 class="page-card__title">{{ i18n.t('home.contactCard') }}</h3>
+          <p class="page-card__desc">{{ i18n.t('home.contactCardDesc') }}</p>
+          <span class="page-card__link">{{ i18n.t('home.explore') }} →</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== CAMEROON PHOTO MONTAGE ===== -->
+<section class="montage" id="cameroon">
+  <div class="container">
+
+    <div class="montage__header fade-up" appFadeOnScroll>
+      <span class="montage__tag">{{ i18n.t('home.montageTag') }}</span>
+      <h2 class="montage__title">{{ i18n.t('home.montageTitle') }}</h2>
+      <p class="montage__sub">{{ i18n.t('home.montageSub') }}</p>
+    </div>
+
+    <div class="montage__grid fade-up" appFadeOnScroll [delay]="80">
+      <!-- P1: Yaoundé aerial — large, spans 2 rows on left -->
+      <div class="montage__photo mp--1" role="img" aria-label="Aerial view, Yaoundé">
+        <div class="montage__caption"><span>Yaoundé</span></div>
+      </div>
+      <!-- P2: Bansoa landscape — top right -->
+      <div class="montage__photo mp--2" role="img" aria-label="Landscape, Bansoa">
+        <div class="montage__caption"><span>Bansoa</span></div>
+      </div>
+      <!-- P3: Street life Douala — middle right -->
+      <div class="montage__photo mp--3" role="img" aria-label="Street life, Douala">
+        <div class="montage__caption"><span>Douala</span></div>
+      </div>
+      <!-- P4: Kribi motorbike — bottom left -->
+      <div class="montage__photo mp--4" role="img" aria-label="Daily life, Kribi">
+        <div class="montage__caption"><span>Kribi</span></div>
+      </div>
+      <!-- P5: Lagdo town — bottom right large -->
+      <div class="montage__photo mp--5" role="img" aria-label="Town view, Lagdo">
+        <div class="montage__caption"><span>Lagdo</span></div>
+      </div>
+    </div>
+
+    <!-- Attribution -->
+    <p class="montage__credit fade-up" appFadeOnScroll [delay]="200">
+      Photos by <a href="https://unsplash.com/@tamba" target="_blank" rel="noopener noreferrer">Edouard TAMBA</a>
+      &amp; <a href="https://unsplash.com/@tokoto" target="_blank" rel="noopener noreferrer">Christian Tokoto</a>
+      on Unsplash
+    </p>
+
   </div>
 </section>

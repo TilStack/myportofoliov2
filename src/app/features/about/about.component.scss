@@ -529,3 +529,268 @@ $accent: $color-accent;
     }
   }
 }
+
+// ===== INVOLVEMENT LINKS =====
+.involvement-section {
+  &__header { margin-bottom: $space-10; }
+}
+
+.involvement-grid {
+  display: grid;
+  gap: $space-4;
+  grid-template-columns: 1fr;
+  @include sm { grid-template-columns: repeat(2, 1fr); }
+  @include lg { grid-template-columns: repeat(4, 1fr); }
+}
+
+.involvement-card {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  padding: $space-5;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-xl;
+  transition: border-color $transition-base, transform $transition-base, box-shadow $transition-base;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    border-color: $color-accent;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
+
+    .involvement-card__arrow { opacity: 1; transform: translateY(-2px) translateX(2px); }
+  }
+
+  &__icon-wrap {
+    width: 42px;
+    height: 42px;
+    border-radius: $radius-lg;
+    background: var(--color-surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--color-text);
+    transition: background $transition-fast, color $transition-fast;
+  }
+
+  &:hover &__icon-wrap {
+    background: $color-primary;
+    color: $color-accent;
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+  }
+
+  &__label {
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__desc {
+    font-size: $text-xs;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__arrow {
+    flex-shrink: 0;
+    font-size: $text-base;
+    color: $color-accent;
+    opacity: 0;
+    transition: opacity $transition-fast, transform $transition-fast;
+  }
+}
+
+// ===== EDUCATOR GALLERY =====
+.edu-gallery-section {
+  &__header { margin-bottom: $space-8; }
+}
+
+.edu-gallery-grid {
+  display: grid;
+  gap: $space-4;
+  grid-template-columns: 1fr;
+  @include sm { grid-template-columns: repeat(3, 1fr); }
+}
+
+.edu-gallery-card {
+  border-radius: $radius-2xl;
+  aspect-ratio: 4 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $space-3;
+  overflow: hidden;
+  position: relative;
+  transition: transform $transition-base;
+
+  &:hover { transform: translateY(-4px) scale(1.01); }
+
+  &__icon {
+    font-size: 2.5rem;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,.4));
+  }
+
+  &__label {
+    color: rgba(255,255,255,0.75);
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+}
+
+// ===== OTHER ROLES =====
+.other-roles-section {
+  background: var(--color-surface);
+
+  &__header { margin-bottom: $space-10; }
+}
+
+.other-roles-grid {
+  display: grid;
+  gap: $space-6;
+  grid-template-columns: 1fr;
+  @include md { grid-template-columns: repeat(3, 1fr); }
+}
+
+.role-card {
+  padding: $space-8;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-2xl;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  transition: border-color $transition-base, transform $transition-base;
+
+  &:hover {
+    border-color: $color-accent;
+    transform: translateY(-3px);
+  }
+
+  &__icon-wrap {
+    font-size: 2.25rem;
+    line-height: 1;
+    margin-bottom: $space-2;
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: $text-xl;
+    font-weight: $font-bold;
+    color: var(--color-text);
+  }
+
+  &__desc {
+    font-size: $text-sm;
+    color: var(--color-text-muted);
+    line-height: 1.75;
+    flex: 1;
+  }
+
+  &__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+    margin-top: $space-1;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    padding: $space-1 $space-3;
+    background: $color-primary;
+    color: $color-accent;
+    font-size: $text-xs;
+    font-weight: $font-semibold;
+    border-radius: $radius-full;
+    text-decoration: none;
+    transition: background $transition-fast;
+
+    &:hover { background: color.adjust($color-primary, $lightness: 8%); }
+  }
+}
+
+// ===== FAITH =====
+.faith-section {
+  padding-block: $space-24;
+  background: $color-primary;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '✝';
+    position: absolute;
+    font-size: 18rem;
+    color: rgba(255,222,89,0.04);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  &__cross {
+    font-size: 2.25rem;
+    color: $color-accent;
+    margin-bottom: $space-4;
+    opacity: 0.9;
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: clamp($text-2xl, 4vw, $text-4xl);
+    font-weight: $font-black;
+    color: #ffffff;
+    margin-bottom: $space-6;
+  }
+
+  &__verse {
+    font-size: clamp($text-lg, 2.5vw, $text-2xl);
+    font-style: italic;
+    color: $color-accent;
+    line-height: 1.55;
+    margin: 0 0 $space-3;
+  }
+
+  &__ref {
+    font-size: $text-sm;
+    color: rgba(255,255,255,0.5);
+    font-style: normal;
+    letter-spacing: 0.08em;
+    margin-bottom: $space-8;
+  }
+
+  &__desc {
+    font-size: $text-base;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.8;
+    max-width: 560px;
+  }
+}

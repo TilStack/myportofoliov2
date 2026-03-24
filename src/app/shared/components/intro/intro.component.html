@@ -1,0 +1,62 @@
+@if (visible()) {
+  <div class="intro" [class.exiting]="exiting()" aria-hidden="true" role="presentation">
+
+    <!-- Animated grid background -->
+    <div class="intro__grid" aria-hidden="true"></div>
+
+    <!-- Floating particles -->
+    <div class="intro__particles" aria-hidden="true">
+      <span class="intro__p intro__p--1"></span>
+      <span class="intro__p intro__p--2"></span>
+      <span class="intro__p intro__p--3"></span>
+      <span class="intro__p intro__p--4"></span>
+      <span class="intro__p intro__p--5"></span>
+      <span class="intro__p intro__p--6"></span>
+    </div>
+
+    <!-- Center content -->
+    <div class="intro__center">
+
+      <!-- Logo area -->
+      <div class="intro__logo-wrap">
+        <div class="intro__glow" aria-hidden="true"></div>
+        <svg
+          class="intro__svg"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 200 215"
+          fill="currentColor"
+          aria-label="TilStack logo"
+        >
+          <!-- Top bar -->
+          <polygon class="intro__piece intro__piece--1" points="27,57 173,57 153,80 27,80"/>
+          <!-- Second bar -->
+          <polygon class="intro__piece intro__piece--2" points="87,87 153,87 133,108 87,108"/>
+          <!-- Vertical stem -->
+          <polygon class="intro__piece intro__piece--3" points="55,57 78,57 78,172 66,200 55,172"/>
+          <!-- Diagonal -->
+          <polygon class="intro__piece intro__piece--4" points="87,108 133,108 66,200"/>
+        </svg>
+      </div>
+
+      <!-- Name reveal -->
+      <div class="intro__name-wrap">
+        <span class="intro__name">TilStack</span>
+      </div>
+
+      <!-- Role line -->
+      <p class="intro__role">{{ i18n.t('hero.role') }}</p>
+      <p class="intro__tagline">Be Exceptional</p>
+
+      <!-- Progress bar -->
+      <div class="intro__progress" aria-hidden="true">
+        <div class="intro__progress-fill"></div>
+      </div>
+
+    </div>
+
+    <!-- Decorative corner lines -->
+    <div class="intro__corner intro__corner--tl" aria-hidden="true"></div>
+    <div class="intro__corner intro__corner--br" aria-hidden="true"></div>
+
+  </div>
+}

@@ -3,14 +3,9 @@
 
     <!-- Left panel -->
     <div class="contact-left section fade-left" appFadeOnScroll>
-      <span class="contact-eyebrow">Let's talk</span>
-      <h1 class="contact-title">
-        Got a project<br>in mind?
-      </h1>
-      <p class="contact-desc">
-        I'm open to freelance projects, collaborations, and interesting conversations.
-        Drop me a message and I'll get back to you within 48 hours.
-      </p>
+      <span class="contact-eyebrow">{{ i18n.t('contact.eyebrow') }}</span>
+      <h1 class="contact-title">{{ i18n.t('contact.heading') }}</h1>
+      <p class="contact-desc">{{ i18n.t('contact.desc') }}</p>
 
       <a [href]="'mailto:' + email" class="contact-email">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -52,62 +47,62 @@
       @if (sent()) {
         <div class="contact-success">
           <div class="contact-success__icon">✉️</div>
-          <h3>Message sent!</h3>
-          <p>Thanks for reaching out. I'll get back to you soon.</p>
+          <h3>{{ i18n.t('contact.successTitle') }}</h3>
+          <p>{{ i18n.t('contact.successText') }}</p>
         </div>
       } @else {
         <form [formGroup]="form" (ngSubmit)="submit()" class="contact-form" novalidate>
           <div class="form-group">
-            <label for="name" class="form-label">Name</label>
+            <label for="name" class="form-label">{{ i18n.t('contact.name') }}</label>
             <input
               id="name"
               type="text"
               formControlName="name"
               class="form-input"
               [class.error]="hasError('name', 'required') || hasError('name', 'minlength')"
-              placeholder="Your name"
+              [placeholder]="i18n.t('contact.namePlaceholder')"
             />
             @if (hasError('name', 'required')) {
-              <span class="form-error">Name is required.</span>
+              <span class="form-error">{{ i18n.t('contact.nameRequired') }}</span>
             }
             @if (hasError('name', 'minlength')) {
-              <span class="form-error">At least 2 characters.</span>
+              <span class="form-error">{{ i18n.t('contact.nameMin') }}</span>
             }
           </div>
 
           <div class="form-group">
-            <label for="email" class="form-label">Email</label>
+            <label for="email" class="form-label">{{ i18n.t('contact.email') }}</label>
             <input
               id="email"
               type="email"
               formControlName="email"
               class="form-input"
               [class.error]="hasError('email', 'required') || hasError('email', 'email')"
-              placeholder="your@email.com"
+              [placeholder]="i18n.t('contact.emailPlaceholder')"
             />
             @if (hasError('email', 'required')) {
-              <span class="form-error">Email is required.</span>
+              <span class="form-error">{{ i18n.t('contact.emailRequired') }}</span>
             }
             @if (hasError('email', 'email')) {
-              <span class="form-error">Invalid email address.</span>
+              <span class="form-error">{{ i18n.t('contact.emailInvalid') }}</span>
             }
           </div>
 
           <div class="form-group">
-            <label for="message" class="form-label">Message</label>
+            <label for="message" class="form-label">{{ i18n.t('contact.message') }}</label>
             <textarea
               id="message"
               formControlName="message"
               class="form-input form-textarea"
               [class.error]="hasError('message', 'required') || hasError('message', 'minlength')"
-              placeholder="Tell me about your project…"
+              [placeholder]="i18n.t('contact.messagePlaceholder')"
               rows="5"
             ></textarea>
             @if (hasError('message', 'required')) {
-              <span class="form-error">Message is required.</span>
+              <span class="form-error">{{ i18n.t('contact.messageRequired') }}</span>
             }
             @if (hasError('message', 'minlength')) {
-              <span class="form-error">At least 10 characters.</span>
+              <span class="form-error">{{ i18n.t('contact.messageMin') }}</span>
             }
           </div>
 
@@ -116,13 +111,11 @@
               <line x1="22" y1="2" x2="11" y2="13"></line>
               <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
             </svg>
-            Send message
+            {{ i18n.t('contact.send') }}
           </app-button>
 
           @if (error()) {
-            <p class="form-generic-error">
-              Something went wrong. Please try again.
-            </p>
+            <p class="form-generic-error">{{ i18n.t('contact.genericError') }}</p>
           }
         </form>
       }

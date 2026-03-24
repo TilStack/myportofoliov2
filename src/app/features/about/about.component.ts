@@ -1,7 +1,8 @@
-import { Component, HostListener, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, HostListener, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { interval, Subscription } from 'rxjs';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
+import { I18nService } from '../../core/services/i18n.service';
 
 interface SetupItem {
   icon: string;
@@ -28,14 +29,16 @@ interface TravelImage { src: string; alt: string; caption: string; }
   styleUrl: './about.component.scss',
 })
 export class AboutComponent implements OnInit, OnDestroy {
+  readonly i18n = inject(I18nService);
+
   // ── travel carousel ──────────────────────────────────────
   activeImageIndex = signal(0);
   private imageSub?: Subscription;
 
   travelImages: TravelImage[] = [
-    { src: 'images/cameroon-1.jpg', alt: 'Cameroon landscape', caption: 'The highlands of Cameroon' },
-    { src: 'images/cameroon-2.jpg', alt: 'Douala at night',    caption: 'Douala by night'            },
-    { src: 'images/cameroon-3.jpg', alt: 'Local culture',      caption: 'Rich local culture'          },
+    { src: 'https://images.unsplash.com/photo-MdNOvU9uFuo?w=900&q=80&fit=crop', alt: 'Cameroon highlands', caption: 'The highlands of Cameroon' },
+    { src: 'https://images.unsplash.com/photo-oTrwlvPvpVo?w=900&q=80&fit=crop', alt: 'Douala street life', caption: 'Douala — Street Life'      },
+    { src: 'https://images.unsplash.com/photo-Kj7naxthK6c?w=900&q=80&fit=crop', alt: 'Kribi daily life',   caption: 'Kribi, South Cameroon'     },
   ];
 
   // ── profile photo stack ───────────────────────────────────
@@ -114,6 +117,59 @@ export class AboutComponent implements OnInit, OnDestroy {
 
   @HostListener('document:keydown.escape')
   onEscape(): void { this.closeSetupLightbox(); }
+
+  // ── involvement links ─────────────────────────────────────────
+  involvementLinks = [
+    {
+      label: 'GitHub',
+      href:  'https://github.com/tilstack',
+      icon:  'github',
+      descKey: 'about.involvementGithub',
+    },
+    {
+      label: 'LinkedIn',
+      href:  'https://www.linkedin.com/in/israel-tientcheu/',
+      icon:  'linkedin',
+      descKey: 'about.involvementLinkedIn',
+    },
+    {
+      label: 'Zerofiltre.tech',
+      href:  'https://zerofiltre.tech',
+      icon:  'zerofiltre',
+      descKey: 'about.involvementZerofiltre',
+    },
+    {
+      label: 'X / Twitter',
+      href:  'https://x.com/tilstack',
+      icon:  'twitter',
+      descKey: 'about.involvementTwitter',
+    },
+  ];
+
+  // ── other roles ───────────────────────────────────────────────
+  otherRoles = [
+    {
+      icon:    '📸',
+      titleKey: 'about.rolePhotographer',
+      descKey:  'about.rolePhotographerDesc',
+      links:   [] as { label: string; href: string }[],
+    },
+    {
+      icon:    '🎬',
+      titleKey: 'about.roleVideoEditor',
+      descKey:  'about.roleVideoEditorDesc',
+      links:   [] as { label: string; href: string }[],
+    },
+    {
+      icon:    '📱',
+      titleKey: 'about.roleCommunity',
+      descKey:  'about.roleCommunityDesc',
+      links:   [
+        { label: 'TikTok',    href: 'https://www.tiktok.com/@tilstack'    },
+        { label: 'Facebook',  href: 'https://www.facebook.com/tilstack'   },
+      ],
+    },
+  ];
 
   // ── skills ────────────────────────────────────────────────
   skills = [

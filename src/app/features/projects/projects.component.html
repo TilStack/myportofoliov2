@@ -237,6 +237,55 @@
           </div>
         </section>
 
+        <!-- ─── IMAGE GALLERY ─── -->
+        @if (selected()!.images?.length) {
+          <div class="pmodal__divider"></div>
+          <section class="pmodal__section">
+            <h4 class="pmodal__section-title">
+              <span class="pmodal__section-dot" aria-hidden="true"></span>
+              {{ i18n.t('projects.screenshots') }}
+            </h4>
+            <div class="pmodal__gallery">
+              <div class="pmodal__gallery-main">
+                <img
+                  [src]="selected()!.images![activeGalleryIdx()]"
+                  [alt]="selected()!.name + ' screenshot'"
+                  class="pmodal__gallery-img"
+                />
+              </div>
+              @if (selected()!.images!.length > 1) {
+                <div class="pmodal__gallery-thumbs">
+                  @for (img of selected()!.images; track img; let gi = $index) {
+                    <button
+                      class="pmodal__gallery-thumb"
+                      [class.active]="activeGalleryIdx() === gi"
+                      (click)="setGalleryIdx(gi)"
+                      [attr.aria-label]="'View screenshot ' + (gi + 1)"
+                    >
+                      <img [src]="img" [alt]="selected()!.name + ' ' + (gi + 1)" />
+                    </button>
+                  }
+                </div>
+              }
+            </div>
+          </section>
+        }
+
+        <!-- ─── CONTACT CTA ─── -->
+        <div class="pmodal__contact-cta">
+          <p class="pmodal__contact-cta-text">{{ i18n.t('projects.contactCta') }}</p>
+          <a
+            href="mailto:israel01tientcheu@gmail.com"
+            class="pmodal__contact-cta-btn"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+            {{ i18n.t('projects.contactBtn') }}
+          </a>
+        </div>
+
       </div><!-- /content -->
     </div><!-- /card -->
   </div><!-- /backdrop -->
