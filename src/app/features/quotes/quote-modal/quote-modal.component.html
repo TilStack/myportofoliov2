@@ -38,12 +38,20 @@
         <span class="qmodal__author-name">{{ quote.author }}</span>
         <span class="qmodal__date">{{ formattedDate }}</span>
       </div>
-      <div class="qmodal__likes">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <!-- Like button -->
+      <button
+        class="qmodal__like-btn"
+        [class.liked]="liked"
+        (click)="toggleLike()"
+        aria-label="Like this quote"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24"
+             [attr.fill]="liked ? 'currentColor' : 'none'"
+             stroke="currentColor" stroke-width="2">
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
         </svg>
-        <span>{{ quote.likes }}</span>
-      </div>
+        {{ likeCount }}
+      </button>
     </div>
 
     <!-- Divider -->
@@ -65,6 +73,66 @@
         }
       </div>
     }
+
+    <!-- Divider -->
+    <div class="qmodal__divider" style="margin-top:1.5rem"></div>
+
+    <!-- Comments section -->
+    <section class="qmodal__comments">
+      <h4 class="qmodal__comments-title">
+        Comments
+        @if (comments.length) { <span class="qmodal__comments-count">{{ comments.length }}</span> }
+      </h4>
+
+      @if (comments.length) {
+        <ul class="qcomment-list">
+          @for (c of comments; track c.id) {
+            <li class="qcomment">
+              <div class="qcomment__avatar">{{ c.author[0].toUpperCase() }}</div>
+              <div class="qcomment__body">
+                <div class="qcomment__header">
+                  <span class="qcomment__author">{{ c.author }}</span>
+                  <span class="qcomment__date">{{ formatCommentDate(c.date) }}</span>
+                </div>
+                <p class="qcomment__text">{{ c.text }}</p>
+              </div>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="qmodal__comments-empty">No comments yet. Be the first!</p>
+      }
+
+      <!-- Add comment form -->
+      <div class="qcomment-form">
+        <input
+          type="text"
+          class="qcomment-form__input"
+          placeholder="Your name (optional)"
+          [value]="newCommentAuthor"
+          (input)="newCommentAuthor = $any($event.target).value"
+        />
+        <div class="qcomment-form__row">
+          <textarea
+            class="qcomment-form__textarea"
+            placeholder="Write a comment…"
+            rows="3"
+            [value]="newCommentText"
+            (input)="newCommentText = $any($event.target).value"
+            (keydown.ctrl.enter)="addComment()"
+          ></textarea>
+          <button
+            class="qcomment-form__submit"
+            (click)="addComment()"
+            [disabled]="!newCommentText.trim()"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
 
   </div>
 </div>

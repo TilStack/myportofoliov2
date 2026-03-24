@@ -13,10 +13,7 @@ $accent: $color-accent;
     display: grid;
     gap: $space-12;
     align-items: center;
-
-    @include lg {
-      grid-template-columns: 1fr 1fr;
-    }
+    @include lg { grid-template-columns: 1fr 1fr; }
   }
 
   &__tag {
@@ -55,35 +52,15 @@ $accent: $color-accent;
 
   &__img-wrapper {
     position: relative;
-    width: min(320px, 100%);
-  }
-
-  &__img-placeholder {
-    width: 100%;
-    aspect-ratio: 3/4;
-    border-radius: $radius-2xl;
-    overflow: hidden;
-    background: var(--color-surface);
-    @include flex-center;
-  }
-
-  &__avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    background: $color-primary;
-    color: $accent;
-    font-size: $text-3xl;
-    font-weight: $font-black;
-    @include flex-center;
+    width: min(300px, 100%);
   }
 
   &__accent-block {
     position: absolute;
     bottom: -$space-4;
     right: -$space-4;
-    width: 60%;
-    height: 60%;
+    width: 55%;
+    height: 55%;
     background: $accent;
     border-radius: $radius-2xl;
     z-index: -1;
@@ -101,15 +78,110 @@ $accent: $color-accent;
     font-weight: $font-semibold;
     box-shadow: $shadow-lg;
     white-space: nowrap;
+    z-index: 4;
   }
 }
 
 .about-accent { color: var(--color-accent-text); }
 
+// ===== PROFILE PHOTO STACK =====
+.profile-stack {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  cursor: pointer;
+  outline: none;
+
+  &:focus-visible { outline: 3px solid $accent; outline-offset: 4px; border-radius: $radius-2xl; }
+
+  &__card {
+    position: absolute;
+    inset: 0;
+    border-radius: $radius-2xl;
+    overflow: hidden;
+    transition: transform 600ms $ease-out-cubic, opacity 600ms $ease-out-cubic, z-index 0ms 300ms;
+
+    &.stack-front {
+      z-index: 3;
+      transform: rotate(0deg) scale(1);
+      opacity: 1;
+    }
+
+    &.stack-mid {
+      z-index: 2;
+      transform: rotate(5deg) translate(14px, 10px) scale(0.93);
+      opacity: 0.75;
+    }
+
+    &.stack-back {
+      z-index: 1;
+      transform: rotate(-5deg) translate(-12px, 10px) scale(0.86);
+      opacity: 0.55;
+    }
+  }
+
+  &:hover &__card {
+    &.stack-mid  { transform: rotate(9deg)  translate(22px, 6px)  scale(0.93); }
+    &.stack-back { transform: rotate(-9deg) translate(-20px, 6px) scale(0.86); }
+  }
+
+  &__hint {
+    position: absolute;
+    bottom: calc(-1 * #{$space-6} - 4px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: $text-xs;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity $transition-fast;
+    pointer-events: none;
+  }
+
+  &:hover &__hint { opacity: 1; }
+}
+
+.profile-ph {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $space-3;
+
+  &__avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: rgba(255, 222, 89, 0.15);
+    border: 3px solid $accent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $text-3xl;
+    font-weight: $font-black;
+    color: $accent;
+    font-family: $font-display;
+  }
+
+  &__emoji {
+    font-size: 5rem;
+    filter: drop-shadow(0 4px 16px rgba(0,0,0,.35));
+  }
+
+  &__label {
+    color: rgba(255,255,255,0.85);
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    letter-spacing: 0.06em;
+    text-shadow: 0 1px 6px rgba(0,0,0,.4);
+  }
+}
+
 // ===== SKILLS =====
 .skills-section {
   background: var(--color-surface);
-
   &__header { margin-bottom: $space-10; }
 }
 
@@ -139,33 +211,28 @@ $accent: $color-accent;
 
 // ===== SETUP =====
 .setup-section {
-  padding-block: $space-20;
-
-  &__inner {
-    position: relative;
+  &__header {
+    margin-bottom: $space-10;
   }
 
-  &__label {
-    position: absolute;
-    top: -$space-4;
-    left: $container-pad-x;
+  &__eyebrow {
+    display: inline-block;
+    padding: $space-1 $space-3;
     background: $color-primary;
     color: $accent;
-    padding: $space-1 $space-4;
-    border-radius: $radius-full;
     font-size: $text-xs;
     font-weight: $font-bold;
+    border-radius: $radius-full;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-
-    @include lg { left: calc((100vw - #{$container-max}) / 2 + #{$container-pad-x}); }
+    margin-bottom: $space-3;
   }
 }
 
 .setup-grid {
   display: grid;
   gap: $space-4;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 }
 
 .setup-card {
@@ -176,6 +243,7 @@ $accent: $color-accent;
   background: var(--color-card-bg);
   border: 1px solid var(--color-border);
   border-radius: $radius-xl;
+  cursor: pointer;
   transition: border-color $transition-base, transform $transition-base,
               box-shadow $transition-base;
 
@@ -183,9 +251,15 @@ $accent: $color-accent;
     border-color: $accent;
     transform: translateY(-3px);
     box-shadow: var(--shadow-card);
+
+    .setup-card__arrow { opacity: 1; transform: translateY(-2px); }
   }
 
+  &:focus-visible { outline: 2px solid $accent; outline-offset: 3px; }
+
   &__icon { font-size: 1.75rem; flex-shrink: 0; }
+
+  &__text { flex: 1; min-width: 0; }
 
   &__label {
     font-size: $text-xs;
@@ -200,8 +274,106 @@ $accent: $color-accent;
     font-size: $text-sm;
     font-weight: $font-medium;
     color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__arrow {
+    flex-shrink: 0;
+    font-size: $text-base;
+    color: $accent;
+    opacity: 0;
+    transition: opacity $transition-fast, transform $transition-fast;
   }
 }
+
+// ===== SETUP LIGHTBOX =====
+.setup-lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: $z-modal;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-4;
+  animation: slFadeIn 200ms $ease-out-cubic both;
+}
+
+.setup-lightbox {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: var(--color-bg);
+  border-radius: $radius-2xl;
+  overflow: hidden;
+  box-shadow: $shadow-xl, 0 0 0 1px var(--color-border);
+  animation: slSlideUp 250ms $ease-out-cubic both;
+
+  &__close {
+    position: absolute;
+    top: $space-4;
+    right: $space-4;
+    z-index: 10;
+    width: 34px;
+    height: 34px;
+    border-radius: $radius-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.35);
+    color: #fff;
+    transition: background $transition-fast;
+
+    &:hover { background: rgba(0,0,0,0.55); }
+  }
+
+  &__hero {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  &__emoji {
+    font-size: 5rem;
+    filter: drop-shadow(0 6px 20px rgba(0,0,0,.4));
+    animation: slPop 400ms $ease-out-cubic both 80ms;
+  }
+
+  &__body {
+    padding: $space-6 $space-8 $space-8;
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: $text-xl;
+    font-weight: $font-black;
+    color: var(--color-text);
+  }
+
+  &__value {
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    color: var(--color-accent-text);
+  }
+
+  &__details {
+    font-size: $text-base;
+    color: var(--color-text-muted);
+    line-height: 1.75;
+  }
+}
+
+@keyframes slFadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slSlideUp { from { opacity: 0; transform: translateY(24px) scale(0.97); } to { opacity: 1; transform: none; } }
+@keyframes slPop     { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
 
 // ===== EDUCATOR =====
 .educator-section {
@@ -209,10 +381,7 @@ $accent: $color-accent;
     display: grid;
     gap: $space-12;
     align-items: center;
-
-    @include lg {
-      grid-template-columns: 1fr 1fr;
-    }
+    @include lg { grid-template-columns: 1fr 1fr; }
   }
 
   &__eyebrow {
@@ -227,11 +396,7 @@ $accent: $color-accent;
 
   .section__title { margin-bottom: $space-5; }
 
-  p {
-    color: var(--color-text-muted);
-    line-height: 1.8;
-    margin-bottom: $space-4;
-  }
+  p { color: var(--color-text-muted); line-height: 1.8; margin-bottom: $space-4; }
 
   &__list {
     display: flex;
@@ -239,13 +404,7 @@ $accent: $color-accent;
     gap: $space-3;
     margin-top: $space-2;
 
-    li {
-      display: flex;
-      align-items: flex-start;
-      gap: $space-3;
-      font-size: $text-sm;
-      color: var(--color-text-muted);
-    }
+    li { display: flex; align-items: flex-start; gap: $space-3; font-size: $text-sm; color: var(--color-text-muted); }
   }
 
   &__list-dot {
@@ -263,24 +422,13 @@ $accent: $color-accent;
   border-radius: $radius-2xl;
   padding: $space-8;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: $space-4;
-
-  @include md {
-    grid-template-columns: 1fr;
-  }
-
-  @include lg {
-    grid-template-columns: 1fr;
-  }
 
   &__stat {
     text-align: center;
     padding: $space-4;
-
-    & + & {
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-    }
+    & + & { border-top: 1px solid rgba(255,255,255,0.08); }
   }
 
   &__number {
@@ -292,10 +440,7 @@ $accent: $color-accent;
     margin-bottom: $space-1;
   }
 
-  &__caption {
-    font-size: $text-sm;
-    color: rgba(255, 255, 255, 0.6);
-  }
+  &__caption { font-size: $text-sm; color: rgba(255,255,255,0.6); }
 }
 
 // ===== TRAVELS =====
@@ -312,25 +457,15 @@ $accent: $color-accent;
     pointer-events: none;
   }
 
-  &__inner {
-    position: relative;
-  }
-
-  &__header {
-    margin-bottom: $space-10;
-  }
+  &__inner { position: relative; }
+  &__header { margin-bottom: $space-10; }
 }
 
 .travels-gallery {
   display: grid;
   gap: $space-12;
   align-items: center;
-
-  @include lg {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  &__main {}
+  @include lg { grid-template-columns: 1fr 1fr; }
 
   &__img-wrap {
     position: relative;
@@ -351,7 +486,6 @@ $accent: $color-accent;
 
     &.active { opacity: 1; }
 
-    // Fallback gradient when no real image
     &:not([style*="url"]) {
       background: linear-gradient(135deg, $color-primary 0%, color.adjust($color-primary, $lightness: -10%) 100%);
     }
@@ -383,10 +517,7 @@ $accent: $color-accent;
     background: var(--color-border);
     transition: background $transition-fast, transform $transition-fast;
 
-    &.active {
-      background: $color-primary;
-      transform: scale(1.4);
-    }
+    &.active { background: $color-primary; transform: scale(1.4); }
   }
 
   &__text {
@@ -394,7 +525,6 @@ $accent: $color-accent;
       font-size: $text-lg;
       color: var(--color-text-muted);
       line-height: 1.8;
-
       & + p { margin-top: $space-5; }
     }
   }

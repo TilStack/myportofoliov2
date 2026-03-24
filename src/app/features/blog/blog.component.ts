@@ -4,6 +4,14 @@ import { ButtonComponent } from '../../shared/components/button/button.component
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { I18nService } from '../../core/services/i18n.service';
 
+// ── Comment type ───────────────────────────────────────────────────────────
+interface ArticleComment {
+  id:     string;
+  author: string;
+  text:   string;
+  date:   Date;
+}
+
 // ── Article types ──────────────────────────────────────────────────────────
 type ArticleSource = 'local' | 'zerofiltre';
 
@@ -311,6 +319,40 @@ export class BlogComponent {
       this.submitSuccess.set(true);
       this.submitting.set(false);
     }, 1000);
+  }
+
+  // ── article comments ──
+  private commentsMap = new Map<string, ArticleComment[]>();
+  commentsRefresh     = signal(0);
+
+  articleComments = computed<ArticleComment[]>(() => {
+    this.commentsRefresh();
+    const id = this.articleDetail()?.id;
+    return id ? (this.commentsMap.get(id) ?? []) : [];
+  });
+
+  newCommentAuthor = '';
+  newCommentText   = '';
+
+  addArticleComment(): void {
+    const id = this.articleDetail()?.id;
+    if (!id || !this.newCommentText.trim()) return;
+    const comment: ArticleComment = {
+      id:     Date.now().toString(),
+      author: this.newCommentAuthor.trim() || 'Anonymous',
+      text:   this.newCommentText.trim(),
+      date:   new Date(),
+    };
+    this.commentsMap.set(id, [...(this.commentsMap.get(id) ?? []), comment]);
+    this.commentsRefresh.update(v => v + 1);
+    this.newCommentAuthor = '';
+    this.newCommentText   = '';
+  }
+
+  formatCommentDate(d: Date): string {
+    return new Intl.DateTimeFormat(this.i18n.lang() === 'fr' ? 'fr-FR' : 'en-US', {
+      day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit',
+    }).format(d);
   }
 
   // ── helpers ──

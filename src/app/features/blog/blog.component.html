@@ -303,6 +303,67 @@
             {{ i18n.t('blog.articleBy') }}
           </span>
         </div>
+
+        <!-- Comments -->
+        <div class="adetail-comments">
+          <h3 class="adetail-comments__title">
+            Comments
+            @if (articleComments().length) {
+              <span class="adetail-comments__count">{{ articleComments().length }}</span>
+            }
+          </h3>
+
+          @if (articleComments().length) {
+            <ul class="adetail-comment-list">
+              @for (c of articleComments(); track c.id) {
+                <li class="adetail-comment">
+                  <div class="adetail-comment__avatar">{{ c.author[0].toUpperCase() }}</div>
+                  <div class="adetail-comment__body">
+                    <div class="adetail-comment__header">
+                      <span class="adetail-comment__author">{{ c.author }}</span>
+                      <span class="adetail-comment__date">{{ formatCommentDate(c.date) }}</span>
+                    </div>
+                    <p class="adetail-comment__text">{{ c.text }}</p>
+                  </div>
+                </li>
+              }
+            </ul>
+          } @else {
+            <p class="adetail-comments__empty">No comments yet — be the first!</p>
+          }
+
+          <!-- Add comment -->
+          <div class="adetail-comment-form">
+            <input
+              type="text"
+              class="adetail-comment-form__input"
+              placeholder="{{ i18n.lang() === 'fr' ? 'Votre nom (facultatif)' : 'Your name (optional)' }}"
+              [value]="newCommentAuthor"
+              (input)="newCommentAuthor = $any($event.target).value"
+            />
+            <div class="adetail-comment-form__row">
+              <textarea
+                class="adetail-comment-form__textarea"
+                rows="3"
+                placeholder="{{ i18n.lang() === 'fr' ? 'Écrire un commentaire…' : 'Write a comment…' }}"
+                [value]="newCommentText"
+                (input)="newCommentText = $any($event.target).value"
+                (keydown.ctrl.enter)="addArticleComment()"
+              ></textarea>
+              <button
+                class="adetail-comment-form__submit"
+                (click)="addArticleComment()"
+                [disabled]="!newCommentText.trim()"
+                aria-label="Post comment"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </div>
@@ -377,19 +438,47 @@
             <label class="form-label" for="c-desc">{{ i18n.t('blog.shortDesc') }}</label>
             <!-- Rich-text toolbar -->
             <div class="rte-toolbar" role="toolbar" aria-label="Formatting">
-              <button type="button" class="rte-btn" title="Bold" (click)="applyFormat('bold')">
-                <strong>B</strong>
-              </button>
-              <button type="button" class="rte-btn rte-btn--italic" title="Italic" (click)="applyFormat('italic')">
-                <em>I</em>
-              </button>
+              <!-- Text style group -->
+              <button type="button" class="rte-btn" title="Bold (Ctrl+B)" (click)="applyFormat('bold')"><strong>B</strong></button>
+              <button type="button" class="rte-btn rte-btn--italic" title="Italic" (click)="applyFormat('italic')"><em>I</em></button>
+              <button type="button" class="rte-btn rte-btn--strike" title="Strikethrough" (click)="applyFormat('strike')"><s>S</s></button>
+              <button type="button" class="rte-btn rte-btn--underline" title="Underline" (click)="applyFormat('underline')"><u>U</u></button>
+              <span class="rte-sep" aria-hidden="true"></span>
+              <!-- Headings -->
               <button type="button" class="rte-btn" title="Heading 1" (click)="applyFormat('h1')">H1</button>
               <button type="button" class="rte-btn" title="Heading 2" (click)="applyFormat('h2')">H2</button>
-              <button type="button" class="rte-btn" title="Center" (click)="applyFormat('center')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-                  <line x1="3" y1="6" x2="21" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-                </svg>
+              <button type="button" class="rte-btn" title="Heading 3" (click)="applyFormat('h3')">H3</button>
+              <span class="rte-sep" aria-hidden="true"></span>
+              <!-- Alignment -->
+              <button type="button" class="rte-btn" title="Center align" (click)="applyFormat('center')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
               </button>
+              <button type="button" class="rte-btn" title="Right align" (click)="applyFormat('right')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="9" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+              </button>
+              <span class="rte-sep" aria-hidden="true"></span>
+              <!-- Lists & blocks -->
+              <button type="button" class="rte-btn" title="Bullet list" (click)="applyFormat('bullet')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><line x1="9" y1="6" x2="20" y2="6"/><line x1="9" y1="12" x2="20" y2="12"/><line x1="9" y1="18" x2="20" y2="18"/><circle cx="4" cy="6" r="1.5" fill="currentColor"/><circle cx="4" cy="12" r="1.5" fill="currentColor"/><circle cx="4" cy="18" r="1.5" fill="currentColor"/></svg>
+              </button>
+              <button type="button" class="rte-btn" title="Numbered list" (click)="applyFormat('numbered')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4" stroke-linecap="round"/><path d="M4 10h2" stroke-linecap="round"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" stroke-linecap="round"/></svg>
+              </button>
+              <button type="button" class="rte-btn" title="Blockquote" (click)="applyFormat('blockquote')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
+              </button>
+              <span class="rte-sep" aria-hidden="true"></span>
+              <!-- Code & misc -->
+              <button type="button" class="rte-btn" title="Inline code" (click)="applyFormat('code')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              </button>
+              <button type="button" class="rte-btn" title="Code block" (click)="applyFormat('codeblock')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M8 10l-3 2 3 2"/><path d="M16 10l3 2-3 2"/><line x1="12" y1="8" x2="12" y2="16"/></svg>
+              </button>
+              <button type="button" class="rte-btn" title="Link" (click)="applyFormat('link')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              </button>
+              <button type="button" class="rte-btn" title="Horizontal rule" (click)="applyFormat('hr')">—</button>
             </div>
             <textarea id="c-desc" formControlName="desc" rows="5" class="form-input form-textarea rte-area"
                       [class.invalid]="contributeForm.controls['desc'].invalid && contributeForm.controls['desc'].touched"></textarea>

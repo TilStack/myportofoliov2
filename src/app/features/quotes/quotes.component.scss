@@ -204,6 +204,317 @@
   }
 }
 
+// ── Page top row (title + add button) ────────────────
+.quotes-page__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $space-4;
+  flex-wrap: wrap;
+}
+
+.qadd-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-3 $space-5;
+  background: $color-accent;
+  color: $color-primary;
+  border-radius: $radius-lg;
+  font-size: $text-sm;
+  font-weight: $font-bold;
+  flex-shrink: 0;
+  transition: opacity $transition-fast, transform $transition-fast;
+
+  &:hover { opacity: 0.88; transform: translateY(-1px); }
+}
+
+// ── Like / Delete buttons on card ────────────────────
+.qcard__actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.qcard__like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: $text-xs;
+  font-weight: $font-semibold;
+  color: var(--color-text-muted);
+  transition: color $transition-fast, transform $transition-fast;
+  padding: 4px;
+  border-radius: $radius-sm;
+
+  &:hover { color: #e74c3c; transform: scale(1.1); }
+  &.liked { color: #e74c3c; }
+}
+
+.qcard__del-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: $radius-sm;
+  color: var(--color-text-muted);
+  opacity: 0;
+  transition: opacity $transition-fast, color $transition-fast;
+
+  .qcard:hover & { opacity: 1; }
+  &:hover { color: #f87171; }
+}
+
+// ── Shared modal backdrop pattern ─────────────────────
+.qpw-backdrop,
+.qadd-backdrop,
+.qdel-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: $z-modal;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(7px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-4;
+  animation: qFadeIn 200ms $ease-out-cubic both;
+}
+
+.qadd-backdrop {
+  align-items: flex-start;
+  padding-top: $space-12;
+  overflow-y: auto;
+}
+
+@keyframes qFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes qSlideUp {
+  from { opacity: 0; transform: translateY(28px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+// ── Shared modal close button ─────────────────────────
+.qmodal-close {
+  position: absolute;
+  top: $space-4;
+  right: $space-4;
+  width: 34px;
+  height: 34px;
+  border-radius: $radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  transition: background $transition-fast, color $transition-fast;
+
+  &:hover { background: var(--color-surface); color: var(--color-text); }
+}
+
+// ── Password modal ────────────────────────────────────
+.qpw-modal {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  background: var(--color-bg);
+  border-radius: $radius-2xl;
+  padding: $space-10 $space-8 $space-8;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-4;
+  box-shadow: $shadow-xl, 0 0 0 1px var(--color-border);
+  animation: qSlideUp 240ms $ease-out-cubic both;
+
+  &__icon  { font-size: 2.6rem; line-height: 1; }
+  &__title { font-family: $font-display; font-size: $text-xl; font-weight: $font-black; color: var(--color-text); }
+  &__sub   { font-size: $text-sm; color: var(--color-text-muted); line-height: 1.6; }
+}
+
+// ── Add quote modal ───────────────────────────────────
+.qadd-modal {
+  position: relative;
+  width: 100%;
+  max-width: 660px;
+  background: var(--color-bg);
+  border-radius: $radius-2xl;
+  overflow: hidden;
+  box-shadow: $shadow-xl, 0 0 0 1px var(--color-border);
+  margin-bottom: $space-12;
+  animation: qSlideUp 260ms $ease-out-cubic both;
+
+  &__header {
+    padding: $space-10 $space-8 $space-6;
+    border-bottom: 1px solid var(--color-border);
+    text-align: center;
+  }
+
+  &__icon  { font-size: 2.5rem; display: block; margin-bottom: $space-3; }
+  &__title { font-family: $font-display; font-size: $text-2xl; font-weight: $font-black; color: var(--color-text); margin-bottom: $space-2; }
+  &__sub   { font-size: $text-sm; color: var(--color-text-muted); line-height: 1.65; }
+}
+
+.qadd-form {
+  padding: $space-6 $space-8 $space-8;
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+
+  &__row {
+    display: grid;
+    gap: $space-4;
+    @include sm { grid-template-columns: 1fr 1fr; }
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: $space-2;
+  }
+}
+
+.qadd-success {
+  padding: $space-12 $space-8;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-4;
+
+  &__icon { font-size: 3rem; display: block; }
+  p { font-size: $text-base; color: var(--color-text-muted); }
+}
+
+// ── Delete modal ──────────────────────────────────────
+.qdel-modal {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: var(--color-bg);
+  border-radius: $radius-2xl;
+  padding: $space-10 $space-8 $space-8;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-4;
+  box-shadow: $shadow-xl, 0 0 0 1px var(--color-border);
+  animation: qSlideUp 240ms $ease-out-cubic both;
+
+  &__icon    { font-size: 2.4rem; line-height: 1; }
+  &__title   { font-family: $font-display; font-size: $text-xl; font-weight: $font-black; color: var(--color-text); }
+  &__preview {
+    font-style: italic;
+    font-size: $text-sm;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    padding: $space-3 $space-4;
+    background: var(--color-surface);
+    border-radius: $radius-lg;
+    border-left: 3px solid $color-accent;
+    text-align: left;
+  }
+  &__sub     { font-size: $text-sm; color: var(--color-text-muted); }
+  &__actions { display: flex; gap: $space-3; align-items: center; }
+}
+
+.qdel-cancel {
+  padding: $space-3 $space-5;
+  border: 1.5px solid var(--color-border);
+  border-radius: $radius-lg;
+  font-size: $text-sm;
+  font-weight: $font-medium;
+  color: var(--color-text-muted);
+  transition: border-color $transition-fast, color $transition-fast;
+
+  &:hover { border-color: var(--color-text-muted); color: var(--color-text); }
+}
+
+// ── Shared form elements ──────────────────────────────
+.qform-field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.qform-label {
+  font-size: $text-sm;
+  font-weight: $font-semibold;
+  color: var(--color-text);
+
+  &__opt { font-weight: $font-normal; color: var(--color-text-muted); font-size: $text-xs; }
+}
+
+.qform-input {
+  width: 100%;
+  padding: $space-3 $space-4;
+  border: 1.5px solid var(--color-border);
+  border-radius: $radius-lg;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: $text-sm;
+  font-family: $font-sans;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &:focus { outline: none; border-color: $color-accent; box-shadow: 0 0 0 3px rgba($color-accent, 0.15); }
+  &.invalid { border-color: #f87171; }
+}
+
+.qform-textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+.qform-error {
+  font-size: $text-xs;
+  color: #f87171;
+  margin-top: -$space-2;
+}
+
+// ── Rich-text toolbar (shared) ────────────────────────
+.rte-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-1;
+  padding: $space-2;
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-bottom: none;
+  border-radius: $radius-lg $radius-lg 0 0;
+}
+
+.rte-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 28px;
+  border-radius: $radius-sm;
+  font-size: $text-sm;
+  font-family: $font-sans;
+  color: var(--color-text-muted);
+  transition: background $transition-fast, color $transition-fast;
+
+  &:hover { background: var(--color-border); color: var(--color-text); }
+  &--italic { font-style: italic; }
+}
+
+.rte-sep {
+  width: 1px;
+  background: var(--color-border);
+  margin-inline: $space-1;
+  align-self: center;
+  height: 18px;
+}
+
+.rte-area {
+  border-radius: 0 0 $radius-lg $radius-lg !important;
+  min-height: 120px;
+  font-family: 'Courier New', monospace;
+  font-size: $text-sm;
+}
+
 // ===== FILTER BAR =====
 .quotes-filter {
   display: flex;

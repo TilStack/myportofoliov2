@@ -3,7 +3,7 @@ import {
   HostListener, OnInit, ElementRef, ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Quote } from '../../../core/models/quote.model';
+import { Quote, QuoteComment } from '../../../core/models/quote.model';
 
 @Component({
   selector: 'app-quote-modal',
@@ -18,26 +18,28 @@ export class QuoteModalComponent implements OnInit {
 
   @ViewChild('dialog', { static: true }) dialogEl!: ElementRef<HTMLElement>;
 
-  visible = false;
+  visible   = false;
+  liked     = false;
+  likeCount = 0;
+
+  comments: QuoteComment[]  = [];
+  newCommentAuthor = '';
+  newCommentText   = '';
 
   ngOnInit(): void {
-    // Trigger enter animation on next frame
     requestAnimationFrame(() => (this.visible = true));
-    // Prevent body scroll
     document.body.style.overflow = 'hidden';
+    this.likeCount = this.quote.likes;
   }
 
   dismiss(): void {
     this.visible = false;
     document.body.style.overflow = '';
-    // Wait for exit animation before emitting
     setTimeout(() => this.close.emit(), 280);
   }
 
   @HostListener('document:keydown.escape')
-  onEsc(): void {
-    this.dismiss();
-  }
+  onEsc(): void { this.dismiss(); }
 
   onBackdropClick(event: MouseEvent): void {
     if ((event.target as HTMLElement).classList.contains('qmodal__backdrop')) {
@@ -45,20 +47,36 @@ export class QuoteModalComponent implements OnInit {
     }
   }
 
-  /** Readable date */
+  toggleLike(): void {
+    this.liked = !this.liked;
+    this.likeCount += this.liked ? 1 : -1;
+  }
+
+  addComment(): void {
+    if (!this.newCommentText.trim()) return;
+    this.comments.push({
+      id:     Date.now().toString(),
+      author: this.newCommentAuthor.trim() || 'Anonyme',
+      text:   this.newCommentText.trim(),
+      date:   new Date(),
+    });
+    this.newCommentAuthor = '';
+    this.newCommentText   = '';
+  }
+
+  formatCommentDate(d: Date): string {
+    return new Intl.DateTimeFormat('fr-FR', {
+      day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit',
+    }).format(d);
+  }
+
   get formattedDate(): string {
     return new Intl.DateTimeFormat('fr-FR', {
       day: 'numeric', month: 'long', year: 'numeric',
     }).format(this.quote.date);
   }
 
-  /** Author initials for avatar */
   get initials(): string {
-    return this.quote.author
-      .split(' ')
-      .map(w => w[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
+    return this.quote.author.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
   }
 }

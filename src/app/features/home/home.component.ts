@@ -39,4 +39,11 @@ export class HomeComponent implements OnInit {
   toggleQuote(quote: Quote): void {
     quote.expanded = !quote.expanded;
   }
+
+  downloadCV(): void {
+    const a = document.createElement('a');
+    a.href     = 'TilCV.pdf';
+    a.download = 'TilStack_CV.pdf';
+    a.click();
+  }
 }

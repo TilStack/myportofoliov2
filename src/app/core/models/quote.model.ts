@@ -1,3 +1,10 @@
+export interface QuoteComment {
+  id:     string;
+  author: string;
+  text:   string;
+  date:   Date;
+}
+
 export interface Quote {
   id?:         string;
   text:        string;
@@ -7,5 +14,5 @@ export interface Quote {
   tags:        string[];
   likes:       number;
   category?:   string;
-  expanded?:   boolean; // UI state only — not persisted
+  expanded?:   boolean;
 }
