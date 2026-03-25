@@ -6,6 +6,7 @@ import { QuoteModalComponent } from './quote-modal/quote-modal.component';
 import { Quote } from '../../core/models/quote.model';
 import { QUOTES } from './quotes.data';
 import { ButtonComponent } from '../../shared/components/button/button.component';
+import { I18nService } from '../../core/services/i18n.service';
 
 interface QuoteVM extends Quote {
   id: string;
@@ -22,29 +23,32 @@ interface QuoteVM extends Quote {
 })
 export class QuotesComponent {
   private readonly fb = inject(FormBuilder);
+  readonly i18n = inject(I18nService);
 
   // ── mutable quotes list ──────────────────────────────────
   quotes = signal<QuoteVM[]>(
     QUOTES.map(q => ({ ...q, id: q.id ?? String(Date.now() + Math.random()), liked: false, likeCount: q.likes }))
   );
 
-  readonly categories = computed(() =>
-    ['Tous', ...new Set(this.quotes().map(q => q.category ?? '').filter(Boolean))]
-  );
+  // null = show all
+  activeCategory = signal<string | null>(null);
 
-  activeCategory = signal<string>('Tous');
+  // Unique category values from data (for the filter buttons)
+  readonly dataCategories = computed(() =>
+    [...new Set(this.quotes().map(q => q.category ?? '').filter(Boolean))]
+  );
 
   readonly filteredQuotes = computed<QuoteVM[]>(() => {
     const cat = this.activeCategory();
-    if (cat === 'Tous') return this.quotes();
+    if (!cat) return this.quotes();
     return this.quotes().filter(q => q.category === cat);
   });
 
   activeQuote = signal<QuoteVM | null>(null);
 
-  openModal(quote: QuoteVM): void  { this.activeQuote.set(quote); }
-  closeModal(): void               { this.activeQuote.set(null); }
-  setCategory(cat: string): void   { this.activeCategory.set(cat); }
+  openModal(quote: QuoteVM): void           { this.activeQuote.set(quote); }
+  closeModal(): void                        { this.activeQuote.set(null); }
+  setCategory(cat: string | null): void     { this.activeCategory.set(cat); }
 
   initials(author: string): string {
     return author.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);

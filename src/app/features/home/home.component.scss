@@ -323,19 +323,7 @@
     grid-template-columns: 1fr;
 
     @include md { grid-template-columns: repeat(2, 1fr); }
-    @include lg { grid-template-columns: repeat(3, 1fr); }
-
-    // Last card spans 2 cols on md (so 2+2+1 become 2+2 and 1 centered on md)
-    @include md {
-      .page-card:last-child:nth-child(odd) {
-        grid-column: 1 / -1;
-        max-width: 480px;
-        justify-self: center;
-      }
-    }
-    @include lg {
-      .page-card:last-child { grid-column: auto; max-width: none; }
-    }
+    @include lg { grid-template-columns: repeat(4, 1fr); }
   }
 }
 

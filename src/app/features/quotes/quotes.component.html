@@ -5,22 +5,25 @@
     <div class="container">
       <div class="quotes-page__top fade-up" appFadeOnScroll>
         <div>
-          <h1 class="section__title">Quotes</h1>
-          <p class="section__subtitle">
-            Des pensées qui me trottent dans la tête. Cliquez sur une citation pour en savoir plus.
-          </p>
+          <h1 class="section__title">{{ i18n.t('quotes.title') }}</h1>
+          <p class="section__subtitle">{{ i18n.t('quotes.subtitle') }}</p>
         </div>
         <button class="qadd-btn" (click)="openPwModal()">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
           </svg>
-          Add a quote
+          {{ i18n.t('quotes.addBtn') }}
         </button>
       </div>
 
       <!-- Category filter -->
       <div class="quotes-filter fade-up" appFadeOnScroll [delay]="100">
-        @for (cat of categories(); track cat) {
+        <button
+          class="quotes-filter__btn"
+          [class.active]="activeCategory() === null"
+          (click)="setCategory(null)"
+        >{{ i18n.t('quotes.filterAll') }}</button>
+        @for (cat of dataCategories(); track cat) {
           <button
             class="quotes-filter__btn"
             [class.active]="activeCategory() === cat"
@@ -102,7 +105,7 @@
           }
 
           <div class="qcard__cta">
-            <span>Lire ma lecture</span>
+            <span>{{ i18n.t('quotes.readMore') }}</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
             </svg>
@@ -128,8 +131,8 @@
         </svg>
       </button>
       <div class="qpw-modal__icon">🔐</div>
-      <h2 class="qpw-modal__title">Add a quote</h2>
-      <p class="qpw-modal__sub">Enter the password to continue.</p>
+      <h2 class="qpw-modal__title">{{ i18n.t('quotes.pwTitle') }}</h2>
+      <p class="qpw-modal__sub">{{ i18n.t('quotes.pwSub') }}</p>
       <input
         type="password"
         class="qform-input"
@@ -139,8 +142,8 @@
         autocomplete="current-password"
         style="text-align:center;letter-spacing:0.15em"
       />
-      @if (pwError()) { <p class="qform-error">Incorrect password.</p> }
-      <app-button variant="accent" (click)="checkPw()">Access</app-button>
+      @if (pwError()) { <p class="qform-error">{{ i18n.t('quotes.pwError') }}</p> }
+      <app-button variant="accent" (click)="checkPw()">{{ i18n.t('quotes.pwAccess') }}</app-button>
     </div>
   </div>
 }
@@ -158,20 +161,20 @@
       @if (addSuccess()) {
         <div class="qadd-success">
           <span class="qadd-success__icon">🎉</span>
-          <p>Citation ajoutée avec succès !</p>
-          <app-button variant="accent" (click)="closeAddModal()">Fermer</app-button>
+          <p>{{ i18n.t('quotes.addSuccess') }}</p>
+          <app-button variant="accent" (click)="closeAddModal()">{{ i18n.t('quotes.addClose') }}</app-button>
         </div>
       } @else {
         <div class="qadd-modal__header">
           <div class="qadd-modal__icon" aria-hidden="true">✍️</div>
-          <h2 class="qadd-modal__title">Add a Quote</h2>
-          <p class="qadd-modal__sub">Share a thought that resonates.</p>
+          <h2 class="qadd-modal__title">{{ i18n.t('quotes.addTitle') }}</h2>
+          <p class="qadd-modal__sub">{{ i18n.t('quotes.addSub') }}</p>
         </div>
 
         <form [formGroup]="addForm" (ngSubmit)="submitQuote()" class="qadd-form" novalidate>
 
           <div class="qform-field">
-            <label class="qform-label" for="qa-text">Quote text *</label>
+            <label class="qform-label" for="qa-text">{{ i18n.t('quotes.textLabel') }} *</label>
             <textarea id="qa-text" formControlName="text" rows="3" class="qform-input qform-textarea"
                       [class.invalid]="addForm.controls['text'].invalid && addForm.controls['text'].touched"
                       placeholder="Enter the quote…"></textarea>
@@ -179,13 +182,13 @@
 
           <div class="qadd-form__row">
             <div class="qform-field">
-              <label class="qform-label" for="qa-author">Author *</label>
+              <label class="qform-label" for="qa-author">{{ i18n.t('quotes.authorLabel') }} *</label>
               <input id="qa-author" type="text" formControlName="author" class="qform-input"
                      [class.invalid]="addForm.controls['author'].invalid && addForm.controls['author'].touched"
                      placeholder="Full name" />
             </div>
             <div class="qform-field">
-              <label class="qform-label" for="qa-cat">Category</label>
+              <label class="qform-label" for="qa-cat">{{ i18n.t('quotes.catLabel') }}</label>
               <input id="qa-cat" type="text" formControlName="category" class="qform-input"
                      placeholder="Sagesse, Growth…" />
             </div>
@@ -193,14 +196,14 @@
 
           <div class="qform-field">
             <label class="qform-label" for="qa-tags">
-              Tags <span class="qform-label__opt">(comma-separated)</span>
+              {{ i18n.t('quotes.tagsLabel') }} <span class="qform-label__opt">({{ i18n.t('quotes.tagsHint') }})</span>
             </label>
             <input id="qa-tags" type="text" formControlName="tags" class="qform-input"
                    placeholder="humilité, sagesse, …" />
           </div>
 
           <div class="qform-field">
-            <label class="qform-label" for="qa-expl">My reading / Explanation *</label>
+            <label class="qform-label" for="qa-expl">{{ i18n.t('quotes.explLabel') }} *</label>
             <div class="rte-toolbar" role="toolbar" aria-label="Formatting">
               <button type="button" class="rte-btn" title="Bold" (click)="applyQuoteFormat('bold')"><strong>B</strong></button>
               <button type="button" class="rte-btn rte-btn--italic" title="Italic" (click)="applyQuoteFormat('italic')"><em>I</em></button>
@@ -228,7 +231,7 @@
 
           <div class="qadd-form__footer">
             <app-button type="submit" variant="accent" [loading]="addSubmitting()" [disabled]="addForm.invalid">
-              Add quote
+              {{ i18n.t('quotes.submitBtn') }}
             </app-button>
           </div>
 
@@ -243,11 +246,11 @@
   <div class="qdel-backdrop" role="dialog" aria-modal="true" (click)="onDelBackdropClick($event)">
     <div class="qdel-modal">
       <div class="qdel-modal__icon">🗑️</div>
-      <h3 class="qdel-modal__title">Delete this quote?</h3>
+      <h3 class="qdel-modal__title">{{ i18n.t('quotes.delTitle') }}</h3>
       <blockquote class="qdel-modal__preview">
         "{{ dq.text.length > 90 ? (dq.text.slice(0, 90) + '…') : dq.text }}"
       </blockquote>
-      <p class="qdel-modal__sub">Enter admin password to confirm.</p>
+      <p class="qdel-modal__sub">{{ i18n.t('quotes.delSub') }}</p>
       <input
         type="password"
         class="qform-input"
@@ -257,10 +260,10 @@
         autocomplete="current-password"
         style="text-align:center;letter-spacing:0.15em"
       />
-      @if (delPwError()) { <p class="qform-error">Incorrect password.</p> }
+      @if (delPwError()) { <p class="qform-error">{{ i18n.t('quotes.delPwError') }}</p> }
       <div class="qdel-modal__actions">
-        <button class="qdel-cancel" (click)="closeDeleteConfirm()">Cancel</button>
-        <app-button variant="accent" (click)="confirmDelete()">Delete</app-button>
+        <button class="qdel-cancel" (click)="closeDeleteConfirm()">{{ i18n.t('quotes.delCancel') }}</button>
+        <app-button variant="accent" (click)="confirmDelete()">{{ i18n.t('quotes.delConfirm') }}</app-button>
       </div>
     </div>
   </div>
