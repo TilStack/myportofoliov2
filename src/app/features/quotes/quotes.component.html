@@ -36,94 +36,157 @@
 
   <!-- Grid -->
   <main class="container quotes-page__main">
-    <div class="quotes-grid">
-      @for (quote of filteredQuotes(); track quote.id; let i = $index) {
-        <article
-          class="qcard fade-up"
-          appFadeOnScroll
-          [delay]="i * 60"
-          (click)="openModal(quote)"
-          role="button"
-          tabindex="0"
-          (keyup.enter)="openModal(quote)"
-          [attr.aria-label]="'Read more about this quote by ' + quote.author"
-        >
-          <div class="qcard__mark" aria-hidden="true">&ldquo;</div>
 
-          @if (quote.category) {
-            <span class="qcard__category">{{ quote.category }}</span>
-          }
-
-          <blockquote class="qcard__text">{{ quote.text }}</blockquote>
-
-          <div class="qcard__meta">
-            <div class="qcard__author-avatar" aria-hidden="true">{{ initials(quote.author) }}</div>
-            <div>
-              <cite class="qcard__author">{{ quote.author }}</cite>
-              <span class="qcard__date">{{ quote.date | date:'dd/MM/yyyy' }}</span>
-            </div>
-            <div class="qcard__actions">
-              <button
-                class="qcard__like-btn"
-                [class.liked]="quote.liked"
-                (click)="toggleLike(quote, $event)"
-                title="Like"
-                aria-label="Like"
-              >
-                <svg width="13" height="13" viewBox="0 0 24 24"
-                     [attr.fill]="quote.liked ? 'currentColor' : 'none'"
-                     stroke="currentColor" stroke-width="2">
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                </svg>
-                {{ quote.likeCount }}
-              </button>
-              <button
-                class="qcard__edit-btn"
-                (click)="openEditPwModal(quote, $event)"
-                [title]="i18n.t('quotes.editBtn')"
-                [attr.aria-label]="i18n.t('quotes.editBtn')"
-              >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                </svg>
-              </button>
-              <button
-                class="qcard__del-btn"
-                (click)="openDeleteConfirm(quote, $event)"
-                title="Delete"
-                aria-label="Delete quote"
-              >
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="3 6 5 6 21 6"/>
-                  <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-                  <path d="M10 11v6"/><path d="M14 11v6"/>
-                  <path d="M9 6V4h6v2"/>
-                </svg>
-              </button>
+    <!-- Skeleton loading -->
+    @if (loading()) {
+      <div class="quotes-grid" aria-busy="true" aria-label="Loading quotes…">
+        @for (n of [1,2,3,4,5,6]; track n) {
+          <div class="qskeleton">
+            <div class="qskeleton__badge"></div>
+            <div class="qskeleton__line qskeleton__line--lg"></div>
+            <div class="qskeleton__line qskeleton__line--md"></div>
+            <div class="qskeleton__line qskeleton__line--sm"></div>
+            <div class="qskeleton__meta">
+              <div class="qskeleton__avatar"></div>
+              <div class="qskeleton__meta-lines">
+                <div class="qskeleton__line qskeleton__line--name"></div>
+                <div class="qskeleton__line qskeleton__line--date"></div>
+              </div>
             </div>
           </div>
+        }
+      </div>
+    }
 
-          @if (quote.tags.length) {
-            <div class="qcard__tags">
-              @for (tag of quote.tags.slice(0, 2); track tag) {
-                <span class="qcard__tag"># {{ tag }}</span>
-              }
-              @if (quote.tags.length > 2) {
-                <span class="qcard__tag-more">+{{ quote.tags.length - 2 }}</span>
-              }
+    <!-- Quotes grid -->
+    @if (!loading()) {
+      <div class="quotes-grid">
+        @for (quote of paginatedQuotes(); track quote.id; let i = $index) {
+          <article
+            class="qcard fade-up"
+            appFadeOnScroll
+            [delay]="i * 60"
+            (click)="openModal(quote)"
+            role="button"
+            tabindex="0"
+            (keyup.enter)="openModal(quote)"
+            [attr.aria-label]="'Read more about this quote by ' + quote.author"
+          >
+            <div class="qcard__mark" aria-hidden="true">&ldquo;</div>
+
+            @if (quote.category) {
+              <span class="qcard__category">{{ quote.category }}</span>
+            }
+
+            <blockquote class="qcard__text">{{ quote.text }}</blockquote>
+
+            <div class="qcard__meta">
+              <div class="qcard__author-avatar" aria-hidden="true">{{ initials(quote.author) }}</div>
+              <div>
+                <cite class="qcard__author">{{ quote.author }}</cite>
+                <span class="qcard__date">{{ quote.date | date:'dd/MM/yyyy' }}</span>
+              </div>
+              <div class="qcard__actions">
+                <button
+                  class="qcard__like-btn"
+                  [class.liked]="quote.liked"
+                  (click)="toggleLike(quote, $event)"
+                  title="Like"
+                  aria-label="Like"
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24"
+                       [attr.fill]="quote.liked ? 'currentColor' : 'none'"
+                       stroke="currentColor" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                  </svg>
+                  {{ quote.likeCount }}
+                </button>
+                <button
+                  class="qcard__edit-btn"
+                  (click)="openEditPwModal(quote, $event)"
+                  [title]="i18n.t('quotes.editBtn')"
+                  [attr.aria-label]="i18n.t('quotes.editBtn')"
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                  </svg>
+                </button>
+                <button
+                  class="qcard__del-btn"
+                  (click)="openDeleteConfirm(quote, $event)"
+                  title="Delete"
+                  aria-label="Delete quote"
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                    <path d="M10 11v6"/><path d="M14 11v6"/>
+                    <path d="M9 6V4h6v2"/>
+                  </svg>
+                </button>
+              </div>
             </div>
-          }
 
-          <div class="qcard__cta">
-            <span>{{ i18n.t('quotes.readMore') }}</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            @if (quote.tags.length) {
+              <div class="qcard__tags">
+                @for (tag of quote.tags.slice(0, 2); track tag) {
+                  <span class="qcard__tag"># {{ tag }}</span>
+                }
+                @if (quote.tags.length > 2) {
+                  <span class="qcard__tag-more">+{{ quote.tags.length - 2 }}</span>
+                }
+              </div>
+            }
+
+            <div class="qcard__cta">
+              <span>{{ i18n.t('quotes.readMore') }}</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </div>
+          </article>
+        }
+      </div>
+
+      <!-- Pagination -->
+      @if (totalPages() > 1) {
+        <nav class="quotes-pagination" aria-label="Pagination">
+          <button
+            class="qpage-btn qpage-btn--arrow"
+            [disabled]="currentPage() === 1"
+            (click)="goToPage(currentPage() - 1)"
+            aria-label="Page précédente"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="15 18 9 12 15 6"/>
             </svg>
-          </div>
-        </article>
+          </button>
+
+          @for (page of pageNumbers(); track page) {
+            <button
+              class="qpage-btn"
+              [class.active]="page === currentPage()"
+              (click)="goToPage(page)"
+              [attr.aria-label]="'Page ' + page"
+              [attr.aria-current]="page === currentPage() ? 'page' : null"
+            >{{ page }}</button>
+          }
+
+          <button
+            class="qpage-btn qpage-btn--arrow"
+            [disabled]="currentPage() === totalPages()"
+            (click)="goToPage(currentPage() + 1)"
+            aria-label="Page suivante"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </button>
+        </nav>
       }
-    </div>
+    }
+
   </main>
 
   @if (activeQuote()) {

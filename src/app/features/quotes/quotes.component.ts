@@ -2,12 +2,15 @@ import { Component, computed, HostListener, inject, signal } from '@angular/core
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { tap } from 'rxjs';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { QuoteModalComponent } from './quote-modal/quote-modal.component';
 import { Quote } from '../../core/models/quote.model';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { I18nService } from '../../core/services/i18n.service';
 import { QuoteService } from '../../core/services/quote.service';
+
+const PAGE_SIZE = 11;
 
 interface QuoteVM extends Quote {
   id: string;
@@ -27,8 +30,14 @@ export class QuotesComponent {
   readonly i18n = inject(I18nService);
   private readonly quoteService = inject(QuoteService);
 
+  // ── Loading state ─────────────────────────────────────────
+  readonly loading = signal(true);
+
   // ── Firebase data (real-time) ────────────────────────────
-  private readonly rawQuotes = toSignal(this.quoteService.getAll(), { initialValue: [] as Quote[] });
+  private readonly rawQuotes = toSignal(
+    this.quoteService.getAll().pipe(tap(() => this.loading.set(false))),
+    { initialValue: [] as Quote[] }
+  );
 
   // Local liked state (session only)
   private likedSet = signal<Set<string>>(new Set());
@@ -58,9 +67,34 @@ export class QuotesComponent {
 
   activeQuote = signal<QuoteVM | null>(null);
 
-  openModal(quote: QuoteVM): void       { this.activeQuote.set(quote); }
-  closeModal(): void                    { this.activeQuote.set(null); }
-  setCategory(cat: string | null): void { this.activeCategory.set(cat); }
+  openModal(quote: QuoteVM): void { this.activeQuote.set(quote); }
+  closeModal(): void              { this.activeQuote.set(null); }
+
+  setCategory(cat: string | null): void {
+    this.activeCategory.set(cat);
+    this.currentPage.set(1);
+  }
+
+  // ── Pagination ───────────────────────────────────────────
+  currentPage = signal(1);
+
+  readonly paginatedQuotes = computed<QuoteVM[]>(() => {
+    const start = (this.currentPage() - 1) * PAGE_SIZE;
+    return this.filteredQuotes().slice(start, start + PAGE_SIZE);
+  });
+
+  readonly totalPages = computed(() =>
+    Math.max(1, Math.ceil(this.filteredQuotes().length / PAGE_SIZE))
+  );
+
+  readonly pageNumbers = computed(() =>
+    Array.from({ length: this.totalPages() }, (_, i) => i + 1)
+  );
+
+  goToPage(page: number): void {
+    this.currentPage.set(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   initials(author: string): string {
     return author.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
