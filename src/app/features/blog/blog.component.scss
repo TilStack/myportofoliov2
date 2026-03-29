@@ -998,6 +998,157 @@
 
 
 // ══════════════════════════════════════════════════════
+// SKELETON LOADING
+// ══════════════════════════════════════════════════════
+@keyframes bShimmer {
+  0%   { background-position: -800px 0; }
+  100% { background-position:  800px 0; }
+}
+
+%shimmer-base {
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    var(--color-surface) 50%,
+    var(--color-border) 75%
+  );
+  background-size: 800px 100%;
+  animation: bShimmer 1.5s infinite linear;
+  border-radius: $radius-md;
+}
+
+// Featured skeleton
+.blog-featured-skeleton {
+  display: grid;
+  gap: 0;
+  border-radius: $radius-2xl;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  margin-bottom: $space-8;
+
+  @include md { grid-template-columns: 1fr 1fr; }
+
+  &__cover {
+    @extend %shimmer-base;
+    aspect-ratio: 4 / 3;
+    border-radius: 0;
+    @include md { aspect-ratio: auto; min-height: 320px; }
+  }
+
+  &__body {
+    padding: $space-8;
+    background: var(--color-card-bg);
+    display: flex;
+    flex-direction: column;
+    gap: $space-4;
+  }
+}
+
+// Card skeleton
+.blog-card-skeleton {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-xl;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  &__cover {
+    @extend %shimmer-base;
+    aspect-ratio: 16 / 9;
+    border-radius: 0;
+  }
+
+  &__body {
+    padding: $space-5;
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+    flex: 1;
+  }
+
+  &__footer {
+    margin-top: auto;
+    padding-top: $space-3;
+    border-top: 1px solid var(--color-border);
+  }
+}
+
+// Shared skeleton elements
+.bskeleton__tags {
+  display: flex;
+  gap: $space-2;
+}
+
+.bskeleton__tag {
+  @extend %shimmer-base;
+  height: 20px;
+  width: 60px;
+  border-radius: $radius-sm;
+
+  &--sm { width: 45px; }
+}
+
+.bskeleton__line {
+  @extend %shimmer-base;
+  height: 13px;
+
+  &--title    { height: 22px; width: 90%; }
+  &--title-sm { width: 65%; }
+  &--text     { height: 13px; width: 100%; }
+  &--text-sm  { width: 80%; }
+  &--text-xs  { width: 55%; }
+  &--meta     { width: 140px; height: 12px; }
+}
+
+// ── Pagination ────────────────────────────────────────
+.blog-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  margin-top: $space-12;
+  padding-bottom: $space-4;
+}
+
+.bpage-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 $space-2;
+  border: 1.5px solid var(--color-border);
+  border-radius: $radius-lg;
+  font-size: $text-sm;
+  font-weight: $font-semibold;
+  color: var(--color-text-muted);
+  background: transparent;
+  cursor: pointer;
+  transition: border-color $transition-fast, color $transition-fast,
+              background $transition-fast, transform $transition-fast;
+
+  &:hover:not(:disabled) {
+    border-color: $color-accent;
+    color: $color-primary;
+    background: $color-accent;
+    transform: translateY(-1px);
+  }
+
+  &.active {
+    border-color: $color-accent;
+    background: $color-accent;
+    color: $color-primary;
+  }
+
+  &--arrow {
+    color: var(--color-text-muted);
+    &:disabled { opacity: 0.3; cursor: not-allowed; }
+  }
+}
+
+// ══════════════════════════════════════════════════════
 // ANIMATIONS
 // ══════════════════════════════════════════════════════
 @keyframes backdropIn {

@@ -10,7 +10,7 @@ import { ButtonComponent } from '../../shared/components/button/button.component
 import { I18nService } from '../../core/services/i18n.service';
 import { QuoteService } from '../../core/services/quote.service';
 
-const PAGE_SIZE = 11;
+const PAGE_SIZE = 9;
 
 interface QuoteVM extends Quote {
   id: string;

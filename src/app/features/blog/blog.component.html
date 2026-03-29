@@ -44,134 +44,223 @@
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════ FEATURED ═══ -->
-  @if (featuredArticle(); as featured) {
+  <!-- ═══════════════════════════════════ FEATURED SKELETON ═══ -->
+  @if (loading()) {
     <div class="container">
-      <article class="blog-featured fade-up" appFadeOnScroll [delay]="160" (click)="openArticleDetail(featured)" style="cursor:pointer">
-
-        <!-- Cover -->
-        <div class="blog-featured__cover">
-          @if (featured.coverUrl) {
-            <img [src]="featured.coverUrl" [alt]="featured.title" loading="eager" />
-          } @else {
-            <div
-              class="blog-featured__cover-placeholder"
-              [style.background]="featured.coverGradient"
-            >
-              <span>{{ featured.coverIcon }}</span>
-            </div>
-          }
-          <span class="blog-featured__badge">{{ i18n.t('blog.featured') }}</span>
-        </div>
-
-        <!-- Content -->
-        <div class="blog-featured__body">
-          <div class="blog-featured__tags">
-            @for (tag of featured.tags; track tag) {
-              <span class="btag">{{ tag }}</span>
-            }
+      <div class="blog-featured-skeleton" aria-busy="true" aria-label="Loading…">
+        <div class="blog-featured-skeleton__cover"></div>
+        <div class="blog-featured-skeleton__body">
+          <div class="bskeleton__tags">
+            <div class="bskeleton__tag"></div>
+            <div class="bskeleton__tag"></div>
           </div>
-
-          <h2 class="blog-featured__title">{{ featured.title }}</h2>
-          <p class="blog-featured__excerpt">{{ featured.excerpt }}</p>
-
-          <div class="blog-featured__footer">
-            <span class="blog-meta">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-              </svg>
-              {{ featured.readTime }} {{ i18n.t('blog.minRead') }}
-            </span>
-            <span class="blog-meta">{{ formatDate(featured.date) }}</span>
-            <span class="blog-featured__cta">{{ i18n.t('blog.readMore') }}</span>
-          </div>
+          <div class="bskeleton__line bskeleton__line--title"></div>
+          <div class="bskeleton__line bskeleton__line--title bskeleton__line--title-sm"></div>
+          <div class="bskeleton__line bskeleton__line--text"></div>
+          <div class="bskeleton__line bskeleton__line--text bskeleton__line--text-sm"></div>
+          <div class="bskeleton__line bskeleton__line--text bskeleton__line--text-xs"></div>
         </div>
-
-      </article>
+      </div>
     </div>
+  }
+
+  <!-- ═══════════════════════════════════ FEATURED ═══ -->
+  @if (!loading()) {
+    @if (featuredArticle(); as featured) {
+      <div class="container">
+        <article class="blog-featured fade-up" appFadeOnScroll [delay]="160" (click)="openArticleDetail(featured)" style="cursor:pointer">
+
+          <!-- Cover -->
+          <div class="blog-featured__cover">
+            @if (featured.coverUrl) {
+              <img [src]="featured.coverUrl" [alt]="featured.title" loading="eager" />
+            } @else {
+              <div
+                class="blog-featured__cover-placeholder"
+                [style.background]="featured.coverGradient"
+              >
+                <span>{{ featured.coverIcon }}</span>
+              </div>
+            }
+            <span class="blog-featured__badge">{{ i18n.t('blog.featured') }}</span>
+          </div>
+
+          <!-- Content -->
+          <div class="blog-featured__body">
+            <div class="blog-featured__tags">
+              @for (tag of featured.tags; track tag) {
+                <span class="btag">{{ tag }}</span>
+              }
+            </div>
+
+            <h2 class="blog-featured__title">{{ featured.title }}</h2>
+            <p class="blog-featured__excerpt">{{ featured.excerpt }}</p>
+
+            <div class="blog-featured__footer">
+              <span class="blog-meta">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                </svg>
+                {{ featured.readTime }} {{ i18n.t('blog.minRead') }}
+              </span>
+              <span class="blog-meta">{{ formatDate(featured.date) }}</span>
+              <span class="blog-featured__cta">{{ i18n.t('blog.readMore') }}</span>
+            </div>
+          </div>
+
+        </article>
+      </div>
+    }
   }
 
   <!-- ═══════════════════════════════════ GRID ═══ -->
   <main class="container blog-page__main">
-    <ul class="blog-grid" role="list">
-      @for (article of gridArticles(); track article.id; let i = $index) {
-        <li>
-          <article
-            class="blog-card fade-up"
-            appFadeOnScroll
-            [delay]="i * 60"
-            [class.blog-card--external]="article.source === 'zerofiltre'"
-            [class.blog-card--clickable]="article.source === 'local'"
-            (click)="openArticleDetail(article)"
-          >
 
-            <!-- Cover image -->
-            <div class="blog-card__cover">
-              @if (article.coverUrl) {
-                <img [src]="article.coverUrl" [alt]="article.title" loading="lazy" />
-              } @else {
-                <div
-                  class="blog-card__cover-placeholder"
-                  [style.background]="article.coverGradient"
-                >
-                  <span>{{ article.coverIcon }}</span>
+    <!-- Grid skeleton -->
+    @if (loading()) {
+      <ul class="blog-grid" aria-busy="true" aria-label="Loading articles…">
+        @for (n of [1,2,3,4,5,6]; track n) {
+          <li>
+            <div class="blog-card-skeleton">
+              <div class="blog-card-skeleton__cover"></div>
+              <div class="blog-card-skeleton__body">
+                <div class="bskeleton__tags">
+                  <div class="bskeleton__tag"></div>
+                  <div class="bskeleton__tag bskeleton__tag--sm"></div>
                 </div>
-              }
-
-              <!-- Zerofiltre badge -->
-              @if (article.source === 'zerofiltre') {
-                <span class="blog-card__source-badge">
-                  <span class="zf-dot zf-dot--sm" aria-hidden="true"></span>
-                  {{ i18n.t('blog.external') }}
-                </span>
-              }
-            </div>
-
-            <!-- Body -->
-            <div class="blog-card__body">
-              <div class="blog-card__tags">
-                @for (tag of article.tags.slice(0, 3); track tag) {
-                  <span class="btag">{{ tag }}</span>
-                }
+                <div class="bskeleton__line bskeleton__line--title"></div>
+                <div class="bskeleton__line bskeleton__line--text"></div>
+                <div class="bskeleton__line bskeleton__line--text bskeleton__line--text-sm"></div>
+                <div class="blog-card-skeleton__footer">
+                  <div class="bskeleton__line bskeleton__line--meta"></div>
+                </div>
               </div>
+            </div>
+          </li>
+        }
+      </ul>
+    }
 
-              <h3 class="blog-card__title">{{ article.title }}</h3>
-              <p class="blog-card__excerpt">{{ article.excerpt }}</p>
+    <!-- Articles grid -->
+    @if (!loading()) {
+      <ul class="blog-grid" role="list">
+        @for (article of paginatedGridArticles(); track article.id; let i = $index) {
+          <li>
+            <article
+              class="blog-card fade-up"
+              appFadeOnScroll
+              [delay]="i * 60"
+              [class.blog-card--external]="article.source === 'zerofiltre'"
+              [class.blog-card--clickable]="article.source === 'local'"
+              (click)="openArticleDetail(article)"
+            >
 
-              <div class="blog-card__footer">
-                <div class="blog-card__meta">
-                  <span class="blog-meta">{{ formatDate(article.date) }}</span>
-                  <span class="blog-meta">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                      <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-                    </svg>
-                    {{ article.readTime }} {{ i18n.t('blog.minRead') }}
-                  </span>
-                </div>
-
-                @if (article.source === 'zerofiltre' && article.externalUrl) {
-                  <a
-                    [href]="article.externalUrl"
-                    class="blog-card__read-link blog-card__read-link--external"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    (click)="$event.stopPropagation()"
-                  >
-                    {{ i18n.t('blog.readOn') }}
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-                      <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
-                    </svg>
-                  </a>
+              <!-- Cover image -->
+              <div class="blog-card__cover">
+                @if (article.coverUrl) {
+                  <img [src]="article.coverUrl" [alt]="article.title" loading="lazy" />
                 } @else {
-                  <span class="blog-card__read-link">{{ i18n.t('blog.readMore') }}</span>
+                  <div
+                    class="blog-card__cover-placeholder"
+                    [style.background]="article.coverGradient"
+                  >
+                    <span>{{ article.coverIcon }}</span>
+                  </div>
+                }
+
+                <!-- Zerofiltre badge -->
+                @if (article.source === 'zerofiltre') {
+                  <span class="blog-card__source-badge">
+                    <span class="zf-dot zf-dot--sm" aria-hidden="true"></span>
+                    {{ i18n.t('blog.external') }}
+                  </span>
                 }
               </div>
-            </div>
 
-          </article>
-        </li>
+              <!-- Body -->
+              <div class="blog-card__body">
+                <div class="blog-card__tags">
+                  @for (tag of article.tags.slice(0, 3); track tag) {
+                    <span class="btag">{{ tag }}</span>
+                  }
+                </div>
+
+                <h3 class="blog-card__title">{{ article.title }}</h3>
+                <p class="blog-card__excerpt">{{ article.excerpt }}</p>
+
+                <div class="blog-card__footer">
+                  <div class="blog-card__meta">
+                    <span class="blog-meta">{{ formatDate(article.date) }}</span>
+                    <span class="blog-meta">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                      </svg>
+                      {{ article.readTime }} {{ i18n.t('blog.minRead') }}
+                    </span>
+                  </div>
+
+                  @if (article.source === 'zerofiltre' && article.externalUrl) {
+                    <a
+                      [href]="article.externalUrl"
+                      class="blog-card__read-link blog-card__read-link--external"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      (click)="$event.stopPropagation()"
+                    >
+                      {{ i18n.t('blog.readOn') }}
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                        <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
+                      </svg>
+                    </a>
+                  } @else {
+                    <span class="blog-card__read-link">{{ i18n.t('blog.readMore') }}</span>
+                  }
+                </div>
+              </div>
+
+            </article>
+          </li>
+        }
+      </ul>
+
+      <!-- Pagination -->
+      @if (totalPages() > 1) {
+        <nav class="blog-pagination" aria-label="Pagination">
+          <button
+            class="bpage-btn bpage-btn--arrow"
+            [disabled]="currentPage() === 1"
+            (click)="goToPage(currentPage() - 1)"
+            aria-label="Page précédente"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+          </button>
+
+          @for (page of pageNumbers(); track page) {
+            <button
+              class="bpage-btn"
+              [class.active]="page === currentPage()"
+              (click)="goToPage(page)"
+              [attr.aria-label]="'Page ' + page"
+              [attr.aria-current]="page === currentPage() ? 'page' : null"
+            >{{ page }}</button>
+          }
+
+          <button
+            class="bpage-btn bpage-btn--arrow"
+            [disabled]="currentPage() === totalPages()"
+            (click)="goToPage(currentPage() + 1)"
+            aria-label="Page suivante"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </button>
+        </nav>
       }
-    </ul>
+    }
+
   </main>
 
   <!-- ═══════════════════════════════════ NEWSLETTER ═══ -->

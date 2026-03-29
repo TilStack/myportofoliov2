@@ -1,8 +1,10 @@
-import { Component, computed, HostListener, inject, signal } from '@angular/core';
+import { afterNextRender, Component, computed, HostListener, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { I18nService } from '../../core/services/i18n.service';
+
+const PAGE_SIZE = 6;
 
 // ── Comment type ───────────────────────────────────────────────────────────
 interface ArticleComment {
@@ -142,6 +144,14 @@ export class BlogComponent {
   readonly i18n = inject(I18nService);
   readonly fb   = inject(FormBuilder);
 
+  // ── Loading state ─────────────────────────────────────
+  readonly loading = signal(true);
+
+  constructor() {
+    // Simulate async load; replace with Firebase observable when wiring blog to Firestore
+    afterNextRender(() => setTimeout(() => this.loading.set(false), 500));
+  }
+
   // ── filter ──
   activeFilter = signal<'all' | 'mine' | 'zerofiltre'>('all');
 
@@ -165,6 +175,28 @@ export class BlogComponent {
 
   setFilter(f: 'all' | 'mine' | 'zerofiltre'): void {
     this.activeFilter.set(f);
+    this.currentPage.set(1);
+  }
+
+  // ── Pagination ─────────────────────────────────────────
+  currentPage = signal(1);
+
+  readonly paginatedGridArticles = computed<Article[]>(() => {
+    const start = (this.currentPage() - 1) * PAGE_SIZE;
+    return this.gridArticles().slice(start, start + PAGE_SIZE);
+  });
+
+  readonly totalPages = computed(() =>
+    Math.max(1, Math.ceil(this.gridArticles().length / PAGE_SIZE))
+  );
+
+  readonly pageNumbers = computed(() =>
+    Array.from({ length: this.totalPages() }, (_, i) => i + 1)
+  );
+
+  goToPage(page: number): void {
+    this.currentPage.set(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // ── newsletter ──
