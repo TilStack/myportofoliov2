@@ -223,25 +223,35 @@
     </div>
 
     <div class="montage__grid fade-up" appFadeOnScroll [delay]="80">
-      <!-- P1: Yaoundé aerial — large, spans 2 rows on left -->
-      <div class="montage__photo mp--1" role="img" aria-label="Aerial view, Yaoundé">
-        <div class="montage__caption"><span>Yaoundé</span></div>
+      <!-- P1: Yaoundé — large, spans 2 rows on left -->
+      <div class="montage__photo mp--1"
+           [style.background-image]="montagePhotos[0].file ? 'url(/' + montagePhotos[0].file + ')' : null"
+           role="img" [attr.aria-label]="montagePhotos[0].caption">
+        <div class="montage__caption"><span>{{ montagePhotos[0].caption }}</span></div>
       </div>
-      <!-- P2: Bansoa landscape — top right -->
-      <div class="montage__photo mp--2" role="img" aria-label="Landscape, Bansoa">
-        <div class="montage__caption"><span>Bansoa</span></div>
+      <!-- P2: Bansoa — top middle -->
+      <div class="montage__photo mp--2"
+           [style.background-image]="montagePhotos[1].file ? 'url(/' + montagePhotos[1].file + ')' : null"
+           role="img" [attr.aria-label]="montagePhotos[1].caption">
+        <div class="montage__caption"><span>{{ montagePhotos[1].caption }}</span></div>
       </div>
-      <!-- P3: Street life Douala — middle right -->
-      <div class="montage__photo mp--3" role="img" aria-label="Street life, Douala">
-        <div class="montage__caption"><span>Douala</span></div>
+      <!-- P3: Douala — top right -->
+      <div class="montage__photo mp--3"
+           [style.background-image]="montagePhotos[2].file ? 'url(/' + montagePhotos[2].file + ')' : null"
+           role="img" [attr.aria-label]="montagePhotos[2].caption">
+        <div class="montage__caption"><span>{{ montagePhotos[2].caption }}</span></div>
       </div>
-      <!-- P4: Kribi motorbike — bottom left -->
-      <div class="montage__photo mp--4" role="img" aria-label="Daily life, Kribi">
-        <div class="montage__caption"><span>Kribi</span></div>
+      <!-- P4: Kribi — bottom middle -->
+      <div class="montage__photo mp--4"
+           [style.background-image]="montagePhotos[3].file ? 'url(/' + montagePhotos[3].file + ')' : null"
+           role="img" [attr.aria-label]="montagePhotos[3].caption">
+        <div class="montage__caption"><span>{{ montagePhotos[3].caption }}</span></div>
       </div>
-      <!-- P5: Lagdo town — bottom right large -->
-      <div class="montage__photo mp--5" role="img" aria-label="Town view, Lagdo">
-        <div class="montage__caption"><span>Lagdo</span></div>
+      <!-- P5: Lagdo — bottom right large -->
+      <div class="montage__photo mp--5"
+           [style.background-image]="montagePhotos[4].file ? 'url(/' + montagePhotos[4].file + ')' : null"
+           role="img" [attr.aria-label]="montagePhotos[4].caption">
+        <div class="montage__caption"><span>{{ montagePhotos[4].caption }}</span></div>
       </div>
     </div>
 

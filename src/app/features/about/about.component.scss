@@ -165,12 +165,22 @@ $accent: $color-accent;
     font-family: $font-display;
   }
 
+  &__real-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+  }
+
   &__emoji {
     font-size: 5rem;
     filter: drop-shadow(0 4px 16px rgba(0,0,0,.35));
   }
 
   &__label {
+    position: relative;  // above real photo
     color: rgba(255,255,255,0.85);
     font-size: $text-sm;
     font-weight: $font-semibold;

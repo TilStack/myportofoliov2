@@ -30,7 +30,9 @@
               [class.stack-back]="stackPos(i) === 'back'"
             >
               <div class="profile-ph" [style.background]="img.bg">
-                @if (img.isText) {
+                @if (img.src) {
+                  <img class="profile-ph__real-photo" [src]="img.src" [alt]="img.label" />
+                } @else if (img.isText) {
                   <div class="profile-ph__avatar"><span>{{ img.icon }}</span></div>
                 } @else {
                   <span class="profile-ph__emoji">{{ img.icon }}</span>

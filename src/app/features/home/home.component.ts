@@ -8,6 +8,7 @@ import { ButtonComponent } from '../../shared/components/button/button.component
 import { SkeletonComponent } from '../../shared/components/skeleton/skeleton.component';
 import { Quote } from '../../core/models';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
+import { MONTAGE_PHOTOS } from '../../core/config/images.config';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,8 @@ export class HomeComponent implements OnInit {
   i18n         = inject(I18nService);
   quoteService = inject(QuoteService);
   scrollAnim   = inject(ScrollAnimationService);
+
+  readonly montagePhotos = MONTAGE_PHOTOS;
 
   quotes        = signal<Quote[]>([]);
   quotesLoading = signal(true);
@@ -42,7 +45,7 @@ export class HomeComponent implements OnInit {
 
   downloadCV(): void {
     const a = document.createElement('a');
-    a.href     = 'TilCV.pdf';
+    a.href     = 'TilStack_CV.pdf';
     a.download = 'TilStack_CV.pdf';
     a.click();
   }

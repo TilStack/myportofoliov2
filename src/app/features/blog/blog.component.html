@@ -523,6 +523,46 @@
                    [placeholder]="i18n.t('blog.tagsHolder')" />
           </div>
 
+          <!-- ── Cover image ── -->
+          <div class="form-field">
+            <label class="form-label" for="c-cover">
+              Image de couverture
+              <span class="form-label__optional">(optionnel)</span>
+            </label>
+            <input
+              id="c-cover"
+              type="text"
+              formControlName="coverUrl"
+              class="form-input"
+              placeholder="https://… ou images/blog/mon-article.jpg"
+            />
+            <small class="form-hint">
+              Dimensions recommandées : <strong>1200 × 630 px</strong> (ratio 16:9).
+              Utilise <code>scripts/resize-image.mjs</code> pour redimensionner automatiquement.
+            </small>
+            @if (contributeForm.controls['coverUrl'].value) {
+              <div class="c-cover-preview">
+                <img
+                  [src]="contributeForm.controls['coverUrl'].value"
+                  alt="Aperçu couverture"
+                  (error)="$any($event.target).style.display='none'"
+                />
+              </div>
+            }
+          </div>
+
+          <!-- ── Read time ── -->
+          <div class="form-field form-field--sm">
+            <label class="form-label" for="c-readtime">Temps de lecture (minutes)</label>
+            <input
+              id="c-readtime"
+              type="number"
+              formControlName="readTime"
+              class="form-input"
+              min="1" max="60"
+            />
+          </div>
+
           <div class="form-field">
             <label class="form-label" for="c-desc">{{ i18n.t('blog.shortDesc') }}</label>
             <!-- Rich-text toolbar -->

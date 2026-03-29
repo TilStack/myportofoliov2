@@ -3,6 +3,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { I18nService } from '../../core/services/i18n.service';
+import { BLOG_COVERS } from '../../core/config/images.config';
 
 const PAGE_SIZE = 6;
 
@@ -40,6 +41,7 @@ const ARTICLES: Article[] = [
     title: 'Getting Started with Angular Signals',
     excerpt:
       'Angular 17+ introduced Signals as a powerful new reactive primitive. In this guide, I break down how they work, how they compare to RxJS observables, and how to adopt them effectively in your components.',
+    coverUrl:      BLOG_COVERS['angular-signals-guide'] || undefined,
     coverGradient: 'linear-gradient(135deg, #c31432 0%, #240b36 100%)',
     coverIcon: '⚡',
     tags: ['Angular', 'TypeScript', 'Signals'],
@@ -53,6 +55,7 @@ const ARTICLES: Article[] = [
     title: 'Building a REST API with NestJS & PostgreSQL',
     excerpt:
       'A step-by-step guide to building a production-ready REST API using NestJS, TypeORM, and PostgreSQL — from project setup and entity design all the way to deployment on a VPS.',
+    coverUrl:      BLOG_COVERS['nestjs-postgresql-api'] || undefined,
     coverGradient: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
     coverIcon: '🔗',
     tags: ['NestJS', 'NodeJS', 'PostgreSQL', 'Backend'],
@@ -65,6 +68,7 @@ const ARTICLES: Article[] = [
     title: 'Flutter vs React Native in 2025',
     excerpt:
       'An honest, developer-focused comparison of the two leading cross-platform mobile frameworks. I cover performance, developer experience, community size, ecosystem, and real-world job market data.',
+    coverUrl:      BLOG_COVERS['flutter-vs-react-native-2025'] || undefined,
     coverGradient: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)',
     coverIcon: '📱',
     tags: ['Flutter', 'Mobile', 'React Native'],
@@ -222,12 +226,14 @@ export class BlogComponent {
   submitting      = signal(false);
 
   contributeForm = this.fb.group({
-    name:    ['', [Validators.required, Validators.minLength(2)]],
-    email:   ['', [Validators.required, Validators.email]],
-    title:   ['', [Validators.required, Validators.minLength(5)]],
-    tags:    [''],
-    desc:    ['', [Validators.required, Validators.minLength(20)]],
-    content: [''],
+    name:     ['', [Validators.required, Validators.minLength(2)]],
+    email:    ['', [Validators.required, Validators.email]],
+    title:    ['', [Validators.required, Validators.minLength(5)]],
+    tags:     [''],
+    coverUrl: [''],  // optional — URL externe ou chemin local images/blog/
+    readTime: [5,  [Validators.required, Validators.min(1), Validators.max(60)]],
+    desc:     ['', [Validators.required, Validators.minLength(20)]],
+    content:  [''],
   });
 
   // ── password gate ──

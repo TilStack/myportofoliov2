@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { interval, Subscription } from 'rxjs';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { I18nService } from '../../core/services/i18n.service';
+import { PROFILE_PHOTOS, TRAVEL_PHOTOS } from '../../core/config/images.config';
 
 interface SetupItem {
   icon: string;
@@ -13,6 +14,7 @@ interface SetupItem {
 }
 
 interface ProfileImage {
+  src?: string;   // optional real photo (from images.config.ts)
   bg: string;
   icon: string;
   label: string;
@@ -35,20 +37,29 @@ export class AboutComponent implements OnInit, OnDestroy {
   activeImageIndex = signal(0);
   private imageSub?: Subscription;
 
-  travelImages: TravelImage[] = [
+  // Unsplash photos used as fallback when no local photo is configured
+  private readonly unsplashTravel = [
     { src: 'https://images.unsplash.com/photo-MdNOvU9uFuo?w=900&q=80&fit=crop', alt: 'Cameroon highlands', caption: 'The highlands of Cameroon' },
     { src: 'https://images.unsplash.com/photo-oTrwlvPvpVo?w=900&q=80&fit=crop', alt: 'Douala street life', caption: 'Douala — Street Life'      },
     { src: 'https://images.unsplash.com/photo-Kj7naxthK6c?w=900&q=80&fit=crop', alt: 'Kribi daily life',   caption: 'Kribi, South Cameroon'     },
   ];
 
+  // Uses images.config.ts — falls back to Unsplash when src is empty
+  travelImages: TravelImage[] = TRAVEL_PHOTOS.map((cfg, i) => ({
+    src:     cfg.src || this.unsplashTravel[i].src,
+    alt:     cfg.alt     || this.unsplashTravel[i].alt,
+    caption: cfg.caption || this.unsplashTravel[i].caption,
+  }));
+
   // ── profile photo stack ───────────────────────────────────
   activeProfileIdx = signal(0);
   private profileSub?: Subscription;
 
+  // Uses images.config.ts — src overrides the gradient/emoji placeholder when set
   profileImages: ProfileImage[] = [
-    { bg: 'linear-gradient(135deg,#1a1a2e 0%,#16213e 100%)',          icon: 'IT',  label: 'Israel T.',    isText: true },
-    { bg: 'linear-gradient(135deg,#0f2027 0%,#203a43 50%,#2c5364 100%)', icon: '💻', label: 'Full-Stack Dev' },
-    { bg: 'linear-gradient(135deg,#11998e 0%,#38ef7d 100%)',          icon: '🌍', label: 'Explorer'       },
+    { src: PROFILE_PHOTOS[0].src || undefined, bg: 'linear-gradient(135deg,#1a1a2e 0%,#16213e 100%)',             icon: 'IT',  label: PROFILE_PHOTOS[0].label, isText: true },
+    { src: PROFILE_PHOTOS[1].src || undefined, bg: 'linear-gradient(135deg,#0f2027 0%,#203a43 50%,#2c5364 100%)', icon: '💻', label: PROFILE_PHOTOS[1].label },
+    { src: PROFILE_PHOTOS[2].src || undefined, bg: 'linear-gradient(135deg,#11998e 0%,#38ef7d 100%)',             icon: '🌍', label: PROFILE_PHOTOS[2].label },
   ];
 
   stackPos(i: number): 'front' | 'mid' | 'back' {
