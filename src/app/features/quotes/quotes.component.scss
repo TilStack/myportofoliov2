@@ -252,6 +252,7 @@
   &.liked { color: #e74c3c; }
 }
 
+.qcard__edit-btn,
 .qcard__del-btn {
   display: inline-flex;
   align-items: center;
@@ -262,12 +263,15 @@
   transition: opacity $transition-fast, color $transition-fast;
 
   .qcard:hover & { opacity: 1; }
-  &:hover { color: #f87171; }
 }
+
+.qcard__edit-btn:hover { color: $color-accent; }
+.qcard__del-btn:hover  { color: #f87171; }
 
 // ── Shared modal backdrop pattern ─────────────────────
 .qpw-backdrop,
 .qadd-backdrop,
+.qedit-backdrop,
 .qdel-backdrop {
   position: fixed;
   inset: 0;
@@ -281,10 +285,24 @@
   animation: qFadeIn 200ms $ease-out-cubic both;
 }
 
-.qadd-backdrop {
+.qadd-backdrop,
+.qedit-backdrop {
   align-items: flex-start;
   padding-top: $space-12;
   overflow-y: auto;
+}
+
+// ── Edit quote modal ──────────────────────────────────
+.qedit-modal {
+  position: relative;
+  width: 100%;
+  max-width: 660px;
+  background: var(--color-bg);
+  border-radius: $radius-2xl;
+  overflow: hidden;
+  box-shadow: $shadow-xl, 0 0 0 1px var(--color-border);
+  margin-bottom: $space-12;
+  animation: qSlideUp 260ms $ease-out-cubic both;
 }
 
 @keyframes qFadeIn {
