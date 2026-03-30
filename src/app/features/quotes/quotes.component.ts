@@ -1,5 +1,5 @@
 import { Component, computed, HostListener, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { tap } from 'rxjs';
@@ -21,7 +21,7 @@ interface QuoteVM extends Quote {
 @Component({
   selector: 'app-quotes',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FadeOnScrollDirective, QuoteModalComponent, ButtonComponent],
+  imports: [DatePipe, ReactiveFormsModule, FadeOnScrollDirective, QuoteModalComponent, ButtonComponent],
   templateUrl: './quotes.component.html',
   styleUrl: './quotes.component.scss',
 })

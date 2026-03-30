@@ -1,5 +1,4 @@
 import { Component, HostListener, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { interval, Subscription } from 'rxjs';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { I18nService } from '../../core/services/i18n.service';
@@ -26,7 +25,7 @@ interface TravelImage { src: string; alt: string; caption: string; }
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [CommonModule, FadeOnScrollDirective],
+  imports: [FadeOnScrollDirective],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss',
 })

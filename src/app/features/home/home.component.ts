@@ -1,6 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { I18nService } from '../../core/services/i18n.service';
 import { QuoteService } from '../../core/services/quote.service';
 import { ScrollAnimationService } from '../../core/services/scroll-animation.service';
@@ -13,7 +12,7 @@ import { MONTAGE_PHOTOS } from '../../core/config/images.config';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule, ButtonComponent, SkeletonComponent, FadeOnScrollDirective],
+  imports: [RouterLink, ButtonComponent, SkeletonComponent, FadeOnScrollDirective],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

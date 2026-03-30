@@ -1,36 +1,13 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, doc, addDoc, getDoc, getDocs,
-         updateDoc, deleteDoc, query, where, orderBy, limit,
+import { Firestore, collection, doc, addDoc, getDoc,
+         updateDoc, deleteDoc,
          CollectionReference, DocumentData, onSnapshot } from '@angular/fire/firestore';
-import { Auth, signInWithEmailAndPassword, signOut,
-         onAuthStateChanged, User } from '@angular/fire/auth';
-import { Observable, from, BehaviorSubject } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class FirebaseService {
   private firestore = inject(Firestore);
-  private auth      = inject(Auth);
-
-  // --- Auth state ---
-  private userSubject = new BehaviorSubject<User | null>(null);
-  readonly user$ = this.userSubject.asObservable();
-
-  constructor() {
-    onAuthStateChanged(this.auth, user => this.userSubject.next(user));
-  }
-
-  get currentUser(): User | null {
-    return this.userSubject.getValue();
-  }
-
-  login(email: string, password: string): Promise<void> {
-    return signInWithEmailAndPassword(this.auth, email, password).then(() => {});
-  }
-
-  logout(): Promise<void> {
-    return signOut(this.auth);
-  }
 
   // --- Generic Firestore helpers ---
   col<T = DocumentData>(path: string): CollectionReference<T> {
