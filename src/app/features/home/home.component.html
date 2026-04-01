@@ -68,52 +68,41 @@
       <p class="section__subtitle">{{ i18n.t('quotes.subtitle') }}</p>
     </div>
 
-    @if (quotesLoading()) {
-      <div class="moodboard__grid">
-        @for (_ of [1,2,3,4,5,6]; track $index) {
-          <div class="moodboard__skeleton">
-            <app-skeleton height="8rem"></app-skeleton>
-            <app-skeleton width="60%" height="0.875rem" style="margin-top:0.75rem"></app-skeleton>
-          </div>
-        }
-      </div>
-    } @else {
-      <div class="moodboard__grid">
-        @for (quote of quotes(); track quote.id; let i = $index) {
-          <article
-            class="quote-card fade-up"
-            [class.expanded]="quote.expanded"
-            appFadeOnScroll
-            [delay]="i * 80"
-            (click)="toggleQuote(quote)"
-            role="button"
-            [attr.aria-expanded]="quote.expanded"
-            tabindex="0"
-            (keyup.enter)="toggleQuote(quote)"
-          >
-            <blockquote class="quote-card__text">"{{ quote.text }}"</blockquote>
-            <cite class="quote-card__author">— {{ quote.author }}</cite>
-            @if (quote.expanded) {
-              <p class="quote-card__explanation">{{ quote.explanation }}</p>
-            }
-            <span class="quote-card__hint">
-              {{ quote.expanded ? i18n.t('home.clickClose') : i18n.t('home.clickExpand') }}
-            </span>
-          </article>
-        }
+    <div class="moodboard__grid">
+      @for (quote of quotes(); track quote.id; let i = $index) {
+        <article
+          class="quote-card fade-up"
+          [class.expanded]="quote.expanded"
+          appFadeOnScroll
+          [delay]="i * 80"
+          (click)="toggleQuote(quote)"
+          role="button"
+          [attr.aria-expanded]="quote.expanded"
+          tabindex="0"
+          (keyup.enter)="toggleQuote(quote)"
+        >
+          <blockquote class="quote-card__text">"{{ quote.text }}"</blockquote>
+          <cite class="quote-card__author">— {{ quote.author }}</cite>
+          @if (quote.expanded) {
+            <p class="quote-card__explanation">{{ quote.explanation }}</p>
+          }
+          <span class="quote-card__hint">
+            {{ quote.expanded ? i18n.t('home.clickClose') : i18n.t('home.clickExpand') }}
+          </span>
+        </article>
+      }
 
-        <!-- CTA card -->
-        <div class="moodboard__cta fade-up" appFadeOnScroll [delay]="quotes().length * 80">
-          <a routerLink="/quotes" class="moodboard__cta-link">
-            {{ i18n.t('home.seeAllQuotes') }}
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
-        </div>
+      <!-- CTA card -->
+      <div class="moodboard__cta fade-up" appFadeOnScroll [delay]="quotes().length * 80">
+        <a routerLink="/quotes" class="moodboard__cta-link">
+          {{ i18n.t('home.seeAllQuotes') }}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
       </div>
-    }
+    </div>
   </div>
 </section>
 
