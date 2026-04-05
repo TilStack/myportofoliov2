@@ -26,13 +26,13 @@
         @if (project()!.images.length) {
           <div class="detail-gallery">
             <div class="detail-gallery__main">
-              <img [src]="project()!.images[activeImg()]" [alt]="project()!.title" class="detail-gallery__img" />
+              <img [src]="project()!.images[activeImg()]" [alt]="'Aperçu du projet ' + project()!.title + ' — capture ' + (activeImg() + 1)" class="detail-gallery__img" />
             </div>
             @if (project()!.images.length > 1) {
               <div class="detail-gallery__thumbs">
                 @for (img of project()!.images; track img; let i = $index) {
                   <button class="detail-gallery__thumb" [class.active]="activeImg() === i" (click)="setActiveImg(i)">
-                    <img [src]="img" [alt]="'Image ' + (i + 1)" />
+                    <img [src]="img" [alt]="'Miniature ' + (i + 1) + ' — ' + project()!.title" />
                   </button>
                 }
               </div>

@@ -54,10 +54,22 @@ export const TRAVEL_PHOTOS: { src: string; alt: string; caption: string }[] = [
 // Taille   : 400 × 400 px  |  Format : JPG / WebP  |  < 150 Ko
 //
 // Laisse src vide ('') pour conserver le placeholder gradient/emoji actuel.
-export const PROFILE_PHOTOS: { src: string; label: string }[] = [
-  { src: 'images/profile/me_pro.jpg',      label: 'Israel T.'     },   // Carte 1 — photo pro
-  { src: 'images/profile/me.jpg',          label: 'Full-Stack Dev' },  // Carte 2 — photo générale
-  { src: 'images/profile/me_charisme.jpg', label: 'Explorer'      },   // Carte 3 — photo charisme
+export const PROFILE_PHOTOS: { src: string; label: string; alt: string }[] = [
+  {
+    src:   'images/profile/me_pro.jpg',
+    label: 'Israel T.',
+    alt:   'Portrait professionnel d\'Israel Tientcheu, développeur Full-Stack basé au Cameroun',
+  },
+  {
+    src:   'images/profile/me.jpg',
+    label: 'Full-Stack Dev',
+    alt:   'Israel Tientcheu dans son environnement de travail, concentré sur le code',
+  },
+  {
+    src:   'images/profile/me_charisme.jpg',
+    label: 'Explorer',
+    alt:   'Israel Tientcheu avec un sourire charismatique, reflet de sa personnalité ouverte et créative',
+  },
 ];
 // Exemple une fois les photos ajoutées :
 //   { src: 'images/profile/photo-1.jpg', label: 'Israel T.' },

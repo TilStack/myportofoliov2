@@ -31,7 +31,7 @@
             >
               <div class="profile-ph" [style.background]="img.bg">
                 @if (img.src) {
-                  <img class="profile-ph__real-photo" [src]="img.src" [alt]="img.label" />
+                  <img class="profile-ph__real-photo" [src]="img.src" [alt]="img.alt || img.label" />
                 } @else if (img.isText) {
                   <div class="profile-ph__avatar"><span>{{ img.icon }}</span></div>
                 } @else {
@@ -189,20 +189,50 @@
       <p class="section__subtitle">{{ i18n.t('about.educatorGallerySub') }}</p>
     </div>
     <div class="edu-gallery-grid fade-up" appFadeOnScroll [delay]="80">
-      <!-- Photo slot 1 — replace with your own image -->
-      <div class="edu-gallery-card" style="background: linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);">
-        <span class="edu-gallery-card__icon" aria-hidden="true">📝</span>
-        <span class="edu-gallery-card__label">Workshop</span>
+      <!-- Formateur -->
+      <div class="edu-gallery-card" style="background:#1a1a2e;">
+        <img
+          class="edu-gallery-card__photo"
+          src="/images/formateur.png"
+          alt="Israel Tientcheu animant une session de formation en développement web devant un groupe d'apprenants"
+          style="object-position: top center;"
+        />
+        <div class="edu-gallery-card__overlay">
+          <span class="edu-gallery-card__role-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            Formateur
+          </span>
+        </div>
       </div>
-      <!-- Photo slot 2 -->
-      <div class="edu-gallery-card" style="background: linear-gradient(135deg,#0f2027 0%,#203a43 50%,#2c5364 100%);">
-        <span class="edu-gallery-card__icon" aria-hidden="true">💡</span>
-        <span class="edu-gallery-card__label">Mentoring</span>
+      <!-- Mentor -->
+      <div class="edu-gallery-card" style="background:#11312b;">
+        <img
+          class="edu-gallery-card__photo"
+          src="/images/mentor.jpg"
+          alt="Israel Tientcheu accompagnant un développeur junior, partageant son expérience en session de mentorat"
+          style="object-position: top center;"
+        />
+        <div class="edu-gallery-card__overlay">
+          <span class="edu-gallery-card__role-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Mentor
+          </span>
+        </div>
       </div>
-      <!-- Photo slot 3 -->
-      <div class="edu-gallery-card" style="background: linear-gradient(135deg,#11998e 0%,#38ef7d 100%);">
-        <span class="edu-gallery-card__icon" aria-hidden="true">🎓</span>
-        <span class="edu-gallery-card__label">Tutorial</span>
+      <!-- Tech Lead -->
+      <div class="edu-gallery-card" style="background:#0f2027;">
+        <img
+          class="edu-gallery-card__photo"
+          src="/images/tech_lead.jpg"
+          alt="Israel Tientcheu en réunion technique, coordonnant et guidant l'équipe en tant que Tech Lead"
+          style="object-position: center center;"
+        />
+        <div class="edu-gallery-card__overlay">
+          <span class="edu-gallery-card__role-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Tech Lead
+          </span>
+        </div>
       </div>
     </div>
   </div>

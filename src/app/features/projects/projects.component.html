@@ -249,7 +249,7 @@
               <div class="pmodal__gallery-main">
                 <img
                   [src]="selected()!.images![activeGalleryIdx()]"
-                  [alt]="selected()!.name + ' screenshot'"
+                  [alt]="'Aperçu du projet ' + selected()!.name + ' — capture ' + (activeGalleryIdx() + 1)"
                   class="pmodal__gallery-img"
                 />
               </div>
@@ -262,7 +262,7 @@
                       (click)="setGalleryIdx(gi)"
                       [attr.aria-label]="'View screenshot ' + (gi + 1)"
                     >
-                      <img [src]="img" [alt]="selected()!.name + ' ' + (gi + 1)" />
+                      <img [src]="img" [alt]="'Miniature ' + (gi + 1) + ' du projet ' + selected()!.name" />
                     </button>
                   }
                 </div>
