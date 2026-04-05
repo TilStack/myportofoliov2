@@ -55,9 +55,9 @@ export const TRAVEL_PHOTOS: { src: string; alt: string; caption: string }[] = [
 //
 // Laisse src vide ('') pour conserver le placeholder gradient/emoji actuel.
 export const PROFILE_PHOTOS: { src: string; label: string }[] = [
-  { src: '', label: 'Israel T.'     },   // Carte 1
-  { src: '', label: 'Full-Stack Dev' },  // Carte 2
-  { src: '', label: 'Explorer'      },   // Carte 3
+  { src: 'images/profile/me_pro.jpg',      label: 'Israel T.'     },   // Carte 1 — photo pro
+  { src: 'images/profile/me.jpg',          label: 'Full-Stack Dev' },  // Carte 2 — photo générale
+  { src: 'images/profile/me_charisme.jpg', label: 'Explorer'      },   // Carte 3 — photo charisme
 ];
 // Exemple une fois les photos ajoutées :
 //   { src: 'images/profile/photo-1.jpg', label: 'Israel T.' },

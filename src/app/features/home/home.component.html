@@ -36,13 +36,14 @@
       </div>
     </div>
 
-    <!-- Decorative accent block -->
-    <div class="hero__deco anim-fade-in-right delay-3" aria-hidden="true">
+    <!-- Profile photo card -->
+    <div class="hero__deco anim-fade-in-right delay-3">
       <div class="hero__deco-card">
-        <div class="hero__deco-dot"></div>
-        <div class="hero__deco-lines">
-          <span></span><span></span><span></span>
-        </div>
+        <img
+          class="hero__deco-photo"
+          src="images/profile/me_simple.jpg"
+          alt="Israel Tientcheu"
+        />
         <div class="hero__deco-badge">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
@@ -120,7 +121,9 @@
       <a routerLink="/about" class="page-card fade-up" appFadeOnScroll [delay]="0">
         <div class="page-card__visual pv--about">
           <div class="pm pm--about">
-            <div class="pm__avatar">IT</div>
+            <div class="pm__avatar">
+              <img src="images/profile/me2.jpg" alt="Israel Tientcheu" class="pm__avatar-img" />
+            </div>
             <div class="pm__lines">
               <span class="pm__line" style="width:75%"></span>
               <span class="pm__line" style="width:55%"></span>

@@ -113,29 +113,14 @@
       animation: float 4s ease-in-out infinite;
     }
 
-    &-dot {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: $color-accent;
-      margin-bottom: $space-4;
-      animation: pulse-ring 2s ease-out infinite;
-    }
-
-    &-lines {
-      display: flex;
-      flex-direction: column;
-      gap: $space-2;
-
-      span {
-        height: 8px;
-        background: var(--color-surface);
-        border-radius: $radius-full;
-
-        &:nth-child(1) { width: 80%; }
-        &:nth-child(2) { width: 60%; }
-        &:nth-child(3) { width: 70%; }
-      }
+    &-photo {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: $radius-xl;
+      display: block;
+      margin-bottom: $space-2;
     }
 
     &-badge {
@@ -431,6 +416,15 @@
     color: $color-accent;
     font-family: $font-display;
     flex-shrink: 0;
+    overflow: hidden;
+
+    &-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 50%;
+    }
   }
 
   .pm__lines { display: flex; flex-direction: column; gap: 6px; flex: 1; }
