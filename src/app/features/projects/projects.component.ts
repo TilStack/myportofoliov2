@@ -47,6 +47,7 @@ const DEVPEA_TEAM: Contributor = {
   initials: 'DP',
   variant: 'accent',
   linkedinUrl: 'https://www.linkedin.com/company/devpea/',
+  photoUrl: 'images/projects/devpea_logo.jpeg',
 };
 
 const LEVEGI_TEAM: Contributor = {
@@ -55,6 +56,7 @@ const LEVEGI_TEAM: Contributor = {
   roleFr: 'Produit & Design',
   initials: 'LV',
   variant: 'accent',
+  photoUrl: 'images/projects/levegi_logo.jpg',
 };
 
 const PROJECTS: Project[] = [
@@ -75,9 +77,10 @@ const PROJECTS: Project[] = [
       'DOFA est une application mobile éducative qui rend l\'apprentissage du code de la route accessible à tous, quelle que soit leur situation financière. Entièrement gratuite et sans publicités, l\'application est disponible sur Android (PlayStore) et iOS (AppStore). Développée pour Devpea avec Flutter pour une expérience mobile fluide et Firebase pour la synchronisation des données en temps réel.',
     contributors: [ISRAEL, DEVPEA_TEAM],
     images: [
-      'images/projects/dofa-1.jpg',
-      'images/projects/dofa-2.jpg',
-      'images/projects/dofa-3.jpg',
+      'images/projects/dofa_capture1.jpg',
+      'images/projects/dofa_capture2.jpg',
+      'images/projects/dofa_capture3.jpg',
+      'images/projects/dofa_capture4.jpg',
     ],
   },
   {
@@ -99,7 +102,6 @@ const PROJECTS: Project[] = [
     contributors: [ISRAEL, DEVPEA_TEAM],
     images: [
       'images/projects/devpea-1.jpg',
-      'images/projects/devpea-2.jpg',
     ],
   },
   {
@@ -119,8 +121,7 @@ const PROJECTS: Project[] = [
       'LEVEFLY est une application mobile ambitieuse conçue pour simplifier les voyages aériens en Afrique. Les utilisateurs peuvent rechercher, comparer et réserver des billets d\'avion directement depuis leur smartphone. La stack comprend Flutter pour une expérience mobile multiplateforme fluide, NestJS pour une API REST robuste, et PostgreSQL pour la persistance des données. Le projet est en cours de développement actif.',
     contributors: [ISRAEL, LEVEGI_TEAM],
     images: [
-      'images/projects/levefly-1.jpg',
-      'images/projects/levefly-2.jpg',
+      'images/projects/levefly-1.png',
     ],
   },
   {
@@ -141,8 +142,6 @@ const PROJECTS: Project[] = [
     contributors: [ISRAEL, DEVPEA_TEAM],
     images: [
       'images/projects/bayarm-1.jpg',
-      'images/projects/bayarm-2.jpg',
-      'images/projects/bayarm-3.jpg',
     ],
   },
   {
@@ -162,8 +161,7 @@ const PROJECTS: Project[] = [
       'MYCAGNOTTE est une plateforme web de financement participatif permettant aux utilisateurs de créer et gérer des campagnes de collecte de fonds en ligne. Simple, transparente et accessible — elle connecte les créateurs de campagnes avec leurs soutiens. Le frontend Angular offre une expérience fluide, le backend NestJS gère la logique métier et les endpoints API, et PostgreSQL assure la persistance des données. Développé pour LEVEGI SARL.',
     contributors: [ISRAEL, LEVEGI_TEAM],
     images: [
-      'images/projects/mycagnotte-1.jpg',
-      'images/projects/mycagnotte-2.jpg',
+      'images/projects/cagnotte-1.png',
     ],
   },
   {
@@ -184,8 +182,7 @@ const PROJECTS: Project[] = [
       'MyPokemon a été mon tout premier projet Angular — une application d\'exploration des Pokémon construite sur la PokéAPI publique. Ce projet personnel a été la façon concrète dont j\'ai appris les concepts fondamentaux d\'Angular : composants, services, injection de dépendances, routing, client HTTP, et Firebase pour l\'authentification. Une expérience à la fois ludique et enrichissante qui a posé les bases de mon parcours Angular.',
     contributors: [{ ...ISRAEL, roleEn: 'Solo Developer', roleFr: 'Développeur Solo' }],
     images: [
-      'images/projects/mypokemon-1.jpg',
-      'images/projects/mypokemon-2.jpg',
+      'images/projects/pokemon-1.png',
     ],
   },
 ];
