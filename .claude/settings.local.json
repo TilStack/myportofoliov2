@@ -10,7 +10,8 @@
       "WebFetch(domain:lndev.me)",
       "WebFetch(domain:tilstack.me)",
       "Bash(firebase deploy:*)",
-      "Bash(firebase projects:list)"
+      "Bash(firebase projects:list)",
+      "WebFetch(domain:v1.tilstack.me)"
     ]
   }
 }

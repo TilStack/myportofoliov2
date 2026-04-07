@@ -316,6 +316,14 @@
   flex-wrap: wrap;
 }
 
+// ── Header actions row ───────────────────────────────
+.quotes-page__actions {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-shrink: 0;
+}
+
 .qadd-btn {
   display: inline-flex;
   align-items: center;
@@ -330,6 +338,59 @@
   transition: opacity $transition-fast, transform $transition-fast;
 
   &:hover { opacity: 0.88; transform: translateY(-1px); }
+}
+
+.qsuggest-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-3 $space-5;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  border-radius: $radius-lg;
+  font-size: $text-sm;
+  font-weight: $font-semibold;
+  flex-shrink: 0;
+  transition: border-color $transition-fast, background $transition-fast, color $transition-fast;
+
+  &:hover {
+    border-color: $color-accent;
+    color: $color-accent;
+    background: rgba($color-accent, 0.06);
+  }
+}
+
+.qmod-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-border);
+  border-radius: $radius-lg;
+  color: var(--color-text-muted);
+  transition: border-color $transition-fast, color $transition-fast;
+
+  &:hover { border-color: $color-accent; color: $color-accent; }
+
+  &__badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 $space-1;
+    background: #e74c3c;
+    color: #fff;
+    border-radius: $radius-full;
+    font-size: 10px;
+    font-weight: $font-bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 // ── Like / Delete buttons on card ────────────────────
@@ -661,4 +722,163 @@
       background: $color-accent;
     }
   }
+}
+
+// ════════════════════════════ SUGGEST MODAL (PUBLIC) ════
+.qsuggest-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-4;
+  backdrop-filter: blur(4px);
+}
+
+.qsuggest-modal {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  max-height: 90svh;
+  overflow-y: auto;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-2xl;
+  padding: $space-8;
+}
+
+// ════════════════════════════ MODERATION MODAL (OWNER) ════
+.qmod-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-4;
+  backdrop-filter: blur(4px);
+}
+
+.qmod-modal {
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+  max-height: 90svh;
+  overflow-y: auto;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-2xl;
+  padding: $space-8;
+}
+
+.qmod-empty {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: $space-8 0;
+  font-size: $text-sm;
+}
+
+.qmod-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+  margin-top: $space-6;
+  list-style: none;
+  padding: 0;
+}
+
+.qmod-item {
+  border: 1px solid var(--color-border);
+  border-radius: $radius-xl;
+  padding: $space-5;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+
+  &__text {
+    font-style: italic;
+    font-size: $text-base;
+    color: var(--color-text);
+    border-left: 3px solid $color-accent;
+    padding-left: $space-3;
+    margin: 0;
+  }
+
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+  }
+
+  &__author {
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    color: var(--color-text);
+  }
+
+  &__role {
+    font-weight: $font-normal;
+    color: var(--color-text-muted);
+  }
+
+  &__contact {
+    display: flex;
+    gap: $space-4;
+    flex-wrap: wrap;
+  }
+
+  &__link {
+    font-size: $text-xs;
+    color: $color-accent;
+    text-decoration: underline;
+    &:hover { opacity: 0.8; }
+  }
+
+  &__expl {
+    font-size: $text-sm;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__actions {
+    display: flex;
+    gap: $space-3;
+    margin-top: $space-1;
+  }
+}
+
+.qmod-approve,
+.qmod-reject {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-2 $space-4;
+  border-radius: $radius-lg;
+  font-size: $text-xs;
+  font-weight: $font-semibold;
+  transition: opacity $transition-fast;
+
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.qmod-approve {
+  background: rgba(#22c55e, 0.15);
+  border: 1px solid #22c55e;
+  color: #22c55e;
+  &:hover:not(:disabled) { background: rgba(#22c55e, 0.25); }
+}
+
+.qmod-reject {
+  background: rgba(#ef4444, 0.12);
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  &:hover:not(:disabled) { background: rgba(#ef4444, 0.22); }
 }

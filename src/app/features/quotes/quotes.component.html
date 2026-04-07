@@ -8,12 +8,31 @@
           <h1 class="section__title">{{ i18n.t('quotes.title') }}</h1>
           <p class="section__subtitle">{{ i18n.t('quotes.subtitle') }}</p>
         </div>
-        <button class="qadd-btn" (click)="openPwModal()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-          </svg>
-          {{ i18n.t('quotes.addBtn') }}
-        </button>
+        <div class="quotes-page__actions">
+          <!-- Public: suggest a quote -->
+          <button class="qsuggest-btn" (click)="openSuggestModal()" [attr.aria-label]="i18n.t('quotes.suggestBtn')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            {{ i18n.t('quotes.suggestBtn') }}
+          </button>
+          <!-- Owner: moderation (password) -->
+          <button class="qmod-btn" (click)="openModerationPwModal()" [attr.aria-label]="i18n.t('quotes.modBtn')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            @if (pendingCount() > 0) {
+              <span class="qmod-btn__badge">{{ pendingCount() }}</span>
+            }
+          </button>
+          <!-- Owner: add a quote (password) -->
+          <button class="qadd-btn" (click)="openPwModal()" [attr.aria-label]="i18n.t('quotes.addBtn')">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            {{ i18n.t('quotes.addBtn') }}
+          </button>
+        </div>
       </div>
 
       <!-- Category filter -->
@@ -205,8 +224,8 @@
         </svg>
       </button>
       <div class="qpw-modal__icon">🔐</div>
-      <h2 class="qpw-modal__title">{{ i18n.t(pendingAction() === 'edit' ? 'quotes.pwEditTitle' : 'quotes.pwTitle') }}</h2>
-      <p class="qpw-modal__sub">{{ i18n.t('quotes.pwSub') }}</p>
+      <h2 class="qpw-modal__title">{{ i18n.t(pendingAction() === 'edit' ? 'quotes.pwEditTitle' : pendingAction() === 'moderation' ? 'quotes.modPwTitle' : 'quotes.pwTitle') }}</h2>
+      <p class="qpw-modal__sub">{{ i18n.t(pendingAction() === 'moderation' ? 'quotes.modPwSub' : 'quotes.pwSub') }}</p>
       <input
         type="password"
         class="qform-input"
@@ -403,6 +422,156 @@
           </div>
 
         </form>
+      }
+    </div>
+  </div>
+}
+
+<!-- ════════════════════════════ SUGGEST MODAL (PUBLIC) ════ -->
+@if (showSuggestModal()) {
+  <div class="qsuggest-backdrop" role="dialog" aria-modal="true" (click)="onSuggestBackdropClick($event)">
+    <div class="qsuggest-modal">
+      <button class="qmodal-close" (click)="closeSuggestModal()" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+
+      @if (suggestSuccess()) {
+        <div class="qadd-success">
+          <span class="qadd-success__icon">🎉</span>
+          <p>{{ i18n.t('quotes.suggestSuccess') }}</p>
+          <app-button variant="accent" (click)="closeSuggestModal()">{{ i18n.t('quotes.suggestClose') }}</app-button>
+        </div>
+      } @else {
+        <div class="qadd-modal__header">
+          <div class="qadd-modal__icon" aria-hidden="true">💬</div>
+          <h2 class="qadd-modal__title">{{ i18n.t('quotes.suggestTitle') }}</h2>
+          <p class="qadd-modal__sub">{{ i18n.t('quotes.suggestSub') }}</p>
+        </div>
+
+        <form [formGroup]="suggestForm" (ngSubmit)="submitSuggestion()" class="qadd-form" novalidate>
+
+          <div class="qform-field">
+            <label class="qform-label" for="qs-text">{{ i18n.t('quotes.suggestTextLabel') }} *</label>
+            <textarea id="qs-text" formControlName="text" rows="3" class="qform-input qform-textarea"
+                      [class.invalid]="suggestForm.controls['text'].invalid && suggestForm.controls['text'].touched"
+                      placeholder="La citation…"></textarea>
+          </div>
+
+          <div class="qform-field">
+            <label class="qform-label" for="qs-expl">{{ i18n.t('quotes.suggestExplLabel') }} *</label>
+            <textarea id="qs-expl" formControlName="explanation" rows="4"
+                      class="qform-input qform-textarea"
+                      [class.invalid]="suggestForm.controls['explanation'].invalid && suggestForm.controls['explanation'].touched"
+                      placeholder="Votre lecture, contexte ou interprétation…"></textarea>
+          </div>
+
+          <div class="qadd-form__row">
+            <div class="qform-field">
+              <label class="qform-label" for="qs-author">{{ i18n.t('quotes.suggestNameLabel') }} *</label>
+              <input id="qs-author" type="text" formControlName="author" class="qform-input"
+                     [class.invalid]="suggestForm.controls['author'].invalid && suggestForm.controls['author'].touched"
+                     placeholder="Votre nom complet" />
+            </div>
+            <div class="qform-field">
+              <label class="qform-label" for="qs-role">{{ i18n.t('quotes.suggestRoleLabel') }}</label>
+              <input id="qs-role" type="text" formControlName="submitterRole" class="qform-input"
+                     placeholder="Développeur, Étudiant…" />
+            </div>
+          </div>
+
+          <div class="qadd-form__row">
+            <div class="qform-field">
+              <label class="qform-label" for="qs-email">{{ i18n.t('quotes.suggestEmailLabel') }} *</label>
+              <input id="qs-email" type="email" formControlName="submitterEmail" class="qform-input"
+                     [class.invalid]="suggestForm.controls['submitterEmail'].invalid && suggestForm.controls['submitterEmail'].touched"
+                     placeholder="votre@email.com" />
+            </div>
+            <div class="qform-field">
+              <label class="qform-label" for="qs-linkedin">{{ i18n.t('quotes.suggestLinkedinLabel') }}</label>
+              <input id="qs-linkedin" type="url" formControlName="submitterLinkedin" class="qform-input"
+                     placeholder="https://linkedin.com/in/…" />
+            </div>
+          </div>
+
+          <div class="qadd-form__footer">
+            <app-button type="submit" variant="accent" [loading]="suggestSubmitting()" [disabled]="suggestForm.invalid">
+              {{ i18n.t('quotes.suggestSubmitBtn') }}
+            </app-button>
+          </div>
+
+        </form>
+      }
+    </div>
+  </div>
+}
+
+<!-- ════════════════════════════ MODERATION MODAL (OWNER) ════ -->
+@if (showModerationModal()) {
+  <div class="qmod-backdrop" role="dialog" aria-modal="true" (click)="onModBackdropClick($event)">
+    <div class="qmod-modal">
+      <button class="qmodal-close" (click)="closeModerationModal()" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+
+      <div class="qadd-modal__header">
+        <div class="qadd-modal__icon" aria-hidden="true">🛡️</div>
+        <h2 class="qadd-modal__title">{{ i18n.t('quotes.modTitle') }}</h2>
+        <p class="qadd-modal__sub">{{ i18n.t('quotes.modSub') }}</p>
+      </div>
+
+      @if (pendingQuotes().length === 0) {
+        <p class="qmod-empty">{{ i18n.t('quotes.modNone') }}</p>
+      } @else {
+        <ul class="qmod-list">
+          @for (pq of pendingQuotes(); track pq.id) {
+            <li class="qmod-item">
+              <blockquote class="qmod-item__text">"{{ pq.text }}"</blockquote>
+              <div class="qmod-item__meta">
+                <div class="qmod-item__author">
+                  <strong>{{ pq.author }}</strong>
+                  @if (pq.submitterRole) {
+                    <span class="qmod-item__role"> — {{ pq.submitterRole }}</span>
+                  }
+                </div>
+                <div class="qmod-item__contact">
+                  @if (pq.submitterEmail) {
+                    <a [href]="'mailto:' + pq.submitterEmail" class="qmod-item__link">{{ pq.submitterEmail }}</a>
+                  }
+                  @if (pq.submitterLinkedin) {
+                    <a [href]="pq.submitterLinkedin" target="_blank" rel="noopener noreferrer" class="qmod-item__link">LinkedIn ↗</a>
+                  }
+                </div>
+              </div>
+              <p class="qmod-item__expl">{{ pq.explanation }}</p>
+              <div class="qmod-item__actions">
+                <button
+                  class="qmod-approve"
+                  [disabled]="moderationApproving() === pq.id"
+                  (click)="approvePending(pq)"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  {{ moderationApproving() === pq.id ? '…' : i18n.t('quotes.modApprove') }}
+                </button>
+                <button
+                  class="qmod-reject"
+                  [disabled]="moderationRejecting() === pq.id"
+                  (click)="rejectPending(pq)"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                  {{ moderationRejecting() === pq.id ? '…' : i18n.t('quotes.modReject') }}
+                </button>
+              </div>
+            </li>
+          }
+        </ul>
       }
     </div>
   </div>

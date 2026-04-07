@@ -534,80 +534,16 @@
   border-radius: $radius-xl;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  flex-wrap: wrap;
 
-  // ── video preview thumbnail ──
-  &__video {
-    position: relative;
-    width: 80px;
+  // ── Avatar wrap (photo or initials) ──
+  &__avatar-wrap {
+    flex-shrink: 0;
+    width: 52px;
     height: 52px;
-    border-radius: $radius-md;
-    overflow: hidden;
-    flex-shrink: 0;
-    cursor: default;
-
-    &-thumb {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        135deg,
-        $color-primary 0%,
-        color.adjust($color-primary, $lightness: 12%) 100%
-      );
-      @include flex-center;
-    }
-
-    &-initials {
-      font-family: $font-display;
-      font-size: $text-base;
-      font-weight: $font-black;
-      color: $color-accent;
-    }
-
-    &-play {
-      position: absolute;
-      inset: 0;
-      @include flex-center;
-      background: rgba(0, 0, 0, 0.38);
-      color: #fff;
-      transition: background $transition-fast;
-
-      svg { filter: drop-shadow(0 1px 3px rgba(0,0,0,0.4)); }
-    }
-
-    &-label {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: rgba(0, 0, 0, 0.55);
-      color: rgba(255, 255, 255, 0.85);
-      font-size: 0.6rem;
-      font-weight: $font-semibold;
-      text-align: center;
-      padding: 2px;
-      letter-spacing: 0.03em;
-    }
-
-    &:hover &-play { background: rgba(0, 0, 0, 0.55); }
-  }
-
-  // ── info block ──
-  &__info {
-    display: flex;
-    align-items: center;
-    gap: $space-3;
-    flex: 1;
-    min-width: 0;
-  }
-
-  &__avatar {
-    flex-shrink: 0;
-    width: 40px;
-    height: 40px;
     border-radius: 50%;
+    overflow: hidden;
     @include flex-center;
-    font-size: $text-sm;
+    font-size: $text-base;
     font-weight: $font-black;
     font-family: $font-display;
 
@@ -622,6 +558,27 @@
     }
   }
 
+  &__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+  }
+
+  &__initials {
+    line-height: 1;
+  }
+
+  // ── Info block ──
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+  }
+
   &__name {
     font-size: $text-sm;
     font-weight: $font-semibold;
@@ -632,7 +589,19 @@
   &__role {
     font-size: $text-xs;
     color: var(--color-text-muted);
-    margin-top: 2px;
+  }
+
+  &__linkedin {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-1;
+    margin-top: $space-1;
+    font-size: $text-xs;
+    color: #0a66c2;
+    font-weight: $font-semibold;
+    transition: opacity $transition-fast;
+
+    &:hover { opacity: 0.8; }
   }
 }
 

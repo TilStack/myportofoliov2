@@ -15,4 +15,9 @@ export interface Quote {
   likes:       number;
   category?:   string;
   expanded?:   boolean;
+  // Moderation
+  status?:             'approved' | 'pending';
+  submitterEmail?:     string;
+  submitterRole?:      string;
+  submitterLinkedin?:  string;
 }

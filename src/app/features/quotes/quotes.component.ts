@@ -33,11 +33,28 @@ export class QuotesComponent {
   // ── Loading state ─────────────────────────────────────────
   readonly loading = signal(true);
 
-  // ── Firebase data (real-time) ────────────────────────────
+  // ── Firebase data (real-time, approved only) ─────────────
   private readonly rawQuotes = toSignal(
     this.quoteService.getAll().pipe(tap(() => this.loading.set(false))),
     { initialValue: [] as Quote[] }
   );
+
+  // ── Pending quotes (for moderation) ─────────────────────
+  private readonly rawPending = toSignal(
+    this.quoteService.getPending(),
+    { initialValue: [] as Quote[] }
+  );
+
+  readonly pendingQuotes = computed<QuoteVM[]>(() =>
+    this.rawPending().map(q => ({
+      ...q,
+      id: q.id!,
+      liked: false,
+      likeCount: q.likes,
+    }))
+  );
+
+  readonly pendingCount = computed(() => this.pendingQuotes().length);
 
   // Local liked state (session only)
   private likedSet = signal<Set<string>>(new Set());
@@ -116,7 +133,7 @@ export class QuotesComponent {
   showPwModal   = signal(false);
   pwError       = signal(false);
   pwValue       = '';
-  pendingAction = signal<'add' | 'edit' | null>(null);
+  pendingAction = signal<'add' | 'edit' | 'moderation' | null>(null);
 
   openPwModal(): void {
     this.pendingAction.set('add');
@@ -134,13 +151,21 @@ export class QuotesComponent {
     this.pwValue = '';
   }
 
+  openModerationPwModal(): void {
+    this.pendingAction.set('moderation');
+    this.showPwModal.set(true);
+    this.pwError.set(false);
+    this.pwValue = '';
+  }
+
   closePwModal(): void { this.showPwModal.set(false); }
 
   checkPw(): void {
     if (this.pwValue === '1Jesus1') {
       this.closePwModal();
-      if (this.pendingAction() === 'add')  this.openAddModal();
-      else if (this.pendingAction() === 'edit') this.openEditModal();
+      if (this.pendingAction() === 'add')        this.openAddModal();
+      else if (this.pendingAction() === 'edit')  this.openEditModal();
+      else if (this.pendingAction() === 'moderation') this.showModerationModal.set(true);
     } else {
       this.pwError.set(true);
     }
@@ -150,7 +175,7 @@ export class QuotesComponent {
     if ((e.target as HTMLElement).classList.contains('qpw-backdrop')) this.closePwModal();
   }
 
-  // ── Add quote modal ──────────────────────────────────────
+  // ── Add quote modal (owner) ──────────────────────────────
   showAddModal  = signal(false);
   addSuccess    = signal(false);
   addSubmitting = signal(false);
@@ -286,6 +311,84 @@ export class QuotesComponent {
     if ((e.target as HTMLElement).classList.contains('qdel-backdrop')) this.closeDeleteConfirm();
   }
 
+  // ── Public visitor submission ────────────────────────────
+  showSuggestModal   = signal(false);
+  suggestSuccess     = signal(false);
+  suggestSubmitting  = signal(false);
+
+  suggestForm = this.fb.group({
+    text:             ['', [Validators.required, Validators.minLength(10)]],
+    author:           ['', [Validators.required, Validators.minLength(2)]],
+    submitterRole:    [''],
+    submitterEmail:   ['', [Validators.required, Validators.email]],
+    submitterLinkedin:[''],
+    explanation:      ['', [Validators.required, Validators.minLength(20)]],
+  });
+
+  openSuggestModal(): void {
+    this.showSuggestModal.set(true);
+    this.suggestSuccess.set(false);
+    this.suggestForm.reset();
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeSuggestModal(): void {
+    this.showSuggestModal.set(false);
+    document.body.style.overflow = '';
+  }
+
+  onSuggestBackdropClick(e: MouseEvent): void {
+    if ((e.target as HTMLElement).classList.contains('qsuggest-backdrop')) this.closeSuggestModal();
+  }
+
+  submitSuggestion(): void {
+    if (this.suggestForm.invalid) return;
+    this.suggestSubmitting.set(true);
+    const v = this.suggestForm.value;
+    const q: Omit<Quote, 'id' | 'expanded'> = {
+      text:              v.text!,
+      author:            v.author!,
+      explanation:       v.explanation!,
+      date:              new Date(),
+      likes:             0,
+      tags:              [],
+      submitterEmail:    v.submitterEmail!,
+      submitterRole:     v.submitterRole || undefined,
+      submitterLinkedin: v.submitterLinkedin || undefined,
+    };
+    this.quoteService.createAsVisitor(q)
+      .then(() => { this.suggestSuccess.set(true); this.suggestSubmitting.set(false); })
+      .catch(() => { this.suggestSubmitting.set(false); });
+  }
+
+  // ── Moderation panel (owner only) ────────────────────────
+  showModerationModal  = signal(false);
+  moderationApproving  = signal<string | null>(null);
+  moderationRejecting  = signal<string | null>(null);
+
+  closeModerationModal(): void {
+    this.showModerationModal.set(false);
+    document.body.style.overflow = '';
+  }
+
+  onModBackdropClick(e: MouseEvent): void {
+    if ((e.target as HTMLElement).classList.contains('qmod-backdrop')) this.closeModerationModal();
+  }
+
+  approvePending(quote: QuoteVM): void {
+    this.moderationApproving.set(quote.id);
+    this.quoteService.approve(quote.id)
+      .then(() => this.moderationApproving.set(null))
+      .catch(() => this.moderationApproving.set(null));
+  }
+
+  rejectPending(quote: QuoteVM): void {
+    this.moderationRejecting.set(quote.id);
+    this.quoteService.reject(quote.id)
+      .then(() => this.moderationRejecting.set(null))
+      .catch(() => this.moderationRejecting.set(null));
+  }
+
   // ── Rich text toolbar (shared helper) ────────────────────
   private applyFormat(ta: HTMLTextAreaElement, format: string, patchFn: (v: string) => void): void {
     const s   = ta.selectionStart ?? 0;
@@ -317,10 +420,12 @@ export class QuotesComponent {
 
   @HostListener('document:keydown.escape')
   onEscape(): void {
-    if (this.showEditModal())     this.closeEditModal();
-    else if (this.showAddModal()) this.closeAddModal();
-    else if (this.showPwModal())  this.closePwModal();
-    else if (this.deleteTarget()) this.closeDeleteConfirm();
-    else if (this.activeQuote())  this.closeModal();
+    if (this.showModerationModal())  this.closeModerationModal();
+    else if (this.showEditModal())   this.closeEditModal();
+    else if (this.showAddModal())    this.closeAddModal();
+    else if (this.showSuggestModal())this.closeSuggestModal();
+    else if (this.showPwModal())     this.closePwModal();
+    else if (this.deleteTarget())    this.closeDeleteConfirm();
+    else if (this.activeQuote())     this.closeModal();
   }
 }
