@@ -11,7 +11,11 @@
       "WebFetch(domain:tilstack.me)",
       "Bash(firebase deploy:*)",
       "Bash(firebase projects:list)",
-      "WebFetch(domain:v1.tilstack.me)"
+      "WebFetch(domain:v1.tilstack.me)",
+      "Bash(python3 -c \"import docx; print\\('ok'\\)\")",
+      "Bash(pip3 install:*)",
+      "Bash(python3 -m pip install python-docx -q)",
+      "Bash(node -e \"require\\('docx'\\)\")"
     ]
   }
 }
