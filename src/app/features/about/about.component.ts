@@ -227,21 +227,41 @@ export class AboutComponent implements OnInit, OnDestroy {
       icon: '📸',
       titleKey: 'about.rolePhotographer',
       descKey: 'about.rolePhotographerDesc',
-      links: [] as { label: string; href: string }[],
+      links: [
+        {
+          label: 'Facebook',
+          href: 'https://www.facebook.com/fullgospelkotto16',
+        },
+      ],
     },
     {
       icon: '🎬',
       titleKey: 'about.roleVideoEditor',
       descKey: 'about.roleVideoEditorDesc',
-      links: [] as { label: string; href: string }[],
+      links: [
+        {
+          label: 'TikTok',
+          href: 'https://www.tiktok.com/@fgmkotto?_r=1&_t=ZS-95MnCV51dZA',
+        },
+        {
+          label: 'Facebook',
+          href: 'https://www.facebook.com/fullgospelkotto16',
+        },
+      ],
     },
     {
       icon: '📱',
       titleKey: 'about.roleCommunity',
       descKey: 'about.roleCommunityDesc',
       links: [
-        { label: 'TikTok', href: 'https://www.tiktok.com/@tilstack' },
-        { label: 'Facebook', href: 'https://www.facebook.com/tilstack' },
+        {
+          label: 'TikTok',
+          href: 'https://www.tiktok.com/@fgmkotto?_r=1&_t=ZS-95MnCV51dZA',
+        },
+        {
+          label: 'Facebook',
+          href: 'https://www.facebook.com/fullgospelkotto16',
+        },
       ],
     },
   ];
