@@ -27,11 +27,12 @@
 
   &__content {
     display: grid;
-    gap: $space-12;
+    gap: $space-8;
     align-items: center;
     padding-block: $space-10 $space-12;
 
     @include md {
+      gap: $space-12;
       padding-block: $space-20;
     }
     @include lg {
@@ -128,23 +129,31 @@
     }
   }
 
-  // Decorative card
+  // Photo de profil
   &__deco {
-    display: none;
-    @include lg {
-      display: flex;
-      justify-content: center;
-    }
+    display: flex;
+    justify-content: center;
 
     &-card {
       background: var(--color-card-bg);
       border: 1px solid var(--color-border);
-      border-radius: $radius-2xl;
-      padding: $space-8;
-      width: 280px;
-      box-shadow: $shadow-xl;
+      border-radius: $radius-xl;
+      padding: $space-3;
+      width: 180px;
+      // Shadow discret — pas de $shadow-xl qui surcharge le rendu
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
       position: relative;
-      animation: float 4s ease-in-out infinite;
+
+      @include sm {
+        width: 210px;
+        padding: $space-4;
+      }
+
+      @include lg {
+        width: 260px;
+        padding: $space-5;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.09);
+      }
     }
 
     &-photo {
@@ -152,24 +161,8 @@
       aspect-ratio: 3 / 4;
       object-fit: cover;
       object-position: top center;
-      border-radius: $radius-xl;
+      border-radius: calc(#{$radius-xl} - #{$space-1});
       display: block;
-      margin-bottom: $space-2;
-    }
-
-    &-badge {
-      position: absolute;
-      top: -12px;
-      right: $space-4;
-      background: $color-primary;
-      color: $color-accent;
-      padding: $space-1 $space-3;
-      border-radius: $radius-full;
-      font-size: $text-xs;
-      font-weight: $font-semibold;
-      display: flex;
-      align-items: center;
-      gap: $space-1;
     }
   }
 
