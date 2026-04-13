@@ -6,8 +6,18 @@ $accent: $color-accent;
 
 // ===== ABOUT HERO =====
 .about-hero {
-  padding-top: calc(#{$navbar-height} + #{$space-16});
-  padding-bottom: $space-20;
+  padding-top: calc(#{$navbar-height} + #{$space-8});
+  padding-bottom: $space-12;
+
+  @include md {
+    padding-top: calc(#{$navbar-height} + #{$space-12});
+    padding-bottom: $space-16;
+  }
+
+  @include lg {
+    padding-top: calc(#{$navbar-height} + #{$space-16});
+    padding-bottom: $space-20;
+  }
 
   &__inner {
     display: grid;
@@ -31,11 +41,12 @@ $accent: $color-accent;
 
   &__name {
     font-family: $font-display;
-    font-size: clamp($text-4xl, 6vw, 5rem);
+    font-size: clamp($text-3xl, 6vw, 5rem);
     font-weight: $font-black;
     line-height: 1.1;
     color: var(--color-text);
     margin-bottom: $space-6;
+    word-break: break-word;
   }
 
   &__desc {
@@ -43,11 +54,6 @@ $accent: $color-accent;
     color: var(--color-text-muted);
     line-height: 1.8;
     max-width: 480px;
-  }
-
-  &__visual {
-    position: relative;
-    @include flex-center;
   }
 
   &__img-wrapper {
@@ -67,9 +73,10 @@ $accent: $color-accent;
   }
 
   &__floating-badge {
+    display: none; // caché sur mobile pour éviter le débordement
     position: absolute;
     top: $space-4;
-    right: -$space-6;
+    right: $space-3;
     background: $color-primary;
     color: $accent;
     padding: $space-2 $space-4;
@@ -79,6 +86,26 @@ $accent: $color-accent;
     box-shadow: $shadow-lg;
     white-space: nowrap;
     z-index: 4;
+
+    @include sm {
+      display: flex;
+      align-items: center;
+      right: -$space-6;
+    }
+  }
+
+  &__visual {
+    position: relative;
+    @include flex-center;
+
+    // Limite la hauteur du stack photo sur mobile
+    max-width: min(300px, 90vw);
+    margin-inline: auto;
+
+    @include lg {
+      max-width: none;
+      margin-inline: 0;
+    }
   }
 }
 
@@ -243,7 +270,7 @@ $accent: $color-accent;
 .setup-grid {
   display: grid;
   gap: $space-4;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
 }
 
 .setup-card {

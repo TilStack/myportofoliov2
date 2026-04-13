@@ -64,11 +64,11 @@
 
 // Section base
 .section {
-  padding-block: $space-20;
+  padding-block: $space-12;
 
-  @include lg {
-    padding-block: $space-32;
-  }
+  @include md { padding-block: $space-16; }
+  @include lg { padding-block: $space-24; }
+  @include xl { padding-block: $space-32; }
 
   &__title {
     font-family: $font-display;
