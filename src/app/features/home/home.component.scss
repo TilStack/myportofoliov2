@@ -143,6 +143,7 @@
       // Shadow discret — pas de $shadow-xl qui surcharge le rendu
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
       position: relative;
+      animation: float 4s ease-in-out infinite;
 
       @include sm {
         width: 210px;

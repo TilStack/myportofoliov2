@@ -41,12 +41,17 @@ $accent: $color-accent;
 
   &__name {
     font-family: $font-display;
-    font-size: clamp($text-3xl, 6vw, 5rem);
+    font-size: clamp($text-3xl, 6vw, 4rem);
     font-weight: $font-black;
     line-height: 1.1;
     color: var(--color-text);
     margin-bottom: $space-6;
     word-break: break-word;
+
+    @include md {
+      font-size: clamp($text-4xl, 6vw, 5rem);
+      word-break: normal;
+    }
   }
 
   &__desc {
@@ -61,36 +66,21 @@ $accent: $color-accent;
     width: min(300px, 100%);
   }
 
+  // Caché sur mobile — remplacé par un simple outline sur desktop
   &__accent-block {
-    position: absolute;
-    bottom: -$space-4;
-    right: -$space-4;
-    width: 55%;
-    height: 55%;
-    background: $accent;
-    border-radius: $radius-2xl;
-    z-index: -1;
-  }
+    display: none;
 
-  &__floating-badge {
-    display: none; // caché sur mobile pour éviter le débordement
-    position: absolute;
-    top: $space-4;
-    right: $space-3;
-    background: $color-primary;
-    color: $accent;
-    padding: $space-2 $space-4;
-    border-radius: $radius-full;
-    font-size: $text-sm;
-    font-weight: $font-semibold;
-    box-shadow: $shadow-lg;
-    white-space: nowrap;
-    z-index: 4;
-
-    @include sm {
-      display: flex;
-      align-items: center;
-      right: -$space-6;
+    @include lg {
+      display: block;
+      position: absolute;
+      bottom: -$space-3;
+      right: -$space-3;
+      width: 48%;
+      height: 48%;
+      border: 2px solid $accent;
+      border-radius: $radius-xl;
+      z-index: -1;
+      opacity: 0.45;
     }
   }
 
@@ -511,7 +501,7 @@ $accent: $color-accent;
     border-radius: $radius-2xl;
     overflow: hidden;
     background: var(--color-surface);
-    box-shadow: $shadow-xl;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
   }
 
   &__img {
