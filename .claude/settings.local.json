@@ -147,13 +147,34 @@
       "Bash(/snap/node/current/bin/node /snap/node/current/lib/node_modules/npm/bin/npm-cli.js install --legacy-peer-deps)",
       "Bash(/snap/node/current/bin/node /snap/node/current/lib/node_modules/npm/bin/npm-cli.js install --legacy-peer-deps --ignore-scripts)",
       "Bash(/snap/node/current/bin/node /snap/node/current/lib/node_modules/npm/bin/npm-cli.js install @angular/material @angular/cdk --legacy-peer-deps --ignore-scripts)",
-      "Bash(/snap/node/current/bin/node /snap/node/current/lib/node_modules/npm/bin/npm-cli.js run build -- --noEmit)"
+      "Bash(/snap/node/current/bin/node /snap/node/current/lib/node_modules/npm/bin/npm-cli.js run build -- --noEmit)",
+      "Bash(mkdir -p /home/tilstack/Bureau/tontine-web/docs/superpowers/plans)",
+      "Bash(/snap/node/current/bin/node /snap/node/current/lib/node_modules/npm/bin/npm-cli.js install --ignore-scripts --legacy-peer-deps)",
+      "Bash(git -C /home/tilstack/Bureau/tontine-web/.worktrees/feature-dashboard-reporting log --oneline 5ef408b..78c0701)",
+      "Bash(git -C /home/tilstack/Bureau/tontine-web/.worktrees/feature-dashboard-reporting rev-parse --git-common-dir)",
+      "Bash(pwd -P)",
+      "Bash(git -C /home/tilstack/Bureau/tontine-web rev-parse --show-toplevel)",
+      "Bash(grep -A5 \"template\\\\`\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d['projects']['tontine-web']['architect']['build']['options'].get\\('styles',[]\\), indent=2\\)\\)\")",
+      "Bash(node -e \"const p=require\\('/home/tilstack/Bureau/tontine-web/node_modules/@angular/material/package.json'\\); console.log\\(p.version\\)\")",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(d['version']\\)\")",
+      "Bash(grep \"^\\\\$[a-z]*-palette:\" /home/tilstack/Bureau/tontine-web/node_modules/@angular/material/core/theming/_palettes.scss)",
+      "Bash(node -e ' *)",
+      "Bash(node)",
+      "Bash(git pull *)",
+      "Bash(npm ls *)",
+      "Bash(npx sass *)",
+      "Bash(cat)",
+      "Bash(python3 /tmp/contrast_check.py)",
+      "Bash(cat > *)"
     ],
     "additionalDirectories": [
       "/home/tilstack/tontine-web",
       "/tmp/brainstorm/content",
       "/home/tilstack/Bureau/tontine-web/.worktrees/feature-foundation/src",
-      "/home/tilstack/Bureau/tontine-web/.worktrees/feature-caisse/src/app/core"
+      "/home/tilstack/Bureau/tontine-web/.worktrees/feature-caisse/src/app/core",
+      "/home/tilstack/Bureau/tontine-web/docs/superpowers/plans",
+      "/tmp"
     ]
   }
 }
