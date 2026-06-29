@@ -1,0 +1,42 @@
+@if (!isOnAbout()) {
+
+  <!-- ── Avatar mascot ─────────────────────────────────────── -->
+  <div
+    class="mascot"
+    [class.mascot--fleeing]="isFleeing()"
+    [class.mascot--caught]="caught()"
+    [style.transform]="transformStyle()"
+    (mouseenter)="onMouseEnter()"
+    (click)="onClick()"
+    (keyup.enter)="onClick()"
+    role="button"
+    tabindex="0"
+    [attr.aria-label]="caught() ? 'Aller à la page À propos' : 'Avatar'"
+  >
+    <span class="mascot__ring mascot__ring--1"></span>
+    <span class="mascot__ring mascot__ring--2"></span>
+    <span class="mascot__border"></span>
+
+    <div class="mascot__img-wrap">
+      <img class="mascot__img" src="images/profile/tiktok_avatar.png" alt="Tilstack avatar" />
+    </div>
+
+    @if (caught()) {
+      <div class="mascot__bubble" aria-hidden="true">
+        <span>Ok ok 😅</span>
+        <span class="mascot__bubble-sub">Clique pour me voir</span>
+      </div>
+    }
+  </div>
+
+  <!-- ── Zoom overlay (circle expand on click) ──────────────── -->
+  @if (isZooming()) {
+    <div
+      class="mascot-overlay"
+      [style.--ox]="zoomOrigin().x"
+      [style.--oy]="zoomOrigin().y"
+      aria-hidden="true"
+    ></div>
+  }
+
+}

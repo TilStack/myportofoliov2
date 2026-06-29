@@ -1,0 +1,69 @@
+[debug] [2026-06-29T22:57:50.873Z] ----------------------------------------------------------------------
+[debug] [2026-06-29T22:57:50.881Z] Command:       /home/tilstack/.nvm/versions/node/v20.20.2/bin/node /home/tilstack/.nvm/versions/node/v20.20.2/bin/firebase deploy --only hosting
+[debug] [2026-06-29T22:57:50.882Z] CLI Version:   15.20.0
+[debug] [2026-06-29T22:57:50.883Z] Platform:      linux
+[debug] [2026-06-29T22:57:50.883Z] Node Version:  v20.20.2
+[debug] [2026-06-29T22:57:50.884Z] Time:          Mon Jun 29 2026 23:57:50 GMT+0100 (heure d’Afrique de l’Ouest)
+[debug] [2026-06-29T22:57:50.884Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2026-06-29T22:57:51.962Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-06-29T22:57:51.963Z] > authorizing via signed-in user (israel01tientcheu@gmail.com)
+[debug] [2026-06-29T22:57:51.963Z] [iam] checking project tilportofoliov2 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2026-06-29T22:57:51.964Z] Checked if tokens are valid: true, expires at: 1782775175287
+[debug] [2026-06-29T22:57:51.964Z] Checked if tokens are valid: true, expires at: 1782775175287
+[debug] [2026-06-29T22:57:51.965Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/tilportofoliov2:testIamPermissions [none]
+[debug] [2026-06-29T22:57:51.965Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/tilportofoliov2:testIamPermissions  x-goog-user-project=tilportofoliov2
+[debug] [2026-06-29T22:57:51.965Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/tilportofoliov2:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-06-29T22:57:53.281Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/tilportofoliov2:testIamPermissions 200
+[debug] [2026-06-29T22:57:53.282Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/tilportofoliov2:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2026-06-29T22:57:53.283Z] Checked if tokens are valid: true, expires at: 1782775175287
+[debug] [2026-06-29T22:57:53.284Z] Checked if tokens are valid: true, expires at: 1782775175287
+[debug] [2026-06-29T22:57:53.285Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/tilportofoliov2 [none]
+[debug] [2026-06-29T22:57:54.585Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/tilportofoliov2 200
+[debug] [2026-06-29T22:57:54.586Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/tilportofoliov2 {"projectId":"tilportofoliov2","projectNumber":"4989753859","displayName":"tilportofoliov2","name":"projects/tilportofoliov2","resources":{"hostingSite":"tilportofoliov2","realtimeDatabaseInstance":"tilportofoliov2-default-rtdb"},"state":"ACTIVE","labels":{"firebase":"enabled"},"etag":"1_72494d41-3b85-4d06-812f-58025d3f5775"}
+[info] 
+[info] === Deploying to 'tilportofoliov2'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2026-06-29T22:57:54.599Z] Checked if tokens are valid: true, expires at: 1782775175287
+[debug] [2026-06-29T22:57:54.600Z] Checked if tokens are valid: true, expires at: 1782775175287
+[debug] [2026-06-29T22:57:54.600Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/tilportofoliov2/sites/tilportofoliov2 [none]
+[debug] [2026-06-29T22:57:56.185Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/tilportofoliov2/sites/tilportofoliov2 200
+[debug] [2026-06-29T22:57:56.185Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/tilportofoliov2/sites/tilportofoliov2 {"name":"projects/tilportofoliov2/sites/tilportofoliov2","defaultUrl":"https://tilportofoliov2.web.app","appId":"1:4989753859:web:c01cfdaa23a3f1a8528c36","type":"DEFAULT_SITE"}
+[debug] [2026-06-29T22:57:56.195Z] Checked if tokens are valid: true, expires at: 1782775175287
+[debug] [2026-06-29T22:57:56.195Z] Checked if tokens are valid: true, expires at: 1782775175287
+[debug] [2026-06-29T22:57:56.196Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/tilportofoliov2/versions [none]
+[debug] [2026-06-29T22:57:56.196Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/tilportofoliov2/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2026-06-29T22:57:57.926Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/tilportofoliov2/versions 200
+[debug] [2026-06-29T22:57:57.927Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/tilportofoliov2/versions {"name":"projects/4989753859/sites/tilportofoliov2/versions/0fce24d905285ef5","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[info] i  hosting[tilportofoliov2]: beginning deploy... 
+[info] i  hosting[tilportofoliov2]: found 49 files in dist/myportofoliov2/browser 
+[debug] [2026-06-29T22:57:57.988Z] [hosting] uploading with 200 concurrency
+[debug] [2026-06-29T22:57:57.999Z] Checked if tokens are valid: true, expires at: 1782775175287
+[debug] [2026-06-29T22:57:58.000Z] Checked if tokens are valid: true, expires at: 1782775175287
+[debug] [2026-06-29T22:57:58.002Z] [hosting] hash cache [ZGlzdC9teXBvcnRvZm9saW92Mi9icm93c2Vy] stored for 49 files
+[debug] [2026-06-29T22:57:58.002Z] [hosting][hash queue][FINAL] {"max":6,"min":1,"avg":1,"active":0,"complete":49,"success":49,"errored":0,"retried":0,"total":49,"elapsed":11}
+[debug] [2026-06-29T22:57:58.004Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/4989753859/sites/tilportofoliov2/versions/0fce24d905285ef5:populateFiles [none]
+[debug] [2026-06-29T22:57:58.004Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/4989753859/sites/tilportofoliov2/versions/0fce24d905285ef5:populateFiles {"files":{"/styles-LGYNF4D4.css":"4a8415ddf09ab8a07d45b5cb2d9124e679291b5bbbe4a7e3ca4be81766bfccbd","/polyfills-5CFQRCPP.js":"e90181a2b04f12c05d2cf77aefa46053332eec5744365f3d73feee04a0285a16","/main-BZWLHZBL.js":"310a58ad3b74242b0654562510f9eeb11a3446068c39422f52759c54961dbe37","/logo.svg":"4038d81fc0a6cc19965494fbca91900766b7b5b7d8a23f7bf91ffaaf9d29e67a","/index.html":"b4058dcb3ba3740bcaaffd4056cdd36cc9056769666517a9f20902785903a8ff","/favicon.svg":"33cd8e2f828f39bddabeeda5ad7d82c54d00028a2b08e13482cb9dfceefa7027","/favicon.ico":"2add0cc793219edd4c7e298d6081d94db083b1d7daa7610f3dd95aaf8a6ea62e","/chunk-VLFDXU4N.js":"626a2a9de6545d96e44674830990f51d4f70779afd37212c00307a833e32a05a","/chunk-USROHVEN.js":"df00cb2207593fe47f8b79de00bee19e20ac894b18348a15eca7f438bf3c6baa","/chunk-U2MZMVU7.js":"15c0b8725f3c6f01fd6c437827f6e314df8c4727d1153a5461e164fb3630e542","/chunk-T32NA4HQ.js":"520588bdf412e077a0011a241d11ef332847c2ef4a75229ea6b21481c23a9ac5","/chunk-SCVN4VHE.js":"283d9dd9f18d169b17aaf36bd7882b0c26b400e48a3fcb8774b1d8b411a353a1","/chunk-OYNVITK4.js":"d36130906d4a8dc9cc1dc860be389615ad75438201f22cbdaebc24fe5aabff19","/chunk-NTJFLCPH.js":"dabeeca0a2693ece3f693026190e8485080c3e22b07ee0c9e0e9297e735c9b8d","/chunk-NRXMNL3J.js":"4179eebdceb17cbf5378a178d4038a51b8abe694bc5ae8c67e711f14e4651bad","/chunk-NCRXNYPK.js":"a74299c972fccc24d5e47dba9cb5bbba1a92ab375e43dc5fb4c1afdd1058d64f","/chunk-IH4NV4W3.js":"6f34c3a0d1c29bae8219cdb0fb1cc6ae5edb107e8f17c26a90363ab4e2a74255","/chunk-GWWUADAV.js":"28d1e918e3e9750082a5a07532c26b7c129cbaf58ca710fb14fbcecbb4f8893c","/chunk-6YCTICZ3.js":"d0db9bcb8159b3e479af94a4de6d08f713239319dd516517e790092d6f7705c5","/chunk-5U2U3TBR.js":"21fe3a900bb247ebf2257d69c58009d4cdd835e3af47999fc4d158040d329d95","/chunk-4TO6ZFHF.js":"1ee959d22e93966ba1164ef826315ee373a0388ae11b53fe5adf39b43ca882f2","/chunk-44HLTLV7.js":"c3252dc9a772bc188726f38f21458b3b35dbc2833c8f3fcc01b9c7df8334a5c7","/chunk-3WEMPJMB.js":"764c36e5d4403c6c2629126cef580d03f79911467d49fd93b2cc7ff8605a04ed","/chunk-3GXEHBDI.js":"bdc7f881b070ae5a6685fb40358e40a51fcc84f245fcda20d9db12f939997b83","/TilStack_CV.pdf":"d14e052a9336ae7f2e1db3b568fc32f0926037bc4c8fcb51566dd5931d7ced03","/images/tech_lead.jpg":"cff4ec8aaafeb9bfb0ab1565f03925b89f67d572ce637d84c696dbe3301f1133","/images/mentor.jpg":"c17942e5c1c896f86096a8493378f4eff2aa1c57495dde2d5248e0fb9458d116","/images/formateur.png":"d6ab12fdc2be52ad28caa951fb9dabd7430c00bbb0d670bde68aa5eb532ae7f1","/images/projects/pokemon-1.png":"6b706566468517e5d2ab51620278f36feecf05f044573d0b96931c675a52e9e8","/images/projects/levegi_logo.jpg":"a78ac8e20b73dc2d304f197f0e369cd03ce78e22d2a53d5e99385aa9b2207e92","/images/projects/levefly4.png":"8d6ae1d8a4eb8f2068869ca156094068f3244d0fa74bb399a5c7bc282fd1a99a","/images/projects/levefly3.png":"c693f516019e4f0435b12b54efd1eebd1056bc0d032ed401254584f7d83566f5","/images/projects/levefly2.png":"9d04ec21588ee6c57154ee255925bb74343338bc7b4aebe613be8bd91d90cd93","/images/projects/levefly-1.png":"2860d41cd129fe9fa49f9d5794abca93fcc621ca73327a214b51d8243bfaaa90","/images/projects/dofa_capture4.jpg":"d6e3f593df800de066284849fc49c175f5ce04143971e29e624d46b6a5094da3","/images/projects/dofa_capture3.jpg":"a8e35bd0d6136546217ee29212660f8bcd1ad15664744c6252d543bc087dc717","/images/projects/dofa_capture2.jpg":"447b564a68c0e18d9bf3a13ef1e4745d55a74ee4b23e918bfaf4ae193025192f","/images/projects/dofa_capture1.jpg":"d6e3f593df800de066284849fc49c175f5ce04143971e29e624d46b6a5094da3","/images/projects/devpea_logo.jpeg":"84fba78d0c5c60f3de9910ff021dc5c0f2b6c24af5229f60800cc9b636f129f7","/images/projects/devpea-1.jpg":"abc36a7f36394be1aa2e741e92b08f05ae19bcd37b8cb5780a02d18c07e81cb1","/images/projects/cagnotte-1.png":"f5ef4d5586950abb4922c3a9cca317348cc58a4ac4dcdbfc7f46c356004dad20","/images/projects/bayarm-1.jpg":"888bc55df9732ccfa5372488062e46380f98e4290c2f707e14340684369a784d","/images/profile/tiktok_avatar.png":"73916b74cc0ae99a58649fac228e8b97f264044aff457272753af065a6ead53b","/images/profile/me_simple.jpg":"9e88de9ee245b70859e8a4023f07874131bc9c60b686b7d242048f2820bb9dc0","/images/profile/me_pro.jpg":"350b37e4167e1d2eda67b53f39fa9f61ce7ff62e515928d5fedb382e25700d75","/images/profile/me_charisme.jpg":"e691aadf635e7af0fa2f94857154cefdc49c9b8ff6e877c313e9043e24f386a8","/images/profile/me2.jpg":"e1609c6466a8cab14701a2ed5caa96cd46429cfd8124d28f6e5fa4dbfe5bfa53","/images/profile/me.jpg":"30e088a1dd98825b3ed4cc7241787e05c918cdfdfa3b2f07ae2e5f8bb4d1de97","/images/profile/avatar.png":"73916b74cc0ae99a58649fac228e8b97f264044aff457272753af065a6ead53b"}}
+[debug] [2026-06-29T22:57:59.459Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/4989753859/sites/tilportofoliov2/versions/0fce24d905285ef5:populateFiles 200
+[debug] [2026-06-29T22:57:59.459Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/4989753859/sites/tilportofoliov2/versions/0fce24d905285ef5:populateFiles {"uploadRequiredHashes":["73916b74cc0ae99a58649fac228e8b97f264044aff457272753af065a6ead53b"],"uploadUrl":"https://upload-firebasehosting.googleapis.com/upload/sites/tilportofoliov2/versions/0fce24d905285ef5/files"}
+[debug] [2026-06-29T22:57:59.462Z] Checked if tokens are valid: true, expires at: 1782775175287
+[debug] [2026-06-29T22:57:59.463Z] Checked if tokens are valid: true, expires at: 1782775175287
+[debug] [2026-06-29T22:57:59.464Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/tilportofoliov2/versions/0fce24d905285ef5/files/73916b74cc0ae99a58649fac228e8b97f264044aff457272753af065a6ead53b [none]
+[debug] [2026-06-29T22:57:59.464Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/tilportofoliov2/versions/0fce24d905285ef5/files/73916b74cc0ae99a58649fac228e8b97f264044aff457272753af065a6ead53b [stream]
+[debug] [2026-06-29T22:57:59.469Z] [hosting][populate queue][FINAL] {"max":1464,"min":1464,"avg":1464,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":1470}
+[debug] [2026-06-29T22:57:59.470Z] [hosting] uploads queued: 1
+[info] i  hosting: uploading new files [0/1] (0%) 
+[info] i  hosting: uploading new files [0/1] (0%) 
+[info] i  hosting: uploading new files [0/1] (0%) 
+[info] i  hosting: uploading new files [0/1] (0%) 
+[info] i  hosting: uploading new files [0/1] (0%) 
+[info] i  hosting: uploading new files [0/1] (0%) 
+[info] i  hosting: uploading new files [0/1] (0%) 
+[info] i  hosting: uploading new files [0/1] (0%) 
+[info] i  hosting: uploading new files [0/1] (0%) 
+[info] i  hosting: uploading new files [0/1] (0%) 
+[info] i  hosting: uploading new files [0/1] (0%) 
+[info] i  hosting: uploading new files [0/1] (0%) 
+[info] i  hosting: uploading new files [0/1] (0%) 
+[info] i  hosting: uploading new files [0/1] (0%) 

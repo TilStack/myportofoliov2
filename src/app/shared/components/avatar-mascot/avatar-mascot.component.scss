@@ -1,0 +1,224 @@
+@use '../../../../assets/styles/variables' as *;
+
+// ── Base container ────────────────────────────────────────────────────────────
+.mascot {
+  position: fixed;
+  bottom: 5.5rem;
+  right: 1.5rem;
+  z-index: 900;
+  width: 64px;
+  height: 64px;
+  cursor: pointer;
+  user-select: none;
+
+  // Smooth flee movement
+  transition: transform 0.48s cubic-bezier(0.55, 0, 1, 0.45);
+
+  // Entrance: slide up from below
+  animation: mascotEntrance 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 1.2s both;
+
+  &:focus-visible {
+    outline: 2px solid $color-accent;
+    outline-offset: 4px;
+    border-radius: $radius-full;
+  }
+
+  // Default idle float (image wrapper)
+  &:not(.mascot--fleeing):not(.mascot--caught) {
+    .mascot__img-wrap {
+      animation: mascotFloat 3.2s ease-in-out infinite;
+    }
+  }
+
+  // On hover when caught: subtle scale
+  &.mascot--caught:hover .mascot__img-wrap {
+    transform: scale(1.1);
+  }
+}
+
+// ── Fleeing state ─────────────────────────────────────────────────────────────
+.mascot--fleeing {
+  cursor: default;
+  transition: transform 0.44s cubic-bezier(0.55, 0, 1, 0.45); // fast escape ease
+
+  .mascot__img-wrap {
+    animation: mascotTilt 0.44s ease both !important;
+  }
+
+  .mascot__ring {
+    opacity: 0;
+  }
+}
+
+// ── Caught state ──────────────────────────────────────────────────────────────
+.mascot--caught {
+  cursor: pointer;
+  // Springy settle when caught
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  .mascot__img-wrap {
+    animation: mascotCaughtBounce 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both !important;
+  }
+
+  .mascot__bubble {
+    animation: bubblePop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+  }
+}
+
+// ── Avatar image wrapper ──────────────────────────────────────────────────────
+.mascot__img-wrap {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  border-radius: $radius-full;
+  overflow: hidden;
+  background: var(--color-surface);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mascot__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: $radius-full;
+}
+
+// ── Spinning gradient border ──────────────────────────────────────────────────
+.mascot__border {
+  position: absolute;
+  inset: -3px;
+  z-index: 2;
+  border-radius: $radius-full;
+  background: conic-gradient(
+    from 0deg,
+    $color-accent,
+    #ff6b6b,
+    #a855f7,
+    #3b82f6,
+    $color-accent
+  );
+  animation: mascotSpin 2.8s linear infinite;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border-radius: $radius-full;
+    background: var(--color-bg, #fff);
+  }
+}
+
+// ── Pulsating rings ───────────────────────────────────────────────────────────
+.mascot__ring {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: $radius-full;
+  border: 2px solid $color-accent;
+  animation: mascotPulse 2.4s ease-out infinite;
+  pointer-events: none;
+  transition: opacity 0.2s;
+
+  &--2 {
+    animation-delay: 1.2s;
+    border-color: #a855f7;
+  }
+}
+
+// ── Speech bubble ─────────────────────────────────────────────────────────────
+.mascot__bubble {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+
+  background: var(--color-surface, #f7f7f7);
+  border: 1.5px solid var(--color-border, #e5e7eb);
+  border-radius: $radius-xl;
+  padding: 0.45rem 0.9rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+
+  font-size: $text-sm;
+  font-weight: $font-semibold;
+  color: var(--color-text, #1c1c1e);
+
+  // Tail
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 7px solid transparent;
+    border-top-color: var(--color-surface, #f7f7f7);
+    filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.06));
+  }
+}
+
+.mascot__bubble-sub {
+  font-size: $text-xs;
+  font-weight: $font-medium;
+  color: $color-accent;
+}
+
+// ── Zoom overlay (circle expand) ──────────────────────────────────────────────
+.mascot-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: $color-accent;
+  clip-path: circle(0% at var(--ox, 93%) var(--oy, 93%));
+  animation: circleExpand 0.7s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+  pointer-events: none;
+}
+
+// ── Keyframes ────────────────────────────────────────────────────────────────
+@keyframes mascotEntrance {
+  from { opacity: 0; transform: translateY(80px) scale(0.5); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);   }
+}
+
+@keyframes mascotFloat {
+  0%,  100% { transform: translateY(0);     }
+  50%        { transform: translateY(-10px); }
+}
+
+@keyframes mascotSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes mascotPulse {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  100% { transform: scale(2.1); opacity: 0;   }
+}
+
+@keyframes mascotTilt {
+  0%   { transform: rotate(0deg)    scale(1);    }
+  30%  { transform: rotate(-25deg)  scale(0.82); }
+  70%  { transform: rotate(-18deg)  scale(0.88); }
+  100% { transform: rotate(0deg)    scale(1);    }
+}
+
+@keyframes mascotCaughtBounce {
+  0%   { transform: scale(1);    }
+  30%  { transform: scale(0.78); }
+  65%  { transform: scale(1.18); }
+  100% { transform: scale(1);    }
+}
+
+@keyframes bubblePop {
+  from { opacity: 0; transform: translateX(-50%) scale(0.7); }
+  to   { opacity: 1; transform: translateX(-50%) scale(1);   }
+}
+
+@keyframes circleExpand {
+  to { clip-path: circle(150% at var(--ox, 93%) var(--oy, 93%)); }
+}

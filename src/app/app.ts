@@ -6,13 +6,14 @@ import { NavbarComponent } from './layout/navbar/navbar.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { BackToTopComponent } from './shared/components/back-to-top/back-to-top.component';
 import { IntroComponent } from './shared/components/intro/intro.component';
+import { AvatarMascotComponent } from './shared/components/avatar-mascot/avatar-mascot.component';
 import { ThemeService } from './core/services/theme.service';
 import { ScrollAnimationService } from './core/services/scroll-animation.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, NavbarComponent, FooterComponent, BackToTopComponent, IntroComponent],
+  imports: [CommonModule, RouterOutlet, NavbarComponent, FooterComponent, BackToTopComponent, IntroComponent, AvatarMascotComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
