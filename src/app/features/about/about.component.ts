@@ -188,13 +188,39 @@ export class AboutComponent implements OnInit, OnDestroy {
     }
   }
 
+  // ── educator gallery lightbox ─────────────────────────────
+  eduLightbox = signal<{ src: string; alt: string } | null>(null);
+
+  openEduLightbox(src: string, alt: string): void {
+    this.eduLightbox.set({ src, alt });
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeEduLightbox(): void {
+    this.eduLightbox.set(null);
+    document.body.style.overflow = '';
+  }
+
+  onEduBackdropClick(e: MouseEvent): void {
+    if ((e.target as HTMLElement).classList.contains('edu-lightbox-backdrop')) {
+      this.closeEduLightbox();
+    }
+  }
+
   @HostListener('document:keydown.escape')
   onEscape(): void {
     this.closeSetupLightbox();
+    this.closeEduLightbox();
   }
 
   // ── involvement links ─────────────────────────────────────────
-  involvementLinks = [
+  involvementLinks: {
+    label: string;
+    href: string;
+    icon: string;
+    descKey: string;
+    imgSrc?: string;
+  }[] = [
     {
       label: 'GitHub',
       href: 'https://github.com/tilstack',
@@ -218,6 +244,13 @@ export class AboutComponent implements OnInit, OnDestroy {
       href: 'https://x.com/tilstack',
       icon: 'twitter',
       descKey: 'about.involvementTwitter',
+    },
+    {
+      label: 'TikTok',
+      href: 'https://www.tiktok.com/@tilstack_draw',
+      icon: 'tiktok',
+      imgSrc: 'images/profile/tiktok_avatar.png',
+      descKey: 'about.involvementTiktok',
     },
   ];
 

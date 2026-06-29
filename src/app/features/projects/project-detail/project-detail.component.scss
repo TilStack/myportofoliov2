@@ -48,42 +48,159 @@
 
 // Gallery
 .detail-gallery {
-  &__main {
+
+  // ── Single image ──────────────────────────────────────────────────────
+  &__single {
+    position: relative;
     border-radius: $radius-2xl;
     overflow: hidden;
     box-shadow: $shadow-xl;
+    cursor: pointer;
+
+    &:hover .detail-gallery__zoom-hint { opacity: 1; }
+  }
+
+  &__single-img {
+    width: 100%;
+    display: block;
+    max-height: 600px;
+    object-fit: contain;
+    background: var(--color-surface);
+  }
+
+  &__zoom-hint {
+    position: absolute;
+    bottom: $space-4;
+    right: $space-4;
+    display: inline-flex;
+    align-items: center;
+    gap: $space-1;
+    padding: $space-2 $space-3;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+    color: #fff;
+    font-size: $text-xs;
+    font-weight: $font-medium;
+    border-radius: $radius-full;
+    opacity: 0;
+    transition: opacity $transition-fast;
+    pointer-events: none;
+  }
+}
+
+// ── Adaptive image grid ────────────────────────────────────────────────
+.img-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $space-3;
+
+  @include md {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.img-gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: $radius-xl;
+  cursor: pointer;
+  background: var(--color-surface);
+  box-shadow: $shadow-md;
+  transition: transform $transition-base, box-shadow $transition-base;
+
+  // Portrait (mobile screenshots): 1 column, tall aspect ratio
+  &[data-orientation="portrait"],
+  &[data-orientation="unknown"] {
+    grid-column: span 1;
+    aspect-ratio: 9 / 19;
+  }
+
+  // Landscape (web screenshots): 2 columns, wide aspect ratio
+  &[data-orientation="landscape"] {
+    grid-column: span 2;
+    aspect-ratio: 16 / 9;
+  }
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 400ms $ease-out-cubic;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-xl;
+
+    img { transform: scale(1.04); }
+
+    .img-gallery-item__zoom { opacity: 1; transform: scale(1); }
+  }
+
+  &:focus-visible { outline: 2px solid $color-accent; outline-offset: 3px; }
+
+  &__zoom {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity $transition-fast, transform $transition-fast;
+  }
+}
+
+// ── Image lightbox ─────────────────────────────────────────────────────
+.img-lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: $z-modal;
+  background: rgba(0,0,0,0.88);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-6;
+  animation: lbFadeIn 180ms $ease-out-cubic both;
+}
+
+.img-lightbox {
+  &__close {
+    position: fixed;
+    top: $space-5;
+    right: $space-5;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    border-radius: $radius-full;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    transition: background $transition-fast;
+
+    &:hover { background: rgba(255,255,255,0.25); }
   }
 
   &__img {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    display: block;
-  }
-
-  &__thumbs {
-    display: flex;
-    gap: $space-3;
-    margin-top: $space-3;
-    overflow-x: auto;
-    padding-bottom: $space-2;
-  }
-
-  &__thumb {
-    flex-shrink: 0;
-    width: 72px;
-    height: 56px;
-    border-radius: $radius-md;
-    overflow: hidden;
-    border: 2px solid transparent;
-    transition: border-color $transition-fast;
-    cursor: pointer;
-
-    &.active { border-color: $color-accent; }
-
-    img { width: 100%; height: 100%; object-fit: cover; }
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: $radius-xl;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+    animation: lbSlideUp 220ms $ease-out-cubic both;
   }
 }
+
+@keyframes lbFadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes lbSlideUp { from { opacity: 0; transform: translateY(20px) scale(0.96); } to { opacity: 1; transform: none; } }
 
 // Meta
 .detail-meta {

@@ -89,6 +89,7 @@ const EN: Translations = {
     involvementLinkedIn:    'Professional network',
     involvementZerofiltre:  'Technical articles',
     involvementTwitter:     'Thoughts & updates',
+    involvementTiktok:      'Creative content & drawing',
     // Educator gallery
     educatorGalleryTitle: 'Teaching Moments',
     educatorGallerySub:   'Moments from workshops, tutorials, and mentoring sessions.',
@@ -344,6 +345,7 @@ const FR: Translations = {
     involvementLinkedIn:    'Réseau professionnel',
     involvementZerofiltre:  'Articles techniques',
     involvementTwitter:     'Réflexions & actualités',
+    involvementTiktok:      'Contenu créatif & dessin',
     // Educator gallery
     educatorGalleryTitle: 'Moments d\'enseignement',
     educatorGallerySub:   'Instants de workshops, tutoriels et sessions de mentorat.',

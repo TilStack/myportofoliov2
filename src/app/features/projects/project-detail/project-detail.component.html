@@ -23,20 +23,57 @@
       </div>
     } @else if (project()) {
       <div class="detail-content">
+
         @if (project()!.images.length) {
           <div class="detail-gallery">
-            <div class="detail-gallery__main">
-              <img [src]="project()!.images[activeImg()]" [alt]="'Aperçu du projet ' + project()!.title + ' — capture ' + (activeImg() + 1)" class="detail-gallery__img" />
-            </div>
-            @if (project()!.images.length > 1) {
-              <div class="detail-gallery__thumbs">
+
+            @if (project()!.images.length === 1) {
+              <!-- Single image: full-width -->
+              <div class="detail-gallery__single" (click)="openLightbox(project()!.images[0])"
+                   role="button" tabindex="0" aria-label="Agrandir l'image"
+                   (keyup.enter)="openLightbox(project()!.images[0])">
+                <img [src]="project()!.images[0]"
+                     [alt]="'Aperçu du projet ' + project()!.title"
+                     class="detail-gallery__single-img"
+                     (load)="onImageLoad($event, project()!.images[0])" />
+                <div class="detail-gallery__zoom-hint" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                  </svg>
+                  Agrandir
+                </div>
+              </div>
+
+            } @else {
+              <!-- Multiple images: adaptive grid -->
+              <div class="img-gallery-grid">
                 @for (img of project()!.images; track img; let i = $index) {
-                  <button class="detail-gallery__thumb" [class.active]="activeImg() === i" (click)="setActiveImg(i)">
-                    <img [src]="img" [alt]="'Miniature ' + (i + 1) + ' — ' + project()!.title" />
-                  </button>
+                  <div
+                    class="img-gallery-item"
+                    [attr.data-orientation]="getOrientation(img)"
+                    (click)="openLightbox(img)"
+                    role="button"
+                    tabindex="0"
+                    [attr.aria-label]="'Agrandir capture ' + (i + 1) + ' — ' + project()!.title"
+                    (keyup.enter)="openLightbox(img)"
+                  >
+                    <img
+                      [src]="img"
+                      [alt]="'Capture ' + (i + 1) + ' — ' + project()!.title"
+                      (load)="onImageLoad($event, img)"
+                    />
+                    <div class="img-gallery-item__zoom" aria-hidden="true">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+                      </svg>
+                    </div>
+                  </div>
                 }
               </div>
             }
+
           </div>
         }
 
@@ -80,3 +117,21 @@
     }
   </div>
 </div>
+
+<!-- Image lightbox -->
+@if (lightboxSrc()) {
+  <div
+    class="img-lightbox-backdrop"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Image agrandie"
+    (click)="onLightboxBackdropClick($event)"
+  >
+    <button class="img-lightbox__close" (click)="closeLightbox()" aria-label="Fermer">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <img class="img-lightbox__img" [src]="lightboxSrc()!" [alt]="'Vue agrandie — ' + project()?.title" />
+  </div>
+}

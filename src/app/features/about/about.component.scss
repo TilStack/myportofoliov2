@@ -602,6 +602,19 @@ $accent: $color-accent;
     flex-shrink: 0;
     color: var(--color-text);
     transition: background $transition-fast, color $transition-fast;
+    overflow: hidden;
+
+    &.has-photo {
+      padding: 0;
+      border-radius: $radius-lg;
+    }
+  }
+
+  &__avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   &:hover &__icon-wrap {
@@ -665,9 +678,18 @@ $accent: $color-accent;
   gap: $space-3;
   overflow: hidden;
   position: relative;
-  transition: transform $transition-base;
+  cursor: pointer;
+  transition: transform $transition-base, box-shadow $transition-base;
 
-  &:hover { transform: translateY(-4px) scale(1.01); }
+  &:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: $shadow-xl;
+
+    .edu-gallery-card__zoom-icon { opacity: 1; transform: scale(1); }
+    .edu-gallery-card__photo { transform: scale(1.04); }
+  }
+
+  &:focus-visible { outline: 3px solid $color-accent; outline-offset: 4px; }
 
   &__photo {
     position: absolute;
@@ -676,14 +698,16 @@ $accent: $color-accent;
     height: 100%;
     object-fit: cover;
     object-position: top center;
+    transition: transform 400ms $ease-out-cubic;
   }
 
   &__overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.70) 0%, transparent 55%);
+    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%);
     display: flex;
     align-items: flex-end;
+    justify-content: space-between;
     padding: $space-4;
     pointer-events: none;
   }
@@ -706,6 +730,22 @@ $accent: $color-accent;
     svg { flex-shrink: 0; }
   }
 
+  &__zoom-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: $radius-full;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(6px);
+    color: #fff;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity $transition-fast, transform $transition-fast;
+    flex-shrink: 0;
+  }
+
   &__icon {
     font-size: 2.5rem;
     filter: drop-shadow(0 4px 12px rgba(0,0,0,.4));
@@ -719,6 +759,52 @@ $accent: $color-accent;
     text-transform: uppercase;
   }
 }
+
+// ===== EDUCATOR PHOTO LIGHTBOX =====
+.edu-lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: $z-modal;
+  background: rgba(0,0,0,0.90);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-6;
+  animation: eduLbFadeIn 180ms $ease-out-cubic both;
+}
+
+.edu-lightbox {
+  &__close {
+    position: fixed;
+    top: $space-5;
+    right: $space-5;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    border-radius: $radius-full;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    transition: background $transition-fast;
+
+    &:hover { background: rgba(255,255,255,0.25); }
+  }
+
+  &__img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: $radius-2xl;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.7);
+    animation: eduLbSlideUp 220ms $ease-out-cubic both;
+  }
+}
+
+@keyframes eduLbFadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes eduLbSlideUp { from { opacity: 0; transform: translateY(20px) scale(0.96); } to { opacity: 1; transform: none; } }
 
 // ===== OTHER ROLES =====
 .other-roles-section {

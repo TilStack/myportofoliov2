@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProjectService } from '../../../core/services/project.service';
@@ -22,6 +22,9 @@ export class ProjectDetailComponent implements OnInit {
   notFound = signal(false);
   activeImg = signal(0);
 
+  imageOrientations = signal<Record<string, 'portrait' | 'landscape'>>({});
+  lightboxSrc = signal<string | null>(null);
+
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) { this.notFound.set(true); return; }
@@ -41,5 +44,36 @@ export class ProjectDetailComponent implements OnInit {
 
   setActiveImg(i: number): void {
     this.activeImg.set(i);
+  }
+
+  onImageLoad(event: Event, src: string): void {
+    const img = event.target as HTMLImageElement;
+    const orientation = img.naturalHeight > img.naturalWidth ? 'portrait' : 'landscape';
+    this.imageOrientations.update(o => ({ ...o, [src]: orientation }));
+  }
+
+  getOrientation(src: string): string {
+    return this.imageOrientations()[src] ?? 'unknown';
+  }
+
+  openLightbox(src: string): void {
+    this.lightboxSrc.set(src);
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeLightbox(): void {
+    this.lightboxSrc.set(null);
+    document.body.style.overflow = '';
+  }
+
+  onLightboxBackdropClick(e: MouseEvent): void {
+    if ((e.target as HTMLElement).classList.contains('img-lightbox-backdrop')) {
+      this.closeLightbox();
+    }
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.closeLightbox();
   }
 }
