@@ -213,10 +213,55 @@ $accent: $color-accent;
   &__header { margin-bottom: $space-10; }
 }
 
+// ── Categories grid ──────────────────────────────────────────────
+.skills-categories-grid {
+  display: grid;
+  gap: $space-4;
+  grid-template-columns: 1fr;
+  @include sm { grid-template-columns: repeat(2, 1fr); }
+  @include lg { grid-template-columns: repeat(3, 1fr); }
+}
+
+// ── Category card ─────────────────────────────────────────────────
+.skills-category {
+  padding: $space-5 $space-6;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-xl;
+  transition: border-color $transition-base, box-shadow $transition-base;
+
+  &:hover {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-card);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    margin-bottom: $space-4;
+    padding-bottom: $space-3;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  &__icon {
+    font-size: $text-xl;
+    line-height: 1;
+  }
+
+  &__label {
+    font-size: $text-sm;
+    font-weight: $font-bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+  }
+}
+
 .skills-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: $space-3;
+  gap: $space-2;
 }
 
 .skill-tag {
@@ -227,13 +272,20 @@ $accent: $color-accent;
   font-size: $text-sm;
   font-weight: $font-medium;
   color: var(--color-text);
-  transition: border-color $transition-fast, background $transition-fast,
-              transform $transition-fast;
+  cursor: default;
+  transition:
+    border-color  0.2s ease,
+    background    0.2s ease,
+    color         0.2s ease,
+    transform     0.2s ease,
+    box-shadow    0.2s ease;
 
   &:hover {
-    border-color: $accent;
-    background: rgba(255, 222, 89, 0.08);
-    transform: translateY(-2px);
+    border-color: var(--brand, $color-accent);
+    background:   color-mix(in srgb, var(--brand, $color-accent) 12%, transparent);
+    color:        var(--brand, var(--color-text));
+    transform:    translateY(-3px);
+    box-shadow:   0 4px 12px color-mix(in srgb, var(--brand, $color-accent) 30%, transparent);
   }
 }
 

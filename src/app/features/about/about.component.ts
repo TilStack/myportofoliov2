@@ -299,22 +299,60 @@ export class AboutComponent implements OnInit, OnDestroy {
     },
   ];
 
-  // ── skills ────────────────────────────────────────────────
-  skills = [
-    'Figma',
-    'Canva',
-    'Angular',
-    'TypeScript',
-    'Flutter',
-    'SCSS',
-    'NestJS',
-    'ExpressJS',
-    'NodeJS',
-    'PostgreSQL',
-    'Git / GitHub',
-    'Docker',
-    'Firebase',
-    'Trello',
+  // ── skills (catégorisés avec couleur de marque) ───────────
+  skillCategories: { label: string; icon: string; skills: { name: string; color: string }[] }[] = [
+    {
+      label: 'Frontend',
+      icon: '🌐',
+      skills: [
+        { name: 'Angular',     color: '#DD0031' },
+        { name: 'TypeScript',  color: '#3178C6' },
+        { name: 'SCSS',        color: '#CD6799' },
+      ],
+    },
+    {
+      label: 'Mobile',
+      icon: '📱',
+      skills: [
+        { name: 'Flutter', color: '#54C5F8' },
+      ],
+    },
+    {
+      label: 'Backend',
+      icon: '⚙️',
+      skills: [
+        { name: 'NestJS',      color: '#E0234E' },
+        { name: 'ExpressJS',   color: '#68A063' },
+        { name: 'NodeJS',      color: '#339933' },
+        { name: 'PostgreSQL',  color: '#336791' },
+      ],
+    },
+    {
+      label: 'Design',
+      icon: '🎨',
+      skills: [
+        { name: 'Figma', color: '#F24E1E' },
+        { name: 'Canva', color: '#00C4CC' },
+      ],
+    },
+    {
+      label: 'DevOps & Outils',
+      icon: '🛠️',
+      skills: [
+        { name: 'Git / GitHub', color: '#F05032' },
+        { name: 'Docker',       color: '#2496ED' },
+        { name: 'Firebase',     color: '#FFCA28' },
+        { name: 'Trello',       color: '#0052CC' },
+      ],
+    },
+    {
+      label: 'IA',
+      icon: '🤖',
+      skills: [
+        { name: 'Claude AI', color: '#D97757' },
+        { name: 'ChatGPT',   color: '#10A37F' },
+      ],
+    },
   ];
 
   ngOnInit(): void {

@@ -156,19 +156,12 @@
         [delay]="0"
       >
         <div class="page-card__visual pv--about">
-          <div class="pm pm--about">
-            <div class="pm__avatar">
-              <img
-                src="images/profile/me2.jpg"
-                alt="Photo de profil d'Israel Tientcheu"
-                class="pm__avatar-img"
-              />
-            </div>
-            <div class="pm__lines">
-              <span class="pm__line" style="width: 75%"></span>
-              <span class="pm__line" style="width: 55%"></span>
-              <span class="pm__line" style="width: 65%"></span>
-            </div>
+          <img class="page-card__cover" src="images/profile/me2.jpg" alt="Israel Tientcheu" />
+          <div class="page-card__cover-overlay pco--about"></div>
+          <div class="page-card__cover-badges">
+            <span class="pcb__badge">Dev</span>
+            <span class="pcb__badge pcb__badge--accent">IA</span>
+            <span class="pcb__badge">Formateur</span>
           </div>
         </div>
         <div class="page-card__body">
@@ -187,10 +180,12 @@
         [delay]="80"
       >
         <div class="page-card__visual pv--projects">
-          <div class="pm pm--projects">
-            <div class="pm__proj"></div>
-            <div class="pm__proj"></div>
-            <div class="pm__proj"></div>
+          <div class="page-card__cover-overlay pco--projects"></div>
+          <div class="page-card__cover-code" aria-hidden="true">
+            <span class="pcc__line"><em>const</em> app = <em>new</em> App();</span>
+            <span class="pcc__line"><em>await</em> app.build();</span>
+            <span class="pcc__line pcc__line--dim">// Flutter · Angular · NestJS</span>
+            <span class="pcc__cursor"></span>
           </div>
         </div>
         <div class="page-card__body">
@@ -209,17 +204,16 @@
         [delay]="160"
       >
         <div class="page-card__visual pv--blog">
-          <div class="pm pm--blog">
-            <div class="pm__article">
-              <span class="pm__tag-pill"></span>
-              <span class="pm__row" style="width: 80%"></span>
-              <span class="pm__row" style="width: 60%"></span>
+          <div class="page-card__cover-overlay pco--blog"></div>
+          <div class="page-card__cover-article" aria-hidden="true">
+            <div class="pca__header">
+              <span class="pca__pill">Angular</span>
+              <span class="pca__pill pca__pill--dim">Flutter</span>
             </div>
-            <div class="pm__article">
-              <span class="pm__tag-pill"></span>
-              <span class="pm__row" style="width: 70%"></span>
-              <span class="pm__row" style="width: 50%"></span>
-            </div>
+            <div class="pca__title"></div>
+            <div class="pca__row" style="width:85%"></div>
+            <div class="pca__row" style="width:65%"></div>
+            <div class="pca__row" style="width:75%"></div>
           </div>
         </div>
         <div class="page-card__body">
@@ -238,13 +232,15 @@
         [delay]="240"
       >
         <div class="page-card__visual pv--quotes">
-          <div class="pm pm--quotes">
-            <span class="pm__bigquote">"</span>
-            <div class="pm__qlines">
-              <span style="width: 85%"></span>
-              <span style="width: 65%"></span>
-              <span style="width: 75%"></span>
+          <div class="page-card__cover-overlay pco--quotes"></div>
+          <div class="page-card__cover-quote" aria-hidden="true">
+            <span class="pcq__mark">"</span>
+            <div class="pcq__lines">
+              <span style="width:85%"></span>
+              <span style="width:65%"></span>
+              <span style="width:75%"></span>
             </div>
+            <div class="pcq__author"></div>
           </div>
         </div>
         <div class="page-card__body">
@@ -262,7 +258,6 @@
 <section class="montage" id="cameroon">
   <div class="container">
     <div class="montage__header fade-up" appFadeOnScroll>
-      <span class="montage__tag">{{ i18n.t("home.montageTag") }}</span>
       <h2 class="montage__title">{{ i18n.t("home.montageTitle") }}</h2>
       <p class="montage__sub">{{ i18n.t("home.montageSub") }}</p>
     </div>

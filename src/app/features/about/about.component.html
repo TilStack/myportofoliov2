@@ -57,9 +57,19 @@
       <h2 class="section__title">{{ i18n.t('about.stackTitle') }}</h2>
       <p class="section__subtitle">{{ i18n.t('about.stackSubtitle') }}</p>
     </div>
-    <div class="skills-grid">
-      @for (skill of skills; track skill; let i = $index) {
-        <span class="skill-tag fade-up" appFadeOnScroll [delay]="i * 50">{{ skill }}</span>
+    <div class="skills-categories-grid">
+      @for (cat of skillCategories; track cat.label; let ci = $index) {
+        <div class="skills-category fade-up" appFadeOnScroll [delay]="ci * 60">
+          <div class="skills-category__header">
+            <span class="skills-category__icon" aria-hidden="true">{{ cat.icon }}</span>
+            <h3 class="skills-category__label">{{ cat.label }}</h3>
+          </div>
+          <div class="skills-grid">
+            @for (skill of cat.skills; track skill.name) {
+              <span class="skill-tag" [style.--brand]="skill.color">{{ skill.name }}</span>
+            }
+          </div>
+        </div>
       }
     </div>
   </div>
