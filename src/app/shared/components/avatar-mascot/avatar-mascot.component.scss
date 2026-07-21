@@ -1,5 +1,7 @@
 @use '../../../../assets/styles/variables' as *;
 
+$mascot-ring-alt: #a855f7; // second pulse ring — intentional contrast with $color-accent
+
 // ── Base container ────────────────────────────────────────────────────────────
 .mascot {
   position: fixed;
@@ -123,7 +125,7 @@
 
   &--2 {
     animation-delay: 1.2s;
-    border-color: #a855f7;
+    border-color: $mascot-ring-alt;
   }
 }
 

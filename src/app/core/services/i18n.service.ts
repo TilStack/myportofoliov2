@@ -37,6 +37,9 @@ const EN: Translations = {
     contactCard:   "Let's Connect",
     contactCardDesc: 'Open to projects, collabs & conversations.',
     explore:       'Explore',
+    badgeDev:      'Dev',
+    badgeAI:       'AI',
+    badgeTeacher:  'Teacher',
     // Cameroon montage
     montageTitle: 'Cameroon, My Home',
     montageSub:   'The land that shaped who I am — a thousand hills, a thousand stories.',
@@ -297,6 +300,9 @@ const FR: Translations = {
     montageTitle: 'Le Cameroun, ma patrie',
     montageSub:   'La terre qui m\'a façonné — mille collines, mille histoires.',
     montageTag:   'Afrique · Cameroun',
+    badgeDev:     'Dev',
+    badgeAI:      'IA',
+    badgeTeacher: 'Formateur',
   },
   about: {
     title:    'À propos de moi',

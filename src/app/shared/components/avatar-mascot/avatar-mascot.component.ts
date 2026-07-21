@@ -1,4 +1,5 @@
 import { Component, inject, signal, computed } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
@@ -44,7 +45,7 @@ export class AvatarMascotComponent {
     check(this.router.url);
 
     this.router.events
-      .pipe(filter(e => e instanceof NavigationEnd))
+      .pipe(filter(e => e instanceof NavigationEnd), takeUntilDestroyed())
       .subscribe(e => check((e as NavigationEnd).urlAfterRedirects));
   }
 
@@ -63,7 +64,7 @@ export class AvatarMascotComponent {
   }
 
   onClick(): void {
-    if (this.fleeCount() < 2 || this.isZooming()) return;
+    if (!this.caught() || this.isZooming()) return;
 
     this.isZooming.set(true);
 
