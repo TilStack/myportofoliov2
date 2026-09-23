@@ -1,6 +1,6 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, PLATFORM_ID, inject, OnInit } from '@angular/core';
 import { RouterOutlet, NavigationEnd, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { FooterComponent } from './layout/footer/footer.component';
@@ -21,8 +21,11 @@ export class App implements OnInit {
   private themeService = inject(ThemeService);          // initializes on inject
   private scrollAnim   = inject(ScrollAnimationService);
   private router       = inject(Router);
+  private isBrowser    = isPlatformBrowser(inject(PLATFORM_ID));
 
   ngOnInit(): void {
+    if (!this.isBrowser) return;
+
     // Re-init scroll animations on every page navigation
     this.router.events.pipe(
       filter(e => e instanceof NavigationEnd)

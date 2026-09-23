@@ -9,6 +9,7 @@ import { Quote } from '../../core/models/quote.model';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { I18nService } from '../../core/services/i18n.service';
 import { QuoteService } from '../../core/services/quote.service';
+import { QUOTES } from './quotes.data';
 
 const PAGE_SIZE = 9;
 
@@ -31,12 +32,13 @@ export class QuotesComponent {
   private readonly quoteService = inject(QuoteService);
 
   // ── Loading state ─────────────────────────────────────────
-  readonly loading = signal(true);
+  // Le contenu initial est local (voir rawQuotes) : pas d'état de chargement.
+  readonly loading = signal(false);
 
   // ── Firebase data (real-time, approved only) ─────────────
   private readonly rawQuotes = toSignal(
     this.quoteService.getAll().pipe(tap(() => this.loading.set(false))),
-    { initialValue: [] as Quote[] }
+    { initialValue: QUOTES }
   );
 
   // ── Pending quotes (for moderation) ─────────────────────

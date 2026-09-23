@@ -1,4 +1,4 @@
-import { afterNextRender, Component, computed, HostListener, inject, signal } from '@angular/core';
+import { Component, computed, HostListener, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
@@ -149,12 +149,8 @@ export class BlogComponent {
   readonly fb   = inject(FormBuilder);
 
   // ── Loading state ─────────────────────────────────────
-  readonly loading = signal(true);
-
-  constructor() {
-    // Simulate async load; replace with Firebase observable when wiring blog to Firestore
-    afterNextRender(() => setTimeout(() => this.loading.set(false), 500));
-  }
+  // Les articles sont locaux : rien à attendre, le contenu est déjà dans le HTML pré-rendu.
+  readonly loading = signal(false);
 
   // ── filter ──
   activeFilter = signal<'all' | 'mine' | 'zerofiltre'>('all');

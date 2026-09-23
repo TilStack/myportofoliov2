@@ -1,4 +1,5 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, afterNextRender, inject, signal } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 export type Lang = 'en' | 'fr';
 
@@ -112,6 +113,10 @@ const EN: Translations = {
     faithDesc:  'My faith is the foundation of everything I do. It shapes how I build, how I lead, and how I serve — striving for excellence because excellence honours God.',
   },
   projects: {
+    quickView:    'Quick view',
+    viewDetail:   'View project page',
+    backToProjects: 'Back to projects',
+    company:      'Company',
     title:        'Projects',
     eyebrow:      'My Work',
     subtitle:     "A selection of apps and websites I've built — from mobile platforms to web applications, for clients and for learning.",
@@ -371,6 +376,10 @@ const FR: Translations = {
     faithDesc:  'Ma foi est le fondement de tout ce que je fais. Elle guide ma façon de construire, de diriger et de servir — en visant l\'excellence, parce que l\'excellence honore Dieu.',
   },
   projects: {
+    quickView:    'Aperçu rapide',
+    viewDetail:   'Voir la page du projet',
+    backToProjects: 'Retour aux projets',
+    company:      'Entreprise',
     title:        'Projets',
     eyebrow:      'Mon Travail',
     subtitle:     'Une sélection d\'applications et de sites web que j\'ai construits — du mobile au web, pour des clients ou pour apprendre.',
@@ -526,9 +535,22 @@ const FR: Translations = {
 
 const DICTS: Record<Lang, Translations> = { en: EN, fr: FR };
 
+const STORAGE_KEY = 'portfolio-lang';
+
+/**
+ * Français par défaut (langue du HTML pré-rendu, `<html lang="fr">`).
+ * La préférence du visiteur (localStorage, puis navigator.language) n'est lue
+ * qu'après le rendu, dans le navigateur.
+ */
 @Injectable({ providedIn: 'root' })
 export class I18nService {
-  readonly lang = signal<Lang>(this.getInitialLang());
+  private readonly document = inject(DOCUMENT);
+
+  readonly lang = signal<Lang>('fr');
+
+  constructor() {
+    afterNextRender(() => this.setLang(this.getInitialLang(), false));
+  }
 
   t(key: string): string {
     const dict = DICTS[this.lang()];
@@ -541,10 +563,11 @@ export class I18nService {
     return typeof node === 'string' ? node : key;
   }
 
-  setLang(lang: Lang): void {
+  /** Navigateur uniquement (appelé depuis un clic ou après le rendu). */
+  setLang(lang: Lang, persist = true): void {
     this.lang.set(lang);
-    localStorage.setItem('portfolio-lang', lang);
-    document.documentElement.setAttribute('lang', lang);
+    if (persist) localStorage.setItem(STORAGE_KEY, lang);
+    this.document.documentElement.setAttribute('lang', lang);
   }
 
   toggleLang(): void {
@@ -552,8 +575,8 @@ export class I18nService {
   }
 
   private getInitialLang(): Lang {
-    const stored = localStorage.getItem('portfolio-lang') as Lang | null;
-    if (stored) return stored;
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === 'fr' || stored === 'en') return stored;
     return navigator.language.startsWith('fr') ? 'fr' : 'en';
   }
 }

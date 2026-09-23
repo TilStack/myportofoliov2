@@ -1,20 +1,26 @@
-import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, doc, addDoc, getDoc,
-         updateDoc, deleteDoc,
-         CollectionReference, DocumentData, onSnapshot } from '@angular/fire/firestore';
-import { Observable, from } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Injectable, Injector, PLATFORM_ID, inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Firestore, collection, doc, addDoc, updateDoc, deleteDoc,
+         DocumentData, onSnapshot } from '@angular/fire/firestore';
+import { NEVER, Observable } from 'rxjs';
 
+/**
+ * Accès Firestore, réservé au navigateur : Firebase n'est pas fourni pendant
+ * le pré-rendu. Côté serveur, les lectures ne rendent jamais de valeur
+ * (`NEVER`) et les composants gardent leur contenu initial.
+ */
 @Injectable({ providedIn: 'root' })
 export class FirebaseService {
-  private firestore = inject(Firestore);
+  private readonly injector  = inject(Injector);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
-  // --- Generic Firestore helpers ---
-  col<T = DocumentData>(path: string): CollectionReference<T> {
-    return collection(this.firestore, path) as CollectionReference<T>;
+  private get firestore(): Firestore {
+    return this.injector.get(Firestore);
   }
 
+  // --- Generic Firestore helpers ---
   getAll<T>(collectionPath: string): Observable<T[]> {
+    if (!this.isBrowser) return NEVER;
     return new Observable(observer => {
       const unsub = onSnapshot(collection(this.firestore, collectionPath), snap => {
         const data = snap.docs.map(d => ({ id: d.id, ...d.data() } as T));
@@ -22,12 +28,6 @@ export class FirebaseService {
       }, err => observer.error(err));
       return () => unsub();
     });
-  }
-
-  getById<T>(collectionPath: string, id: string): Observable<T | null> {
-    return from(getDoc(doc(this.firestore, collectionPath, id))).pipe(
-      map(snap => snap.exists() ? ({ id: snap.id, ...snap.data() } as T) : null)
-    );
   }
 
   add<T>(collectionPath: string, data: T): Promise<string> {
