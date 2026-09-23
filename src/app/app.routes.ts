@@ -22,7 +22,7 @@ export const routes: Routes = [
     title: 'Projects | TilPortofolio',
   },
   {
-    path: 'projects/:id',
+    path: 'projects/:slug',
     loadComponent: () =>
       import('./features/projects/project-detail/project-detail.component').then(
         (m) => m.ProjectDetailComponent,
@@ -42,6 +42,14 @@ export const routes: Routes = [
         (m) => m.QuotesComponent,
       ),
     title: 'Quotes | TilPortofolio',
+  },
+  {
+    path: 'contact',
+    loadComponent: () =>
+      import('./features/contact/contact.component').then(
+        (m) => m.ContactComponent,
+      ),
+    title: 'Contact | TilPortofolio',
   },
   {
     path: '**',

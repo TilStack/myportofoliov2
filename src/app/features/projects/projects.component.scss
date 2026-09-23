@@ -205,7 +205,31 @@
   }
 
   // ── open hint ──
+  // Lien étendu : toute la carte est cliquable vers la page détail
+  &__link {
+    color: inherit;
+    text-decoration: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      border-radius: inherit;
+    }
+
+    &:focus-visible { outline: none; }
+    &:focus-visible::after { outline: 3px solid var(--color-accent); outline-offset: 2px; }
+  }
+
   &__open-hint {
+    position: relative;
+    z-index: 2; // au-dessus du lien étendu
+    padding: 0;
+    background: none;
+    border: 0;
+    font-family: inherit;
+    cursor: pointer;
     font-size: $text-xs;
     font-weight: $font-semibold;
     color: var(--color-text-muted);
@@ -215,7 +239,8 @@
                 color $transition-fast;
   }
 
-  &:hover &__open-hint {
+  &:hover &__open-hint,
+  &__open-hint:focus-visible {
     opacity: 1;
     transform: translateX(0);
     color: var(--color-accent-text);
@@ -401,6 +426,17 @@
   }
 
   // ── full description ──
+  &__detail-link {
+    display: inline-block;
+    margin-bottom: $space-3;
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    color: var(--color-accent-text);
+    text-decoration: none;
+
+    &:hover { text-decoration: underline; }
+  }
+
   &__desc {
     font-size: $text-base;
     color: var(--color-text-muted);

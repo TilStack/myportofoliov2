@@ -222,6 +222,13 @@
     margin-bottom: $space-5;
   }
 
+  &__company {
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    color: var(--color-text-muted);
+    margin-bottom: $space-3;
+  }
+
   &__desc {
     font-size: $text-base;
     color: var(--color-text-muted);
