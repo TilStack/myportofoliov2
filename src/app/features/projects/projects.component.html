@@ -15,16 +15,7 @@
   <main class="container projects-page__main">
     <ul class="projects-grid" role="list">
       @for (p of projects; track p.id; let i = $index) {
-        <li
-          class="pcard fade-up"
-          appFadeOnScroll
-          [delay]="i * 80"
-          (click)="openModal(p)"
-          role="button"
-          tabindex="0"
-          (keyup.enter)="openModal(p)"
-          [attr.aria-label]="p.name"
-        >
+        <li class="pcard fade-up" appFadeOnScroll [delay]="i * 80">
           <!-- Hover reveal background -->
           <div class="pcard__hover-bg" aria-hidden="true"></div>
 
@@ -33,7 +24,9 @@
 
           <!-- Name + company -->
           <div class="pcard__header">
-            <h3 class="pcard__name">{{ p.name }}</h3>
+            <h3 class="pcard__name">
+              <a class="pcard__link" [routerLink]="['/projects', p.slug]">{{ p.name }}</a>
+            </h3>
             <span class="pcard__company">{{ p.company }}</span>
           </div>
 
@@ -57,7 +50,9 @@
               <span class="pcard__status-dot" aria-hidden="true"></span>
               {{ p.status === 'finished' ? i18n.t('projects.finished') : i18n.t('projects.inProgress') }}
             </span>
-            <span class="pcard__open-hint" aria-hidden="true">Open ↗</span>
+            <button type="button" class="pcard__open-hint" (click)="openModal(p)">
+              {{ i18n.t('projects.quickView') }}
+            </button>
           </div>
         </li>
       }
@@ -120,6 +115,10 @@
             <p class="pmodal__company">{{ selected()!.company }}</p>
           </div>
         </div>
+
+        <a class="pmodal__detail-link" [routerLink]="['/projects', selected()!.slug]" (click)="closeModal()">
+          {{ i18n.t('projects.viewDetail') }} →
+        </a>
 
         <!-- Full description -->
         <p class="pmodal__desc">{{ detail(selected()!) }}</p>

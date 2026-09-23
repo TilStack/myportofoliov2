@@ -1,46 +1,43 @@
-import { Component, HostListener, inject, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, HostListener, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { ProjectService } from '../../../core/services/project.service';
-import { SkeletonComponent } from '../../../shared/components/skeleton/skeleton.component';
+import { map } from 'rxjs/operators';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
-import { Project } from '../../../core/models';
+import { I18nService } from '../../../core/services/i18n.service';
+import { PROJECTS, Project } from '../../../data/projects.data';
 
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, SkeletonComponent, ButtonComponent],
+  imports: [RouterModule, ButtonComponent],
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss',
 })
-export class ProjectDetailComponent implements OnInit {
-  private route          = inject(ActivatedRoute);
-  private projectService = inject(ProjectService);
+export class ProjectDetailComponent {
+  readonly i18n = inject(I18nService);
 
-  project  = signal<Project | null>(null);
-  loading  = signal(true);
-  notFound = signal(false);
+  private readonly slug = toSignal(
+    inject(ActivatedRoute).paramMap.pipe(map(params => params.get('slug'))),
+  );
+
+  /** Résolu de façon synchrone depuis les données locales (pré-rendable). */
+  readonly project = computed<Project | null>(
+    () => PROJECTS.find(p => p.slug === this.slug()) ?? null,
+  );
+
+  /** Texte détaillé si présent, sinon description courte ; jamais de texte inventé. */
+  readonly body = computed(() => {
+    const p = this.project();
+    if (!p) return '';
+    const fr = this.i18n.lang() === 'fr';
+    return (fr ? p.detailFr || p.descFr : p.detailEn || p.descEn)
+      || p.detailEn || p.descEn;
+  });
+
   activeImg = signal(0);
 
   imageOrientations = signal<Record<string, 'portrait' | 'landscape'>>({});
   lightboxSrc = signal<string | null>(null);
-
-  ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (!id) { this.notFound.set(true); return; }
-
-    this.projectService.getById(id).subscribe({
-      next: p => {
-        this.project.set(p);
-        this.loading.set(false);
-        if (!p) this.notFound.set(true);
-      },
-      error: () => {
-        this.loading.set(false);
-        this.notFound.set(true);
-      },
-    });
-  }
 
   setActiveImg(i: number): void {
     this.activeImg.set(i);

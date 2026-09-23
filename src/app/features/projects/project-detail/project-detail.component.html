@@ -5,37 +5,29 @@
         <line x1="19" y1="12" x2="5" y2="12"></line>
         <polyline points="12 19 5 12 12 5"></polyline>
       </svg>
-      Back to projects
+      {{ i18n.t('projects.backToProjects') }}
     </a>
 
-    @if (loading()) {
-      <div class="detail-skeleton">
-        <app-skeleton height="400px" radius="1rem"></app-skeleton>
-        <app-skeleton width="60%" height="2rem" style="margin-top:2rem"></app-skeleton>
-        <app-skeleton height="1rem" style="margin-top:1rem"></app-skeleton>
-        <app-skeleton height="1rem" style="margin-top:0.5rem"></app-skeleton>
-        <app-skeleton width="80%" height="1rem" style="margin-top:0.5rem"></app-skeleton>
-      </div>
-    } @else if (notFound()) {
+    @if (!project()) {
       <div class="detail-not-found">
-        <h2>Project not found</h2>
+        <h1>Project not found</h1>
         <a routerLink="/projects">← Back to projects</a>
       </div>
-    } @else if (project()) {
+    } @else {
       <div class="detail-content">
 
-        @if (project()!.images.length) {
+        @if (project()!.images?.length) {
           <div class="detail-gallery">
 
-            @if (project()!.images.length === 1) {
+            @if (project()!.images!.length === 1) {
               <!-- Single image: full-width -->
-              <div class="detail-gallery__single" (click)="openLightbox(project()!.images[0])"
+              <div class="detail-gallery__single" (click)="openLightbox(project()!.images![0])"
                    role="button" tabindex="0" aria-label="Agrandir l'image"
-                   (keyup.enter)="openLightbox(project()!.images[0])">
-                <img [src]="project()!.images[0]"
-                     [alt]="'Aperçu du projet ' + project()!.title"
+                   (keyup.enter)="openLightbox(project()!.images![0])">
+                <img [src]="project()!.images![0]"
+                     [alt]="'Aperçu du projet ' + project()!.name"
                      class="detail-gallery__single-img"
-                     (load)="onImageLoad($event, project()!.images[0])" />
+                     (load)="onImageLoad($event, project()!.images![0])" />
                 <div class="detail-gallery__zoom-hint" aria-hidden="true">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -48,19 +40,19 @@
             } @else {
               <!-- Multiple images: adaptive grid -->
               <div class="img-gallery-grid">
-                @for (img of project()!.images; track img; let i = $index) {
+                @for (img of project()!.images!; track img; let i = $index) {
                   <div
                     class="img-gallery-item"
                     [attr.data-orientation]="getOrientation(img)"
                     (click)="openLightbox(img)"
                     role="button"
                     tabindex="0"
-                    [attr.aria-label]="'Agrandir capture ' + (i + 1) + ' — ' + project()!.title"
+                    [attr.aria-label]="'Agrandir capture ' + (i + 1) + ' — ' + project()!.name"
                     (keyup.enter)="openLightbox(img)"
                   >
                     <img
                       [src]="img"
-                      [alt]="'Capture ' + (i + 1) + ' — ' + project()!.title"
+                      [alt]="'Capture ' + (i + 1) + ' — ' + project()!.name"
                       (load)="onImageLoad($event, img)"
                     />
                     <div class="img-gallery-item__zoom" aria-hidden="true">
@@ -79,13 +71,14 @@
 
         <div class="detail-meta">
           <div class="detail-meta__left">
-            <h1 class="detail-meta__title">{{ project()!.title }}</h1>
+            <h1 class="detail-meta__title">{{ project()!.name }}</h1>
             <div class="detail-meta__tags">
-              @for (t of project()!.techStack; track t) {
+              @for (t of project()!.tech; track t) {
                 <span class="tag">{{ t }}</span>
               }
             </div>
-            <div class="detail-meta__desc">{{ project()!.description }}</div>
+            <p class="detail-meta__company">{{ project()!.company }} · {{ project()!.status === 'finished' ? i18n.t('projects.finished') : i18n.t('projects.inProgress') }}</p>
+            <div class="detail-meta__desc">{{ body() }}</div>
           </div>
 
           <div class="detail-meta__links">
@@ -98,16 +91,6 @@
                     <line x1="10" y1="14" x2="21" y2="3"></line>
                   </svg>
                   Live demo
-                </a>
-              </app-button>
-            }
-            @if (project()!.githubUrl) {
-              <app-button variant="secondary" size="md">
-                <a [href]="project()!.githubUrl" target="_blank" rel="noopener" class="link-btn">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/>
-                  </svg>
-                  Source code
                 </a>
               </app-button>
             }
@@ -132,6 +115,6 @@
         <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
     </button>
-    <img class="img-lightbox__img" [src]="lightboxSrc()!" [alt]="'Vue agrandie — ' + project()?.title" />
+    <img class="img-lightbox__img" [src]="lightboxSrc()!" [alt]="'Vue agrandie — ' + project()?.name" />
   </div>
 }
