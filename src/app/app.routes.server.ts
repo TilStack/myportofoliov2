@@ -8,6 +8,8 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => VISIBLE_PROJECTS.map(({ slug }) => ({ slug })),
   },
+  // Espace admin : jamais pré-rendu (coquille client uniquement, hors sitemap).
+  { path: 'admin', renderMode: RenderMode.Client },
   {
     path: '**',
     renderMode: RenderMode.Prerender,

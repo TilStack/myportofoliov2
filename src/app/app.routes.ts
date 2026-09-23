@@ -52,6 +52,12 @@ export const routes: Routes = [
     title: 'Contact | TilPortofolio',
   },
   {
+    path: 'admin',
+    loadComponent: () =>
+      import('./features/admin/admin.component').then((m) => m.AdminComponent),
+    title: 'Admin | TilPortofolio',
+  },
+  {
     path: '**',
     redirectTo: '',
   },

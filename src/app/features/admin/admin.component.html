@@ -1,0 +1,39 @@
+<div class="admin-page">
+  <div class="admin-card">
+    <h1 class="admin-card__title">{{ i18n.t('admin.title') }}</h1>
+    <p class="admin-card__sub">{{ i18n.t('admin.subtitle') }}</p>
+
+    @if (admin.ready() && admin.user(); as user) {
+      <p class="admin-card__who">
+        {{ i18n.t('admin.signedInAs') }} <strong>{{ user.email }}</strong>
+      </p>
+
+      @if (admin.isAdmin()) {
+        <p class="admin-card__ok">{{ i18n.t('admin.isAdmin') }}</p>
+        <div class="admin-card__links">
+          <a routerLink="/quotes">{{ i18n.t('nav.quotes') }}</a>
+          <a routerLink="/blog">{{ i18n.t('nav.blog') }}</a>
+        </div>
+      } @else {
+        <!-- Première connexion : ADMIN_UID pas encore renseigné -->
+        <div class="admin-card__setup">
+          <h2>{{ i18n.t('admin.setupTitle') }}</h2>
+          <p>{{ i18n.t('admin.setupText') }}</p>
+          <p>{{ i18n.t('admin.uid') }} : <code>{{ user.uid }}</code></p>
+        </div>
+      }
+
+      <app-button variant="secondary" (click)="signOut()">{{ i18n.t('admin.signOut') }}</app-button>
+    } @else {
+      <app-button variant="accent" size="lg" [loading]="busy()" (click)="signIn()">
+        {{ busy() ? i18n.t('admin.signingIn') : i18n.t('admin.signIn') }}
+      </app-button>
+
+      @if (error() === 'forbidden') {
+        <p class="admin-card__error" role="alert">{{ i18n.t('admin.forbidden') }}</p>
+      } @else if (error() === 'failed') {
+        <p class="admin-card__error" role="alert">{{ i18n.t('admin.error') }}</p>
+      }
+    }
+  </div>
+</div>
