@@ -3,6 +3,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { I18nService } from '../../core/services/i18n.service';
+import { AdminAuthService } from '../../core/services/admin-auth.service';
 import { BLOG_COVERS } from '../../core/config/images.config';
 
 const PAGE_SIZE = 6;
@@ -147,6 +148,7 @@ const ARTICLES: Article[] = [
 export class BlogComponent {
   readonly i18n = inject(I18nService);
   readonly fb   = inject(FormBuilder);
+  readonly admin = inject(AdminAuthService);
 
   // ── Loading state ─────────────────────────────────────
   // Les articles sont locaux : rien à attendre, le contenu est déjà dans le HTML pré-rendu.
@@ -232,37 +234,6 @@ export class BlogComponent {
     content:  [''],
   });
 
-  // ── password gate ──
-  showPasswordModal = signal(false);
-  passwordError     = signal(false);
-  passwordValue     = '';
-
-  openPasswordModal(): void {
-    this.showPasswordModal.set(true);
-    this.passwordError.set(false);
-    this.passwordValue = '';
-  }
-
-  closePasswordModal(): void {
-    this.showPasswordModal.set(false);
-    this.passwordError.set(false);
-  }
-
-  checkPassword(): void {
-    if (this.passwordValue === '1Jesus1') {
-      this.closePasswordModal();
-      this.openContribute();
-    } else {
-      this.passwordError.set(true);
-    }
-  }
-
-  onPwBackdropClick(e: MouseEvent): void {
-    if ((e.target as HTMLElement).classList.contains('pw-backdrop')) {
-      this.closePasswordModal();
-    }
-  }
-
   // ── article detail ──
   articleDetail = signal<Article | null>(null);
 
@@ -336,7 +307,6 @@ export class BlogComponent {
   onEscape(): void {
     if (this.showContribute())    this.closeContribute();
     if (this.articleDetail())     this.closeArticleDetail();
-    if (this.showPasswordModal()) this.closePasswordModal();
   }
 
   onBackdropClick(event: MouseEvent): void {

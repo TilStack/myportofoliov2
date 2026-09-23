@@ -433,7 +433,6 @@
 .qcard__del-btn:hover  { color: #f87171; }
 
 // ── Shared modal backdrop pattern ─────────────────────
-.qpw-backdrop,
 .qadd-backdrop,
 .qedit-backdrop,
 .qdel-backdrop {
@@ -494,27 +493,6 @@
   transition: background $transition-fast, color $transition-fast;
 
   &:hover { background: var(--color-surface); color: var(--color-text); }
-}
-
-// ── Password modal ────────────────────────────────────
-.qpw-modal {
-  position: relative;
-  width: 100%;
-  max-width: 380px;
-  background: var(--color-bg);
-  border-radius: $radius-2xl;
-  padding: $space-10 $space-8 $space-8;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: $space-4;
-  box-shadow: $shadow-xl, 0 0 0 1px var(--color-border);
-  animation: qSlideUp 240ms $ease-out-cubic both;
-
-  &__icon  { font-size: 2.6rem; line-height: 1; }
-  &__title { font-family: $font-display; font-size: $text-xl; font-weight: $font-black; color: var(--color-text); }
-  &__sub   { font-size: $text-sm; color: var(--color-text-muted); line-height: 1.6; }
 }
 
 // ── Add quote modal ───────────────────────────────────

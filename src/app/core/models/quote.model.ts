@@ -16,8 +16,18 @@ export interface Quote {
   category?:   string;
   expanded?:   boolean;
   // Moderation
-  status?:             'approved' | 'pending';
-  submitterEmail?:     string;
-  submitterRole?:      string;
-  submitterLinkedin?:  string;
+  status?:     'approved' | 'pending';
+}
+
+/**
+ * Coordonnées d'un visiteur qui propose une citation. Stockées à part
+ * (collection `quoteSubmissions`, lisible par l'admin uniquement) pour qu'elles
+ * ne soient jamais exposées avec la citation publique.
+ */
+export interface QuoteSubmission {
+  id?:      string;
+  quoteId:  string;
+  email:    string;
+  role?:    string;
+  linkedin?: string;
 }
