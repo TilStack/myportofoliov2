@@ -6,7 +6,11 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "test:rules": "firebase emulators:exec --only firestore --project tilportofoliov2 \"node tests/firestore.rules.test.mjs\"",
+    "test:migration": "firebase emulators:exec --only firestore --project tilportofoliov2 \"node tests/migrate-quotes.test.mjs\"",
+    "test:security": "npm run test:rules && npm run test:migration && npm run test:e2e",
+    "test:e2e": "firebase emulators:exec --only firestore,hosting --project tilportofoliov2 \"node tests/e2e-quotes.test.mjs\""
   },
   "prettier": {
     "overrides": [
@@ -24,14 +28,12 @@
     "@angular/common": "^20.3.32",
     "@angular/compiler": "^20.3.32",
     "@angular/core": "^20.3.32",
-    "@angular/fire": "^20.0.1",
     "@angular/forms": "^20.3.32",
     "@angular/platform-browser": "^20.3.32",
-    "@angular/platform-browser-dynamic": "^20.3.32",
     "@angular/platform-server": "^20.3.32",
     "@angular/router": "^20.3.32",
     "@angular/ssr": "^20.3.37",
-    "firebase": "^12.11.0",
+    "firebase": "^11.10.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
@@ -40,13 +42,16 @@
     "@angular/build": "^20.3.37",
     "@angular/cli": "^20.3.37",
     "@angular/compiler-cli": "^20.3.32",
+    "@firebase/rules-unit-testing": "^4.0.1",
     "@types/jasmine": "~5.1.0",
+    "firebase-admin": "^13.10.0",
     "jasmine-core": "~5.8.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "playwright-core": "^1.63.0",
     "typescript": "~5.8.2"
   }
 }
