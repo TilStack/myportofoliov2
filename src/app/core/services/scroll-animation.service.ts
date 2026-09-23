@@ -1,15 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, inject } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
 /**
  * Uses IntersectionObserver to add `.visible` to elements
  * with class `.fade-up`, `.fade-left`, `.fade-right`.
- * Call `init()` once after each page navigation.
+ * Call `init()` once after each page navigation (navigateur uniquement).
  */
 @Injectable({ providedIn: 'root' })
 export class ScrollAnimationService {
+  private readonly document  = inject(DOCUMENT);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private observer: IntersectionObserver | null = null;
 
   init(): void {
+    if (!this.isBrowser) return;
     this.destroy();
 
     this.observer = new IntersectionObserver(
@@ -24,7 +28,7 @@ export class ScrollAnimationService {
       { threshold: 0.12 }
     );
 
-    document
+    this.document
       .querySelectorAll('.fade-up, .fade-left, .fade-right')
       .forEach(el => this.observer!.observe(el));
   }

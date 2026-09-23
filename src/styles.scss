@@ -90,36 +90,30 @@
 .accent { color: $color-accent; }
 .accent-bg { background: $color-accent; }
 
-// Fade-up scroll animation classes (driven by IntersectionObserver)
-.fade-up {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 600ms $ease-out-cubic, transform 600ms $ease-out-cubic;
-
-  &.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fade-left {
-  opacity: 0;
-  transform: translateX(-24px);
-  transition: opacity 600ms $ease-out-cubic, transform 600ms $ease-out-cubic;
-
-  &.visible {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
+// Scroll-reveal classes (driven by IntersectionObserver).
+// Le contenu n'est masqué QUE si le script inline d'index.html a posé `js-anim` sur <html> :
+// sans JavaScript (et dans le HTML pré-rendu lu par un robot) le texte reste visible.
+.fade-up,
+.fade-left,
 .fade-right {
-  opacity: 0;
-  transform: translateX(24px);
   transition: opacity 600ms $ease-out-cubic, transform 600ms $ease-out-cubic;
+}
 
-  &.visible {
+html.js-anim {
+  .fade-up    { opacity: 0; transform: translateY(24px); }
+  .fade-left  { opacity: 0; transform: translateX(-24px); }
+  .fade-right { opacity: 0; transform: translateX(24px); }
+
+  .fade-up.visible,
+  .fade-left.visible,
+  .fade-right.visible {
     opacity: 1;
-    transform: translateX(0);
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js-anim {
+    .fade-up, .fade-left, .fade-right { opacity: 1; transform: none; transition: none; }
   }
 }

@@ -1,6 +1,6 @@
 import {
   Component, Input, Output, EventEmitter,
-  HostListener, OnInit, ElementRef, ViewChild,
+  HostListener, OnInit, ElementRef, ViewChild, afterNextRender,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Quote, QuoteComment } from '../../../core/models/quote.model';
@@ -26,9 +26,14 @@ export class QuoteModalComponent implements OnInit {
   newCommentAuthor = '';
   newCommentText   = '';
 
+  constructor() {
+    afterNextRender(() => {
+      requestAnimationFrame(() => (this.visible = true));
+      document.body.style.overflow = 'hidden';
+    });
+  }
+
   ngOnInit(): void {
-    requestAnimationFrame(() => (this.visible = true));
-    document.body.style.overflow = 'hidden';
     this.likeCount = this.quote.likes;
   }
 

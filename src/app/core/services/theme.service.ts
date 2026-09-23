@@ -1,17 +1,34 @@
-import { Injectable, signal, effect } from '@angular/core';
+import { Injectable, afterNextRender, effect, inject, signal } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 export type Theme = 'light' | 'dark';
 
+const STORAGE_KEY = 'portfolio-theme';
+
+/**
+ * Le thème initial est appliqué avant le premier rendu par le script inline de
+ * `index.html` (pas de flash). Ce service n'agit que dans le navigateur, après
+ * le rendu : côté serveur le signal reste sur 'light' et rien n'est touché.
+ */
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
-  readonly theme = signal<Theme>(this.getInitialTheme());
+  private readonly document = inject(DOCUMENT);
+
+  readonly theme = signal<Theme>('light');
+  private ready = false;
 
   constructor() {
-    // Persist & apply whenever theme changes
+    afterNextRender(() => {
+      this.theme.set(this.getInitialTheme());
+      this.ready = true;
+    });
+
+    // Persist & apply whenever theme changes (after the initial theme is read)
     effect(() => {
       const t = this.theme();
-      document.documentElement.setAttribute('data-theme', t);
-      localStorage.setItem('portfolio-theme', t);
+      if (!this.ready) return;
+      this.document.documentElement.setAttribute('data-theme', t);
+      localStorage.setItem(STORAGE_KEY, t);
     });
   }
 
@@ -24,8 +41,8 @@ export class ThemeService {
   }
 
   private getInitialTheme(): Theme {
-    const stored = localStorage.getItem('portfolio-theme') as Theme | null;
-    if (stored) return stored;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === 'light' || stored === 'dark') return stored;
+    return this.document.defaultView!.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
 }

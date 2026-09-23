@@ -1,15 +1,18 @@
 import {
   Component,
   HostListener,
+  PLATFORM_ID,
   inject,
   OnDestroy,
   OnInit,
   signal,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { interval, Subscription } from 'rxjs';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { I18nService } from '../../core/services/i18n.service';
 import { PROFILE_PHOTOS, TRAVEL_PHOTOS } from '../../core/config/images.config';
+import { GITHUB_URL, LINKEDIN_URL, TWITTER_URL } from '../../data/site.data';
 
 interface SetupItem {
   icon: string;
@@ -43,6 +46,7 @@ interface TravelImage {
 })
 export class AboutComponent implements OnInit, OnDestroy {
   readonly i18n = inject(I18nService);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   // ── travel carousel ──────────────────────────────────────
   activeImageIndex = signal(0);
@@ -223,13 +227,13 @@ export class AboutComponent implements OnInit, OnDestroy {
   }[] = [
     {
       label: 'GitHub',
-      href: 'https://github.com/tilstack',
+      href: GITHUB_URL,
       icon: 'github',
       descKey: 'about.involvementGithub',
     },
     {
       label: 'LinkedIn',
-      href: 'https://www.linkedin.com/in/israel-tientcheu/',
+      href: LINKEDIN_URL,
       icon: 'linkedin',
       descKey: 'about.involvementLinkedIn',
     },
@@ -241,7 +245,7 @@ export class AboutComponent implements OnInit, OnDestroy {
     },
     {
       label: 'X / Twitter',
-      href: 'https://x.com/tilstack',
+      href: TWITTER_URL,
       icon: 'twitter',
       descKey: 'about.involvementTwitter',
     },
@@ -356,6 +360,9 @@ export class AboutComponent implements OnInit, OnDestroy {
   ];
 
   ngOnInit(): void {
+    // Les timers (interval) rendraient l'application instable pendant le pré-rendu.
+    if (!this.isBrowser) return;
+
     this.imageSub = interval(5000).subscribe(() =>
       this.activeImageIndex.update((i) => (i + 1) % this.travelImages.length),
     );
