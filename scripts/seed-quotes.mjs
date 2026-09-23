@@ -1,3 +1,6 @@
+// OBSOLÈTE — ne plus utiliser. Ce script écrit via l'API REST publique et suppose des règles
+// Firestore ouvertes (`allow read, write: if true`), incompatibles avec firestore.rules.
+// Pour migrer des données, utiliser l'Admin SDK (voir scripts/migrate-quotes.mjs).
 /**
  * One-shot migration: inserts the 12 static quotes into Firestore.
  * Run once: node scripts/seed-quotes.mjs
