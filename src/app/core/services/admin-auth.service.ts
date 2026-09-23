@@ -1,6 +1,6 @@
 import { Injectable, NgZone, PLATFORM_ID, afterNextRender, computed, inject, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { getFirebaseApp } from '../config/firebase-app';
+import { loadFirebaseApp } from '../config/firebase-app';
 import { ADMIN_UID } from '../../data/site.data';
 
 type AuthModule = typeof import('firebase/auth');
@@ -43,15 +43,19 @@ export class AdminAuthService {
   /** Charge Auth (une seule fois) et suit l'état de connexion. */
   load(): Promise<{ m: AuthModule; auth: Auth }> {
     if (!this.isBrowser) return new Promise(() => {});
-    return (this.loading ??= import('firebase/auth').then(m => {
-      const auth = m.getAuth(getFirebaseApp());
-      m.onAuthStateChanged(auth, u => this.zone.run(() => {
-        this.user.set(u ? { uid: u.uid, email: u.email } : null);
-        if (!u) localStorage.removeItem(HINT_KEY);
-        this.ready.set(true);
+    if (ngServerMode) {
+      return new Promise(() => {});
+    } else {
+      return (this.loading ??= Promise.all([import('firebase/auth'), loadFirebaseApp()]).then(([m, app]) => {
+        const auth = m.getAuth(app);
+        m.onAuthStateChanged(auth, u => this.zone.run(() => {
+          this.user.set(u ? { uid: u.uid, email: u.email } : null);
+          if (!u) localStorage.removeItem(HINT_KEY);
+          this.ready.set(true);
+        }));
+        return { m, auth };
       }));
-      return { m, auth };
-    }));
+    }
   }
 
   /**

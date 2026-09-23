@@ -2,7 +2,7 @@ import { ApplicationConfig, mergeApplicationConfig, provideAppInitializer } from
 
 import { appConfig } from './app.config';
 import { APP_CHECK } from './core/config/app-check.config';
-import { getFirebaseApp } from './core/config/firebase-app';
+import { loadFirebaseApp } from './core/config/firebase-app';
 
 /** Configuration navigateur : Firebase n'est jamais initialisé pendant le pré-rendu. */
 const browserOnlyConfig: ApplicationConfig = {
@@ -12,8 +12,9 @@ const browserOnlyConfig: ApplicationConfig = {
     // Doit être initialisé avant la première requête Firestore : d'où l'initializer.
     provideAppInitializer(async () => {
       if (!APP_CHECK.enabled || !APP_CHECK.siteKey) return;
-      const { initializeAppCheck, ReCaptchaV3Provider } = await import('firebase/app-check');
-      initializeAppCheck(getFirebaseApp(), {
+      const [{ initializeAppCheck, ReCaptchaV3Provider }, app] =
+        await Promise.all([import('firebase/app-check'), loadFirebaseApp()]);
+      initializeAppCheck(app, {
         provider: new ReCaptchaV3Provider(APP_CHECK.siteKey),
         isTokenAutoRefreshEnabled: true,
       });

@@ -1,10 +1,11 @@
 import { Injectable, NgZone, PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Firestore, collection, doc, addDoc, updateDoc, deleteDoc, getDocs, getFirestore,
-         query, where, writeBatch, WhereFilterOp,
-         DocumentData, onSnapshot } from 'firebase/firestore';
-import { NEVER, Observable } from 'rxjs';
-import { getFirebaseApp } from '../config/firebase-app';
+import type { DocumentData, Firestore, WhereFilterOp } from 'firebase/firestore';
+import { NEVER, Observable, defer, switchMap } from 'rxjs';
+import { loadFirebaseApp } from '../config/firebase-app';
+
+type FirestoreModule = typeof import('firebase/firestore');
+interface FirestoreContext { m: FirestoreModule; db: Firestore }
 
 /** Firestore refuse `undefined` : on retire les clés vides avant l'écriture. */
 function clean<T extends object>(data: T): DocumentData {
@@ -12,19 +13,29 @@ function clean<T extends object>(data: T): DocumentData {
 }
 
 /**
- * Accès Firestore, réservé au navigateur : Firebase n'est pas fourni pendant
- * le pré-rendu. Côté serveur, les lectures ne rendent jamais de valeur
- * (`NEVER`) et les composants gardent leur contenu initial.
+ * Accès Firestore, réservé au navigateur et chargé à la demande : `firebase/firestore`
+ * n'est importé (import dynamique) qu'au premier appel, puis mis en cache. Les pages qui
+ * n'utilisent pas ce service ne téléchargent aucun code Firebase.
+ *
+ * Côté serveur (pré-rendu), les lectures ne rendent jamais de valeur (`NEVER`) et les
+ * composants gardent leur contenu initial ; `firebase/firestore` n'entre pas dans le bundle
+ * serveur (sa version Node dépend de gRPC, module CommonJS).
  */
 @Injectable({ providedIn: 'root' })
 export class FirebaseService {
   private readonly zone      = inject(NgZone);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
-  private db?: Firestore;
+  private context?: Promise<FirestoreContext>;
 
-  /** Initialisé au premier usage, dans le navigateur uniquement. */
-  private get firestore(): Firestore {
-    return (this.db ??= getFirestore(getFirebaseApp()));
+  /** Charge Firestore (une seule fois) et l'initialise sur l'app Firebase. */
+  private load(): Promise<FirestoreContext> {
+    if (!this.isBrowser) return new Promise(() => {});
+    if (ngServerMode) {
+      return new Promise(() => {});
+    } else {
+      return (this.context ??= Promise.all([import('firebase/firestore'), loadFirebaseApp()])
+        .then(([m, app]) => ({ m, db: m.getFirestore(app) })));
+    }
   }
 
   // --- Generic Firestore helpers ---
@@ -36,58 +47,64 @@ export class FirebaseService {
    */
   getAllWhere<T>(collectionPath: string, field: string, op: WhereFilterOp, value: unknown): Observable<T[]> {
     if (!this.isBrowser) return NEVER;
-    return new Observable(observer => {
-      const q = query(collection(this.firestore, collectionPath), where(field, op, value));
-      const unsub = onSnapshot(q, snap => {
+    return defer(() => this.load()).pipe(switchMap(({ m, db }) => new Observable<T[]>(observer => {
+      const q = m.query(m.collection(db, collectionPath), m.where(field, op, value));
+      const unsub = m.onSnapshot(q, snap => {
         this.zone.run(() => observer.next(snap.docs.map(d => ({ id: d.id, ...d.data() } as T))));
       }, err => this.zone.run(() => observer.error(err)));
       return () => unsub();
-    });
+    })));
   }
 
   /** Lecture de toute la collection (réservée aux collections dont les règles l'autorisent). */
   getAll<T>(collectionPath: string): Observable<T[]> {
     if (!this.isBrowser) return NEVER;
-    return new Observable(observer => {
-      const unsub = onSnapshot(collection(this.firestore, collectionPath), snap => {
+    return defer(() => this.load()).pipe(switchMap(({ m, db }) => new Observable<T[]>(observer => {
+      const unsub = m.onSnapshot(m.collection(db, collectionPath), snap => {
         this.zone.run(() => observer.next(snap.docs.map(d => ({ id: d.id, ...d.data() } as T))));
       }, err => this.zone.run(() => observer.error(err)));
       return () => unsub();
-    });
+    })));
   }
 
-  add<T extends object>(collectionPath: string, data: T): Promise<string> {
-    return addDoc(collection(this.firestore, collectionPath), clean(data))
-      .then(ref => ref.id);
+  async add<T extends object>(collectionPath: string, data: T): Promise<string> {
+    const { m, db } = await this.load();
+    const ref = await m.addDoc(m.collection(db, collectionPath), clean(data));
+    return ref.id;
   }
 
   /**
    * Crée un document puis un second qui le référence, dans un seul lot atomique
    * (les deux écritures réussissent ou échouent ensemble). Retourne l'id du premier.
    */
-  addLinked<A extends object, B extends object>(
+  async addLinked<A extends object, B extends object>(
     pathA: string, dataA: A, pathB: string, buildB: (idA: string) => B,
   ): Promise<string> {
-    const batch = writeBatch(this.firestore);
-    const refA  = doc(collection(this.firestore, pathA));
+    const { m, db } = await this.load();
+    const batch = m.writeBatch(db);
+    const refA  = m.doc(m.collection(db, pathA));
     batch.set(refA, clean(dataA));
-    batch.set(doc(collection(this.firestore, pathB)), clean(buildB(refA.id)));
-    return batch.commit().then(() => refA.id);
+    batch.set(m.doc(m.collection(db, pathB)), clean(buildB(refA.id)));
+    await batch.commit();
+    return refA.id;
   }
 
-  update<T>(collectionPath: string, id: string, data: Partial<T>): Promise<void> {
-    return updateDoc(doc(this.firestore, collectionPath, id), clean(data as object));
+  async update<T>(collectionPath: string, id: string, data: Partial<T>): Promise<void> {
+    const { m, db } = await this.load();
+    return m.updateDoc(m.doc(db, collectionPath, id), clean(data as object));
   }
 
-  delete(collectionPath: string, id: string): Promise<void> {
-    return deleteDoc(doc(this.firestore, collectionPath, id));
+  async delete(collectionPath: string, id: string): Promise<void> {
+    const { m, db } = await this.load();
+    return m.deleteDoc(m.doc(db, collectionPath, id));
   }
 
   /** Supprime tous les documents dont `field == value` (admin). */
   async deleteWhere(collectionPath: string, field: string, value: unknown): Promise<void> {
-    const snap = await getDocs(query(collection(this.firestore, collectionPath), where(field, '==', value)));
+    const { m, db } = await this.load();
+    const snap = await m.getDocs(m.query(m.collection(db, collectionPath), m.where(field, '==', value)));
     if (snap.empty) return;
-    const batch = writeBatch(this.firestore);
+    const batch = m.writeBatch(db);
     snap.docs.forEach(d => batch.delete(d.ref));
     await batch.commit();
   }
