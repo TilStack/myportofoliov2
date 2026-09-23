@@ -9,13 +9,15 @@
         <p class="blog-page__subtitle">{{ i18n.t('blog.subtitle') }}</p>
       </div>
       <div class="blog-page__header-cta fade-up" appFadeOnScroll [delay]="100">
-        <button class="write-btn" (click)="openPasswordModal()">
+        @if (admin.isAdmin()) {
+        <button class="write-btn" (click)="openContribute()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
             <path d="M12 20h9"/>
             <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
           </svg>
           {{ i18n.t('blog.writeBtn') }}
         </button>
+        }
       </div>
     </div>
   </header>
@@ -298,42 +300,6 @@
 
 </div><!-- /blog-page -->
 
-
-<!-- ═══════════════════════════════════════════════════════ PASSWORD MODAL ═══ -->
-@if (showPasswordModal()) {
-  <div
-    class="pw-backdrop"
-    role="dialog"
-    aria-modal="true"
-    [attr.aria-label]="i18n.t('blog.passwordTitle')"
-    (click)="onPwBackdropClick($event)"
-  >
-    <div class="pw-modal">
-      <button class="contribute-modal__close" (click)="closePasswordModal()" [attr.aria-label]="i18n.t('blog.close')">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-      </button>
-      <div class="pw-modal__icon" aria-hidden="true">🔐</div>
-      <h2 class="pw-modal__title">{{ i18n.t('blog.passwordTitle') }}</h2>
-      <p class="pw-modal__sub">{{ i18n.t('blog.passwordSub') }}</p>
-      <input
-        type="password"
-        class="form-input pw-modal__input"
-        [placeholder]="i18n.t('blog.passwordPlaceholder')"
-        (input)="passwordValue = $any($event.target).value"
-        (keydown.enter)="checkPassword()"
-        autocomplete="current-password"
-      />
-      @if (passwordError()) {
-        <p class="pw-modal__error">{{ i18n.t('blog.passwordError') }}</p>
-      }
-      <app-button variant="accent" (click)="checkPassword()">
-        {{ i18n.t('blog.passwordAccess') }}
-      </app-button>
-    </div>
-  </div>
-}
 
 <!-- ═══════════════════════════════════════════════════════ ARTICLE DETAIL MODAL ═══ -->
 @if (articleDetail(); as article) {

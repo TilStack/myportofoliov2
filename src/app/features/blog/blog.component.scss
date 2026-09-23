@@ -531,69 +531,6 @@
 }
 
 // ══════════════════════════════════════════════════════
-// PASSWORD MODAL
-// ══════════════════════════════════════════════════════
-.pw-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: $z-modal;
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: $space-4;
-  animation: backdropIn 200ms $ease-out-cubic both;
-}
-
-.pw-modal {
-  position: relative;
-  width: 100%;
-  max-width: 400px;
-  background: var(--color-bg);
-  border-radius: $radius-2xl;
-  padding: $space-10 $space-8 $space-8;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: $space-4;
-  box-shadow:
-    $shadow-xl,
-    0 0 0 1px var(--color-border);
-  animation: modalIn 240ms $ease-out-cubic both;
-
-  &__icon {
-    font-size: 2.8rem;
-    line-height: 1;
-  }
-
-  &__title {
-    font-family: $font-display;
-    font-size: $text-xl;
-    font-weight: $font-black;
-    color: var(--color-text);
-  }
-
-  &__sub {
-    font-size: $text-sm;
-    color: var(--color-text-muted);
-    line-height: 1.6;
-  }
-
-  &__input {
-    text-align: center;
-    letter-spacing: 0.15em;
-  }
-
-  &__error {
-    font-size: $text-xs;
-    color: #f87171;
-    margin-top: -$space-2;
-  }
-}
-
-// ══════════════════════════════════════════════════════
 // ARTICLE DETAIL MODAL
 // ══════════════════════════════════════════════════════
 .adetail-backdrop {

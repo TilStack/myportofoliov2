@@ -16,8 +16,9 @@
             </svg>
             {{ i18n.t('quotes.suggestBtn') }}
           </button>
-          <!-- Owner: moderation (password) -->
-          <button class="qmod-btn" (click)="openModerationPwModal()" [attr.aria-label]="i18n.t('quotes.modBtn')">
+          @if (admin.isAdmin()) {
+          <!-- Admin: moderation -->
+          <button class="qmod-btn" (click)="openModerationModal()" [attr.aria-label]="i18n.t('quotes.modBtn')">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
             </svg>
@@ -25,13 +26,14 @@
               <span class="qmod-btn__badge">{{ pendingCount() }}</span>
             }
           </button>
-          <!-- Owner: add a quote (password) -->
-          <button class="qadd-btn" (click)="openPwModal()" [attr.aria-label]="i18n.t('quotes.addBtn')">
+          <!-- Admin: add a quote -->
+          <button class="qadd-btn" (click)="openAddModal()" [attr.aria-label]="i18n.t('quotes.addBtn')">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
               <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
             </svg>
             {{ i18n.t('quotes.addBtn') }}
           </button>
+          }
         </div>
       </div>
 
@@ -120,9 +122,10 @@
                   </svg>
                   {{ quote.likeCount }}
                 </button>
+                @if (admin.isAdmin()) {
                 <button
                   class="qcard__edit-btn"
-                  (click)="openEditPwModal(quote, $event)"
+                  (click)="openEditFor(quote, $event)"
                   [title]="i18n.t('quotes.editBtn')"
                   [attr.aria-label]="i18n.t('quotes.editBtn')"
                 >
@@ -144,6 +147,7 @@
                     <path d="M9 6V4h6v2"/>
                   </svg>
                 </button>
+                }
               </div>
             </div>
 
@@ -213,33 +217,6 @@
   }
 
 </div>
-
-<!-- ════════════════════════════ PASSWORD MODAL ════ -->
-@if (showPwModal()) {
-  <div class="qpw-backdrop" role="dialog" aria-modal="true" (click)="onPwBackdropClick($event)">
-    <div class="qpw-modal">
-      <button class="qmodal-close" (click)="closePwModal()" aria-label="Close">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-      </button>
-      <div class="qpw-modal__icon">🔐</div>
-      <h2 class="qpw-modal__title">{{ i18n.t(pendingAction() === 'edit' ? 'quotes.pwEditTitle' : pendingAction() === 'moderation' ? 'quotes.modPwTitle' : 'quotes.pwTitle') }}</h2>
-      <p class="qpw-modal__sub">{{ i18n.t(pendingAction() === 'moderation' ? 'quotes.modPwSub' : 'quotes.pwSub') }}</p>
-      <input
-        type="password"
-        class="qform-input"
-        placeholder="Password"
-        (input)="pwValue = $any($event.target).value"
-        (keydown.enter)="checkPw()"
-        autocomplete="current-password"
-        style="text-align:center;letter-spacing:0.15em"
-      />
-      @if (pwError()) { <p class="qform-error">{{ i18n.t('quotes.pwError') }}</p> }
-      <app-button variant="accent" (click)="checkPw()">{{ i18n.t('quotes.pwAccess') }}</app-button>
-    </div>
-  </div>
-}
 
 <!-- ════════════════════════════ ADD QUOTE MODAL ════ -->
 @if (showAddModal()) {
@@ -533,16 +510,16 @@
               <div class="qmod-item__meta">
                 <div class="qmod-item__author">
                   <strong>{{ pq.author }}</strong>
-                  @if (pq.submitterRole) {
-                    <span class="qmod-item__role"> — {{ pq.submitterRole }}</span>
+                  @if (submissionFor(pq.id)?.role) {
+                    <span class="qmod-item__role"> — {{ submissionFor(pq.id)!.role }}</span>
                   }
                 </div>
                 <div class="qmod-item__contact">
-                  @if (pq.submitterEmail) {
-                    <a [href]="'mailto:' + pq.submitterEmail" class="qmod-item__link">{{ pq.submitterEmail }}</a>
+                  @if (submissionFor(pq.id)?.email) {
+                    <a [href]="'mailto:' + submissionFor(pq.id)!.email" class="qmod-item__link">{{ submissionFor(pq.id)!.email }}</a>
                   }
-                  @if (pq.submitterLinkedin) {
-                    <a [href]="pq.submitterLinkedin" target="_blank" rel="noopener noreferrer" class="qmod-item__link">LinkedIn ↗</a>
+                  @if (submissionFor(pq.id)?.linkedin) {
+                    <a [href]="submissionFor(pq.id)!.linkedin" target="_blank" rel="noopener noreferrer" class="qmod-item__link">LinkedIn ↗</a>
                   }
                 </div>
               </div>
@@ -587,16 +564,6 @@
         "{{ dq.text.length > 90 ? (dq.text.slice(0, 90) + '…') : dq.text }}"
       </blockquote>
       <p class="qdel-modal__sub">{{ i18n.t('quotes.delSub') }}</p>
-      <input
-        type="password"
-        class="qform-input"
-        placeholder="Admin password"
-        (input)="delPwValue = $any($event.target).value"
-        (keydown.enter)="confirmDelete()"
-        autocomplete="current-password"
-        style="text-align:center;letter-spacing:0.15em"
-      />
-      @if (delPwError()) { <p class="qform-error">{{ i18n.t('quotes.delPwError') }}</p> }
       <div class="qdel-modal__actions">
         <button class="qdel-cancel" (click)="closeDeleteConfirm()">{{ i18n.t('quotes.delCancel') }}</button>
         <app-button variant="accent" (click)="confirmDelete()">{{ i18n.t('quotes.delConfirm') }}</app-button>

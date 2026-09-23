@@ -1,14 +1,15 @@
 import { Component, computed, HostListener, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { tap } from 'rxjs';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { of, switchMap, tap } from 'rxjs';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { QuoteModalComponent } from './quote-modal/quote-modal.component';
-import { Quote } from '../../core/models/quote.model';
+import { Quote, QuoteSubmission } from '../../core/models/quote.model';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { I18nService } from '../../core/services/i18n.service';
 import { QuoteService } from '../../core/services/quote.service';
+import { AdminAuthService } from '../../core/services/admin-auth.service';
 import { QUOTES } from './quotes.data';
 
 const PAGE_SIZE = 9;
@@ -30,6 +31,7 @@ export class QuotesComponent {
   private readonly fb = inject(FormBuilder);
   readonly i18n = inject(I18nService);
   private readonly quoteService = inject(QuoteService);
+  readonly admin = inject(AdminAuthService);
 
   // ── Loading state ─────────────────────────────────────────
   // Le contenu initial est local (voir rawQuotes) : pas d'état de chargement.
@@ -41,11 +43,26 @@ export class QuotesComponent {
     { initialValue: QUOTES }
   );
 
-  // ── Pending quotes (for moderation) ─────────────────────
+  // ── Pending quotes + coordonnées des visiteurs (admin connecté uniquement) ──
+  // Les règles Firestore refusent ces lectures aux autres : on ne s'abonne donc pas.
   private readonly rawPending = toSignal(
-    this.quoteService.getPending(),
+    toObservable(this.admin.isAdmin).pipe(
+      switchMap(isAdmin => isAdmin ? this.quoteService.getPending() : of([] as Quote[])),
+    ),
     { initialValue: [] as Quote[] }
   );
+
+  private readonly submissions = toSignal(
+    toObservable(this.admin.isAdmin).pipe(
+      switchMap(isAdmin => isAdmin ? this.quoteService.getSubmissions() : of([] as QuoteSubmission[])),
+    ),
+    { initialValue: [] as QuoteSubmission[] }
+  );
+
+  /** Coordonnées du visiteur qui a proposé cette citation (admin uniquement). */
+  submissionFor(quoteId: string): QuoteSubmission | undefined {
+    return this.submissions().find(s => s.quoteId === quoteId);
+  }
 
   readonly pendingQuotes = computed<QuoteVM[]>(() =>
     this.rawPending().map(q => ({
@@ -128,53 +145,14 @@ export class QuotesComponent {
       liked ? next.delete(quote.id) : next.add(quote.id);
       return next;
     });
-    this.quoteService.update(quote.id, { likes: liked ? quote.likeCount - 1 : quote.likeCount + 1 });
+    this.quoteService.like(quote.id, liked ? quote.likeCount - 1 : quote.likeCount + 1);
   }
 
-  // ── Shared password gate (add / edit) ────────────────────
-  showPwModal   = signal(false);
-  pwError       = signal(false);
-  pwValue       = '';
-  pendingAction = signal<'add' | 'edit' | 'moderation' | null>(null);
-
-  openPwModal(): void {
-    this.pendingAction.set('add');
-    this.showPwModal.set(true);
-    this.pwError.set(false);
-    this.pwValue = '';
-  }
-
-  openEditPwModal(quote: QuoteVM, e: MouseEvent): void {
+  // ── Admin actions (UI visible uniquement si admin.isAdmin(); droits réels : firestore.rules) ──
+  openEditFor(quote: QuoteVM, e: MouseEvent): void {
     e.stopPropagation();
-    this.pendingAction.set('edit');
     this.editTarget.set(quote);
-    this.showPwModal.set(true);
-    this.pwError.set(false);
-    this.pwValue = '';
-  }
-
-  openModerationPwModal(): void {
-    this.pendingAction.set('moderation');
-    this.showPwModal.set(true);
-    this.pwError.set(false);
-    this.pwValue = '';
-  }
-
-  closePwModal(): void { this.showPwModal.set(false); }
-
-  checkPw(): void {
-    if (this.pwValue === '1Jesus1') {
-      this.closePwModal();
-      if (this.pendingAction() === 'add')        this.openAddModal();
-      else if (this.pendingAction() === 'edit')  this.openEditModal();
-      else if (this.pendingAction() === 'moderation') this.showModerationModal.set(true);
-    } else {
-      this.pwError.set(true);
-    }
-  }
-
-  onPwBackdropClick(e: MouseEvent): void {
-    if ((e.target as HTMLElement).classList.contains('qpw-backdrop')) this.closePwModal();
+    this.openEditModal();
   }
 
   // ── Add quote modal (owner) ──────────────────────────────
@@ -283,14 +261,10 @@ export class QuotesComponent {
 
   // ── Delete quote ─────────────────────────────────────────
   deleteTarget = signal<QuoteVM | null>(null);
-  delPwError   = signal(false);
-  delPwValue   = '';
 
   openDeleteConfirm(quote: QuoteVM, e: MouseEvent): void {
     e.stopPropagation();
     this.deleteTarget.set(quote);
-    this.delPwError.set(false);
-    this.delPwValue = '';
     document.body.style.overflow = 'hidden';
   }
 
@@ -300,13 +274,9 @@ export class QuotesComponent {
   }
 
   confirmDelete(): void {
-    if (this.delPwValue === '1Jesus1') {
-      const id = this.deleteTarget()?.id;
-      if (id) this.quoteService.delete(id).then(() => this.closeDeleteConfirm());
-      else this.closeDeleteConfirm();
-    } else {
-      this.delPwError.set(true);
-    }
+    const id = this.deleteTarget()?.id;
+    if (id) this.quoteService.delete(id).then(() => this.closeDeleteConfirm());
+    else this.closeDeleteConfirm();
   }
 
   onDelBackdropClick(e: MouseEvent): void {
@@ -347,24 +317,28 @@ export class QuotesComponent {
     if (this.suggestForm.invalid) return;
     this.suggestSubmitting.set(true);
     const v = this.suggestForm.value;
-    const q: Omit<Quote, 'id' | 'expanded'> = {
-      text:              v.text!,
-      author:            v.author!,
-      explanation:       v.explanation!,
-      date:              new Date(),
-      likes:             0,
-      tags:              [],
-      submitterEmail:    v.submitterEmail!,
-      submitterRole:     v.submitterRole || undefined,
-      submitterLinkedin: v.submitterLinkedin || undefined,
+    const q: Omit<Quote, 'id' | 'expanded' | 'status'> = {
+      text:        v.text!,
+      author:      v.author!,
+      explanation: v.explanation!,
+      date:        new Date(),
+      likes:       0,
+      tags:        [],
     };
-    this.quoteService.createAsVisitor(q)
+    const contact = {
+      email: v.submitterEmail!,
+      ...(v.submitterRole     ? { role: v.submitterRole } : {}),
+      ...(v.submitterLinkedin ? { linkedin: v.submitterLinkedin } : {}),
+    };
+    this.quoteService.createAsVisitor(q, contact)
       .then(() => { this.suggestSuccess.set(true); this.suggestSubmitting.set(false); })
       .catch(() => { this.suggestSubmitting.set(false); });
   }
 
   // ── Moderation panel (owner only) ────────────────────────
   showModerationModal  = signal(false);
+
+  openModerationModal(): void { this.showModerationModal.set(true); }
   moderationApproving  = signal<string | null>(null);
   moderationRejecting  = signal<string | null>(null);
 
@@ -426,7 +400,6 @@ export class QuotesComponent {
     else if (this.showEditModal())   this.closeEditModal();
     else if (this.showAddModal())    this.closeAddModal();
     else if (this.showSuggestModal())this.closeSuggestModal();
-    else if (this.showPwModal())     this.closePwModal();
     else if (this.deleteTarget())    this.closeDeleteConfirm();
     else if (this.activeQuote())     this.closeModal();
   }
