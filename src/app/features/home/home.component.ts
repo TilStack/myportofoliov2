@@ -6,6 +6,7 @@ import { Quote } from '../../core/models';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { MONTAGE_PHOTOS } from '../../core/config/images.config';
 import { QUOTES } from '../quotes/quotes.data';
+import { LINKEDIN_URL } from '../../data/site.data';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,7 @@ import { QUOTES } from '../quotes/quotes.data';
 export class HomeComponent {
   i18n = inject(I18nService);
 
+  readonly linkedinUrl = LINKEDIN_URL;
   readonly montagePhotos = MONTAGE_PHOTOS;
   readonly quotes = signal<Quote[]>(QUOTES.slice(0, 6));
 

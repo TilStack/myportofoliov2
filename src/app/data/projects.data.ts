@@ -28,6 +28,8 @@ export interface Project {
   detailFr: string;
   contributors: Contributor[];
   images?: string[];
+  /** Masqué : absent de la liste, non pré-rendu, absent du sitemap. */
+  hidden?: boolean;
 }
 
 export const ISRAEL: Contributor = {
@@ -144,6 +146,44 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 5,
+    slug: 'otadex',
+    name: 'Otadex',
+    icon: '⚡',
+    company: 'Personal',
+    status: 'in-progress',
+    tech: ['Flutter', 'Firebase', 'Claude Code'],
+    liveUrl: 'https://otadex.tilstack.me',
+    descEn: 'My first personnal project in building a mobile application',
+    descFr:
+      "Mon premier projet personnel de construction d'une application mobile",
+    detailEn: '',
+    detailFr: '',
+    contributors: [
+      { ...ISRAEL, roleEn: 'Solo Developer', roleFr: 'Développeur Solo' },
+    ],
+    images: ['images/projects/placeholder.svg'], // TODO(israel): capture réelle
+  },
+  {
+    id: 6,
+    slug: 'tiltine',
+    hidden: true, // TODO(israel): fournir description + capture réelle pour l'afficher
+    name: 'Tiltine',
+    icon: '⚡',
+    company: 'Personal',
+    status: 'in-progress',
+    tech: ['Angular', 'Firebase', 'Claude Code'],
+    liveUrl: 'https://tiltine.tilstack.me',
+    descEn: 'Angular project for a company in my own life',
+    descFr: '',
+    detailEn: '',
+    detailFr: '',
+    contributors: [
+      { ...ISRAEL, roleEn: 'Solo Developer', roleFr: 'Développeur Solo' },
+    ],
+    images: ['images/projects/placeholder.svg'], // TODO(israel): capture réelle
+  },
+  {
+    id: 7,
     slug: 'mypokemon',
     name: 'MyPokemon',
     icon: '⚡',
@@ -164,41 +204,7 @@ export const PROJECTS: Project[] = [
     ],
     images: ['images/projects/pokemon-1.png'],
   },
-  {
-    id: 6,
-    slug: 'otadex',
-    name: 'Otadex',
-    icon: '⚡',
-    company: 'Personal',
-    status: 'in-progress',
-    tech: ['Flutter', 'Firebase', 'Claude Code'],
-    liveUrl: 'https://otadex.tilstack.me',
-    descEn: 'My first personnal project in building a mobile application',
-    descFr:
-      "Mon premier projet personnel de construction d'une application mobile",
-    detailEn: '',
-    detailFr: '',
-    contributors: [
-      { ...ISRAEL, roleEn: 'Solo Developer', roleFr: 'Développeur Solo' },
-    ],
-    images: ['images/projects/pokemon-1.png'],
-  },
-  {
-    id: 7,
-    slug: 'tiltine',
-    name: 'Tiltine',
-    icon: '⚡',
-    company: 'Personal',
-    status: 'in-progress',
-    tech: ['Angular', 'Firebase', 'Claude Code'],
-    liveUrl: 'https://tiltine.tilstack.me',
-    descEn: 'Angular project for a company in my own life',
-    descFr: '',
-    detailEn: '',
-    detailFr: '',
-    contributors: [
-      { ...ISRAEL, roleEn: 'Solo Developer', roleFr: 'Développeur Solo' },
-    ],
-    images: ['images/projects/pokemon-1.png'],
-  },
 ];
+
+/** Projets affichés : liste, pages détail pré-rendues, sitemap. */
+export const VISIBLE_PROJECTS: Project[] = PROJECTS.filter((p) => !p.hidden);

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500" role="img" aria-label="Illustration neutre — capture d'écran à venir">
+  <rect width="800" height="500" fill="#14213D"/>
+  <g transform="translate(400 250)">
+    <polygon points="0,-90 130,-25 0,40 -130,-25" fill="#2B3D66"/>
+    <polygon points="-130,-25 0,40 0,110 -130,45" fill="#14213D" stroke="#2B3D66" stroke-width="2"/>
+    <polygon points="0,40 130,-25 130,45 0,110" fill="#0B1426"/>
+  </g>
+</svg>
