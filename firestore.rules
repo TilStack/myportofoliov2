@@ -1,0 +1,99 @@
+rules_version = '2';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Modèle de sécurité
+//  • Lecture publique : uniquement les citations approuvées (`quotes`, status == 'approved').
+//  • Un visiteur peut : proposer une citation (toujours `pending`, sans coordonnées),
+//    déposer ses coordonnées dans `quoteSubmissions` (écriture seule), et liker (±1).
+//  • L'admin (compte Google vérifié, UID connu) peut tout faire sur `quotes` et lire/supprimer
+//    `quoteSubmissions`.
+//  • Tout le reste est refusé.
+//
+// TODO(israel): remplacer le marqueur ADMIN_UID (entre doubles underscores, dans isAdmin() ci-dessous)
+//   par l'UID affiché sur /admin après ta première
+//   connexion (le même que ADMIN_UID dans src/app/data/site.data.ts) AVANT de déployer.
+//   Tant que le marqueur est là, personne n'est admin (échec « fermé » : sans danger).
+// ─────────────────────────────────────────────────────────────────────────────
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Fonctions ────────────────────────────────────────────────────────────
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.uid == '__ADMIN_UID__'
+        && request.auth.token.email_verified == true;
+    }
+
+    function isNonEmptyString(v, max) {
+      return v is string && v.size() > 0 && v.size() <= max;
+    }
+
+    function isOptionalString(data, key, max) {
+      return !(key in data) || (data[key] is string && data[key].size() <= max);
+    }
+
+    // Les coordonnées des visiteurs ne doivent JAMAIS être stockées dans `quotes`
+    // (lisible par tous) : aucun champ submitter* n'est accepté, même de l'admin.
+    function hasNoSubmitterFields(data) {
+      return !data.keys().hasAny(['submitterEmail', 'submitterRole', 'submitterLinkedin']);
+    }
+
+    // Proposition d'un visiteur : toujours `pending`, champs bornés et en liste fermée.
+    function isValidVisitorQuote(q) {
+      return q.keys().hasAll(['text', 'author', 'explanation', 'date', 'tags', 'likes', 'status'])
+        && q.keys().hasOnly(['text', 'author', 'explanation', 'date', 'tags', 'likes', 'status', 'category'])
+        && q.status == 'pending'
+        && isNonEmptyString(q.text, 2000)
+        && isNonEmptyString(q.author, 200)
+        && q.explanation is string && q.explanation.size() <= 4000
+        && (q.date is timestamp || (q.date is string && q.date.size() <= 40))
+        && q.tags is list && q.tags.size() == 0
+        && q.likes is number && q.likes == 0
+        && isOptionalString(q, 'category', 50);
+    }
+
+    // Like : +1 ou -1 sur une citation approuvée, rien d'autre, jamais sous 0.
+    function isValidLike() {
+      return resource.data.status == 'approved'
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes'])
+        && request.resource.data.likes is number
+        && request.resource.data.likes >= 0
+        && (request.resource.data.likes == resource.data.likes + 1
+            || request.resource.data.likes == resource.data.likes - 1);
+    }
+
+    function isValidSubmission(s) {
+      return s.keys().hasAll(['quoteId', 'email'])
+        && s.keys().hasOnly(['quoteId', 'email', 'role', 'linkedin'])
+        && isNonEmptyString(s.quoteId, 128)
+        && isNonEmptyString(s.email, 254)
+        && s.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
+        && isOptionalString(s, 'role', 100)
+        && isOptionalString(s, 'linkedin', 300);
+    }
+
+    // ── Refus par défaut ─────────────────────────────────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // ── Citations ────────────────────────────────────────────────────────────
+    // NB : une requête de liste n'est acceptée que si elle filtre elle-même sur
+    // status == 'approved' (côté client : where('status', '==', 'approved')).
+    match /quotes/{quoteId} {
+      allow read:   if isAdmin() || resource.data.status == 'approved';
+      allow create: if (isAdmin() && hasNoSubmitterFields(request.resource.data))
+                       || isValidVisitorQuote(request.resource.data);
+      allow update: if (isAdmin() && hasNoSubmitterFields(request.resource.data))
+                       || isValidLike();
+      allow delete: if isAdmin();
+    }
+
+    // ── Coordonnées des visiteurs (écriture seule pour le public) ────────────
+    match /quoteSubmissions/{submissionId} {
+      allow read, delete: if isAdmin();
+      allow create:       if isValidSubmission(request.resource.data);
+      allow update:       if false;
+    }
+  }
+}
