@@ -5,6 +5,8 @@
 export const SITE_URL = 'https://tilstack.me';
 
 export const GITHUB_URL = 'https://github.com/TilStack';
+// TODO(israel): URL LinkedIn correcte ? /in/israel-tientcheu/ (valeur actuelle) ou /in/tientcheuisrael/
+//   (ancien lien de la page d'accueil). Une seule constante à corriger.
 export const LINKEDIN_URL = 'https://www.linkedin.com/in/israel-tientcheu/';
 export const TWITTER_URL = 'https://x.com/tilstack';
 export const CONTACT_EMAIL = 'israel01tientcheu@gmail.com';

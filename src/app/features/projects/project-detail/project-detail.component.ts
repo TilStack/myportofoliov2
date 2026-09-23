@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { I18nService } from '../../../core/services/i18n.service';
-import { PROJECTS, Project } from '../../../data/projects.data';
+import { VISIBLE_PROJECTS, Project } from '../../../data/projects.data';
 
 @Component({
   selector: 'app-project-detail',
@@ -22,7 +22,7 @@ export class ProjectDetailComponent {
 
   /** Résolu de façon synchrone depuis les données locales (pré-rendable). */
   readonly project = computed<Project | null>(
-    () => PROJECTS.find(p => p.slug === this.slug()) ?? null,
+    () => VISIBLE_PROJECTS.find(p => p.slug === this.slug()) ?? null,
   );
 
   /** Texte détaillé si présent, sinon description courte ; jamais de texte inventé. */

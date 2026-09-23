@@ -2,7 +2,7 @@ import { Component, HostListener, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { I18nService } from '../../core/services/i18n.service';
-import { Contributor, PROJECTS, Project } from '../../data/projects.data';
+import { Contributor, VISIBLE_PROJECTS, Project } from '../../data/projects.data';
 
 @Component({
   selector: 'app-projects',
@@ -13,7 +13,7 @@ import { Contributor, PROJECTS, Project } from '../../data/projects.data';
 })
 export class ProjectsComponent {
   readonly i18n = inject(I18nService);
-  readonly projects = PROJECTS;
+  readonly projects = VISIBLE_PROJECTS;
 
   selected = signal<Project | null>(null);
 
