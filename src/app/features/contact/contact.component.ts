@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { I18nService } from '../../core/services/i18n.service';
+import { CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL, TWITTER_URL } from '../../data/site.data';
 
 @Component({
   selector: 'app-contact',
@@ -26,12 +27,12 @@ export class ContactComponent {
   sent    = signal(false);
   error   = signal(false);
 
-  readonly email = 'israel01tientcheu@gmail.com';
+  readonly email = CONTACT_EMAIL;
 
   socials = [
-    { label: 'GitHub',   href: 'https://github.com/tilstack',                       icon: 'github'   },
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/israel-tientcheu/',      icon: 'linkedin' },
-    { label: 'Twitter',  href: 'https://x.com/tilstack',                             icon: 'twitter'  },
+    { label: 'GitHub',   href: GITHUB_URL,   icon: 'github'   },
+    { label: 'LinkedIn', href: LINKEDIN_URL, icon: 'linkedin' },
+    { label: 'Twitter',  href: TWITTER_URL,  icon: 'twitter'  },
   ];
 
   submit(): void {
