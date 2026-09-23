@@ -17,3 +17,11 @@ export const STORE_URL = 'https://store.tilstack.me';
 // (La valeur actuelle, devpea.com, est celle qui était déjà dans le code.)
 export const DEVPEA_URL = 'https://devpea.com';
 export const DEVPEA_LINKEDIN_URL = 'https://www.linkedin.com/company/devpea/';
+
+/**
+ * UID Firebase Auth du compte admin (connexion Google sur /admin).
+ * Public par nature : la vraie protection est dans firestore.rules (isAdmin()).
+ * TODO(israel): après ta première connexion sur /admin, copie ici l'UID affiché,
+ *   ET dans firestore.rules (remplacer __ADMIN_UID__) avant le déploiement.
+ */
+export const ADMIN_UID = '';
