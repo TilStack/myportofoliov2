@@ -1,5 +1,5 @@
-import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
@@ -16,16 +16,13 @@ import { CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL, TWITTER_URL } from '../../data
 export class ContactComponent {
   readonly i18n = inject(I18nService);
   fb = inject(FormBuilder);
+  private readonly document = inject(DOCUMENT);
 
   form = this.fb.group({
     name:    ['', [Validators.required, Validators.minLength(2)]],
     email:   ['', [Validators.required, Validators.email]],
     message: ['', [Validators.required, Validators.minLength(10)]],
   });
-
-  sending = signal(false);
-  sent    = signal(false);
-  error   = signal(false);
 
   readonly email = CONTACT_EMAIL;
 
@@ -35,21 +32,19 @@ export class ContactComponent {
     { label: 'Twitter',  href: TWITTER_URL,  icon: 'twitter'  },
   ];
 
+  /** Ouvre le client mail du visiteur avec sujet et message pré-remplis (aucun envoi simulé). */
   submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    this.sending.set(true);
-    this.error.set(false);
+    const { name, email, message } = this.form.getRawValue();
+    const subject = `${this.i18n.t('contact.mailtoSubject')} — ${name}`;
+    const body = `${message}\n\n— ${name} (${email})`;
 
-    // Wire this to your backend / EmailJS / Firebase function
-    setTimeout(() => {
-      this.sent.set(true);
-      this.sending.set(false);
-      this.form.reset();
-    }, 1200);
+    this.document.defaultView!.location.href =
+      `mailto:${this.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
 
   hasError(field: string, err: string): boolean {
