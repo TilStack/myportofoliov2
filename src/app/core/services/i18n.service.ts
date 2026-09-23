@@ -256,10 +256,9 @@ const EN: Translations = {
     messageRequired: 'Message is required.',
     messageMin:      'At least 10 characters.',
     // Buttons & states
-    send:         'Send message',
-    successTitle: 'Message sent!',
-    successText:  "Thanks for reaching out. I'll get back to you soon.",
-    genericError: 'Something went wrong. Please try again.',
+    send:         'Send by email',
+    mailtoSubject: 'Contact from tilstack.me',
+    mailtoHint:   'Your email app will open with the message pre-filled — nothing is sent until you press send there.',
   },
   common: {
     loading:  'Loading…',
@@ -519,10 +518,9 @@ const FR: Translations = {
     messageRequired: 'Le message est requis.',
     messageMin:      'Au moins 10 caractères.',
     // Buttons & states
-    send:         'Envoyer le message',
-    successTitle: 'Message envoyé !',
-    successText:  'Merci de m\'avoir contacté. Je vous répondrai bientôt.',
-    genericError: 'Une erreur est survenue. Veuillez réessayer.',
+    send:         'Envoyer par email',
+    mailtoSubject: 'Contact depuis tilstack.me',
+    mailtoHint:   'Votre application de messagerie s\'ouvrira avec le message pré-rempli — rien n\'est envoyé tant que vous n\'appuyez pas sur envoyer là-bas.',
   },
   common: {
     loading:  'Chargement…',
