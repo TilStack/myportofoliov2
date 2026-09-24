@@ -124,6 +124,15 @@ Contenu centralisé dans des fichiers typés `src/app/data/*.ts`, intégré aux 
 
 ---
 
+### Phase 4 : état (24/09/2026, branche `feat/content`)
+
+Fait : boutique (accueil + `/boutique`, prix actuel/barré, JSON-LD Product avec `offers`), Séla Cantique, Otadex
+(« Bientôt sur le Play Store », bloc Abonnements), don libre Séla, parcours, compétences par couches, Enseignement &
+Formations (interventions vides, bloc masqué), newsletter retirée (elle simulait une inscription), formulaire
+d'article réservé à l'admin (export JSON, plus de succès simulé). Reste en `TODO(israel)` : URL d'achat des plans
+Otadex, URL de don Séla, dates de DevPea, score IELTS, captures Otadex/Tiltine/Séla, description de Tiltine, image
+de chaque produit (JSON-LD), confirmation que Séla Cantique = application de cantiques.
+
 ## Phase 5 (optionnelle, demande-moi avant) — Version /en pré-rendue
 
 Routes `/en/...` pré-rendues depuis les dictionnaires existants, `hreflang` réciproques, `og:locale:alternate`, sitemap bilingue. Donne-moi une estimation avant de commencer.

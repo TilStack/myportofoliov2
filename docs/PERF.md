@@ -45,3 +45,31 @@ SEO 100 et Best Practices 100 partout. Seule cible manquée : TBT de `/about` (2
   faible (+1 à +2) ; non adopté pour l'instant (décision du 24/09/2026) car `quote-modal` et `blog` mutent des champs
   non-signal dans des timers. Tâche de fin de chantier ajoutée au plan.
 - `public/hero/avatar-3d.png` (861 kB), non référencé : supprimé le 24/09/2026, le WebP (51 kB) suffit.
+
+## Phase 4 (contenu) : contrôle de non-régression
+
+Méthode : **A/B entrelacé** (un run « avant » puis un run « après », en alternance, 5 tours par route) sur deux
+copies du build servies avec brotli : `master` à la fin de la Phase 3 et `feat/content`. L'entrelacement
+répartit sur les deux versions le bruit de la machine.
+
+> Mise en garde : sur une machine chargée (navigateur, VS Code… : load average ≥ 2), le TBT est multiplié par 5
+> à 10 et le score perd 5 à 10 points, **y compris pour une version identique** (deux séries de la même version
+> ont donné 96 et 91,5 sur `/projects`). Mesurer au calme, jamais pendant un build ou une autre tâche.
+
+| Route | Perf avant → après | LCP | TBT | CLS | A11y | SEO |
+|---|---|---|---|---|---|---|
+| `/` | 99 → **99** | 2,03 → 1,95 s | 21 → 23 ms | 0 | 100 | 100 |
+| `/about` | 98 → **98** | 2,25 → 2,40 s | 25 → 27 ms | 0 | 100 | 100 |
+| `/projects` | 99 → **99** | 1,80 → 1,80 s | 46 → 52 ms | 0 | 96 | 100 |
+| `/projects/dofa` | 97 → **99** | 2,56 → 2,10 s | 28 → 26 ms | 0 | 100 | 100 |
+| `/quotes` | 99 → **99** | 1,95 → 1,88 s | 54 → 23 ms | 0 | 100 | 100 |
+| `/boutique` (nouvelle) | **100** | 1,73 s | 43 ms | 0 | 100 | 100 |
+| `/projects/otadex` (nouvelle) | **99** | 1,80 s | 25 ms | 0 | 100 | 100 |
+
+Bundle initial : 398 → 404 kB (+6 kB : textes FR/EN de la boutique, du parcours et de l'enseignement), budget 500 kB.
+Les nouvelles sections (boutique sur l'accueil, parcours, enseignement) sont dans des blocs `@defer (hydrate on
+viewport)` avec `content-visibility: auto`, comme le reste : elles sont dans le HTML pré-rendu (indexables,
+JSON-LD Product cohérent avec le contenu visible) mais ne coûtent rien au chargement.
+
+Sur cette machine au calme, le TBT de `/about` est de 25 ms (et non 274 ms) : la valeur de la Phase 3 avait
+été relevée sur une machine plus chargée. Les autres résultats de la Phase 3 restent valables.
