@@ -116,6 +116,29 @@ await check('admin: /admin n\'est pas pré-rendu (aucun HTML statique)', () => {
   assert.ok(!readdirSync(dist).includes('admin'));
 });
 
+// ── /quotes : citations locales d'abord, Firestore ensuite (Phase 3) ──
+await check('quotes: les 9 premières citations locales s\'affichent sans Firestore, chargé plus tard', async () => {
+  const p = await newPage();
+  await p.goto(BASE + '/quotes', { waitUntil: 'load' });
+  await p.waitForSelector('.qcard', { timeout: 5000 });
+  await p.waitForTimeout(500);
+  assert.equal(await p.locator('.qcard').count(), 9);
+  assert.ok(!p.requests.some(u => u.includes('127.0.0.1:8080') || u.includes('firestore.googleapis')), 'Firestore demandé avant le repos');
+  await p.close();
+});
+await check('quotes: si Firestore ne renvoie aucune citation approuvée, les citations locales restent affichées', async () => {
+  for (const id of ['e2e-approved', 'e2e-approved2']) await db.doc(`quotes/${id}`).delete();
+  const approved = await db.collection('quotes').where('status', '==', 'approved').get();
+  await Promise.all(approved.docs.map(d => d.ref.delete()));
+  const p = await newPage();
+  await p.goto(BASE + '/quotes', { waitUntil: 'load' });
+  await p.click('h1'); // première interaction : déclenche aussitôt le chargement de Firestore
+  await p.waitForFunction(() => performance.getEntriesByType('resource').some(r => r.name.includes('8080')), null, { timeout: 8000 });
+  await p.waitForTimeout(1500);
+  assert.equal(await p.locator('.qcard').count(), 9);
+  await p.close();
+});
+
 await browser.close();
 for (const r of results) console.log(`${r.ok ? '✓' : '✗'} ${r.name}${r.ok ? '' : ' — ' + r.error}`);
 const failed = results.filter(r => !r.ok);

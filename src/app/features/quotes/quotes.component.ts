@@ -2,7 +2,7 @@ import { Component, afterNextRender, computed, HostListener, inject, signal } fr
 import { DatePipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { EMPTY, map, of, switchMap, tap } from 'rxjs';
+import { EMPTY, filter, map, of, switchMap, tap } from 'rxjs';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { QuoteModalComponent } from './quote-modal/quote-modal.component';
 import { Quote, QuoteSubmission } from '../../core/models/quote.model';
@@ -46,6 +46,8 @@ export class QuotesComponent {
   private readonly rawQuotes = toSignal(
     toObservable(this.remoteEnabled).pipe(
       switchMap(enabled => enabled ? this.quoteService.getAll() : EMPTY),
+      // Une réponse vide (base non migrée, aucune citation approuvée) ne remplace jamais les citations locales.
+      filter(remote => remote.length > 0),
       map(remote => this.inLocalOrder(remote)),
       tap(() => { this.loading.set(false); this.remoteReady.set(true); }),
     ),
