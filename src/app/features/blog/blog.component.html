@@ -265,38 +265,8 @@
 
   </main>
 
-  <!-- ═══════════════════════════════════ NEWSLETTER ═══ -->
-  <section class="newsletter">
-    <div class="container newsletter__inner">
-      <div class="newsletter__text fade-left" appFadeOnScroll>
-        <h2 class="newsletter__title">{{ i18n.t('blog.newsletter') }}</h2>
-        <p>{{ i18n.t('blog.newsletterSub') }}</p>
-      </div>
-
-      <div class="newsletter__form fade-right" appFadeOnScroll [delay]="100">
-        @if (subscribed()) {
-          <div class="newsletter__success">✅ {{ i18n.t('blog.subscribeOk') }}</div>
-        } @else {
-          <form [formGroup]="newsletterForm" (ngSubmit)="subscribeNewsletter()">
-            <div class="newsletter__input-row">
-              <input
-                type="email"
-                formControlName="email"
-                [placeholder]="i18n.t('blog.emailHolder')"
-                class="newsletter__input"
-              />
-              <app-button type="submit" variant="accent" [loading]="subscribing()">
-                {{ i18n.t('blog.subscribe') }}
-              </app-button>
-            </div>
-            @if (newsletterForm.controls['email'].invalid && newsletterForm.controls['email'].touched) {
-              <p class="newsletter__error">{{ i18n.t('blog.emailError') }}</p>
-            }
-          </form>
-        }
-      </div>
-    </div>
-  </section>
+  <!-- Newsletter : retirée tant qu'aucun service d'envoi n'est branché (elle simulait une inscription).
+       TODO(israel): choisir un service d'emailing avant de la réafficher. -->
 
 </div><!-- /blog-page -->
 
@@ -426,7 +396,7 @@
 }
 
 <!-- ═══════════════════════════════════════════════════════ CONTRIBUTE MODAL ═══ -->
-@if (showContribute()) {
+@if (showContribute() && admin.isAdmin()) {
   <div
     class="contribute-backdrop"
     role="dialog"
@@ -451,10 +421,10 @@
       </div>
 
       <!-- Success state -->
-      @if (submitSuccess()) {
+      @if (exported()) {
         <div class="contribute-modal__success">
-          <span class="contribute-modal__success-icon">🎉</span>
-          <p>{{ i18n.t('blog.submitOk') }}</p>
+          <span class="contribute-modal__success-icon" aria-hidden="true">📄</span>
+          <p role="status">{{ i18n.t('blog.exportOk') }}</p>
           <button class="write-btn write-btn--sm" (click)="closeContribute()">
             {{ i18n.t('blog.close') }}
           </button>
@@ -462,18 +432,13 @@
 
       } @else {
         <!-- Form -->
-        <form [formGroup]="contributeForm" (ngSubmit)="submitContribute()" class="contribute-form" novalidate>
+        <form [formGroup]="contributeForm" (ngSubmit)="exportArticle()" class="contribute-form" novalidate>
 
           <div class="contribute-form__row">
             <div class="form-field">
               <label class="form-label" for="c-name">{{ i18n.t('blog.yourName') }}</label>
               <input id="c-name" type="text" formControlName="name" class="form-input"
                      [class.invalid]="contributeForm.controls['name'].invalid && contributeForm.controls['name'].touched" />
-            </div>
-            <div class="form-field">
-              <label class="form-label" for="c-email">{{ i18n.t('blog.yourEmail') }}</label>
-              <input id="c-email" type="email" formControlName="email" class="form-input"
-                     [class.invalid]="contributeForm.controls['email'].invalid && contributeForm.controls['email'].touched" />
             </div>
           </div>
 
@@ -585,7 +550,7 @@
           </div>
 
           <div class="contribute-form__footer">
-            <app-button type="submit" variant="accent" [loading]="submitting()" [disabled]="contributeForm.invalid">
+            <app-button type="submit" variant="accent" [disabled]="contributeForm.invalid">
               {{ i18n.t('blog.submitBtn') }}
             </app-button>
           </div>

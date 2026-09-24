@@ -202,31 +202,13 @@ export class BlogComponent {
     scrollToTop();
   }
 
-  // ── newsletter ──
-  subscribed  = signal(false);
-  subscribing = signal(false);
-
-  newsletterForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-  });
-
-  subscribeNewsletter(): void {
-    if (this.newsletterForm.invalid) return;
-    this.subscribing.set(true);
-    setTimeout(() => {
-      this.subscribed.set(true);
-      this.subscribing.set(false);
-    }, 1200);
-  }
-
   // ── contribute modal ──
   showContribute  = signal(false);
-  submitSuccess   = signal(false);
-  submitting      = signal(false);
+  /** `true` une fois le fichier JSON généré (rien n'est publié ni envoyé). */
+  exported        = signal(false);
 
   contributeForm = this.fb.group({
     name:     ['', [Validators.required, Validators.minLength(2)]],
-    email:    ['', [Validators.required, Validators.email]],
     title:    ['', [Validators.required, Validators.minLength(5)]],
     tags:     [''],
     coverUrl: [''],  // optional — URL externe ou chemin local images/blog/
@@ -293,8 +275,9 @@ export class BlogComponent {
   }
 
   openContribute(): void {
+    if (!this.admin.isAdmin()) return;
     this.showContribute.set(true);
-    this.submitSuccess.set(false);
+    this.exported.set(false);
     this.contributeForm.reset();
     document.body.style.overflow = 'hidden';
   }
@@ -316,14 +299,30 @@ export class BlogComponent {
     }
   }
 
-  submitContribute(): void {
-    if (this.contributeForm.invalid) return;
-    this.submitting.set(true);
-    // Wire to Firebase or email service later
-    setTimeout(() => {
-      this.submitSuccess.set(true);
-      this.submitting.set(false);
-    }, 1000);
+  /**
+   * Génère l'article dans un fichier JSON téléchargé, à ajouter aux articles locaux (ARTICLES).
+   * Aucune publication : le formulaire n'est pas relié à un stockage, et il ne prétend pas l'être.
+   */
+  exportArticle(): void {
+    if (this.contributeForm.invalid || !this.admin.isAdmin()) return;
+    const v = this.contributeForm.getRawValue();
+    const article = {
+      title: v.title,
+      author: v.name,
+      excerpt: v.desc,
+      content: v.content,
+      tags: (v.tags ?? '').split(',').map(t => t.trim()).filter(Boolean),
+      coverUrl: v.coverUrl || undefined,
+      readTime: v.readTime,
+      date: new Date().toISOString().slice(0, 10),
+    };
+    const url = URL.createObjectURL(new Blob([JSON.stringify(article, null, 2)], { type: 'application/json' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `article-${article.date}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    this.exported.set(true);
   }
 
   // ── article comments ──
