@@ -108,6 +108,43 @@ $latin: 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, 
   }
 }
 
+// Bouton-lien (CTA) : un vrai <a>, sans <button> imbriqué. `.cta--disabled` = lien pas encore disponible
+// (aucune zone cliquable inerte : c'est un <span aria-disabled>).
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  padding: $space-3 $space-6;
+  border: 2px solid $color-accent;
+  border-radius: $radius-lg;
+  background: $color-accent;
+  color: $color-primary;
+  font-family: $font-sans;
+  font-size: $text-base;
+  font-weight: $font-semibold;
+  text-decoration: none;
+  transition: transform $transition-fast, box-shadow $transition-fast;
+
+  &:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(255, 222, 89, 0.4); }
+  &:focus-visible { outline: 3px solid $color-primary; outline-offset: 3px; }
+
+  &--outline {
+    background: transparent;
+    border-color: var(--color-border);
+    color: var(--color-text);
+    &:hover { border-color: $color-primary; box-shadow: none; }
+  }
+
+  &--disabled {
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+    &:hover { transform: none; box-shadow: none; }
+  }
+}
+
 // Accent mark
 .accent { color: $color-accent; }
 .accent-bg { background: $color-accent; }

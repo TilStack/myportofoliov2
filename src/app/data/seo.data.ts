@@ -32,6 +32,12 @@ export const SEO = {
       'Articles techniques, tutoriels et notes sur le développement web et mobile (Flutter, Angular) par TIENTCHEU Israel.',
     path: '/blog',
   },
+  boutique: {
+    title: titled('Boutique'),
+    description:
+      'Ressources numériques pour les enseignants : 10 prompts IA pour générer des épreuves (BEPC, Probatoire, BAC) et la formation en ligne Prof 2.0, par TIENTCHEU Israel.',
+    path: '/boutique',
+  },
   quotes: {
     title: titled('Citations'),
     description:

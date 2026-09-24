@@ -9,11 +9,12 @@ import { MONTAGE_PHOTOS } from '../../core/config/images.config';
 import { QUOTES } from '../quotes/quotes.data';
 import { LINKEDIN_URL } from '../../data/site.data';
 import { responsiveImage } from '../../shared/utils/responsive-image';
+import { ShopSectionComponent } from '../../shared/components/shop-section/shop-section.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, NgOptimizedImage, ButtonComponent, FadeOnScrollDirective],
+  imports: [RouterLink, NgOptimizedImage, ButtonComponent, FadeOnScrollDirective, ShopSectionComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })

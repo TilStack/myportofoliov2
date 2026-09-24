@@ -1,13 +1,13 @@
 import { Routes } from '@angular/router';
 import { SEO } from './data/seo.data';
-import { personSchema, websiteSchema } from './data/structured-data';
+import { personSchema, productSchemas, websiteSchema } from './data/structured-data';
 
 export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
       import('./features/home/home.component').then((m) => m.HomeComponent),
-    data: { seo: SEO.home, jsonLd: [personSchema(), websiteSchema()] },
+    data: { seo: SEO.home, jsonLd: [personSchema(), websiteSchema(), ...productSchemas()] },
   },
   {
     path: 'about',
@@ -29,6 +29,12 @@ export const routes: Routes = [
       import('./features/projects/project-detail/project-detail.component').then(
         (m) => m.ProjectDetailComponent,
       ),
+  },
+  {
+    path: 'boutique',
+    loadComponent: () =>
+      import('./features/boutique/boutique.component').then((m) => m.BoutiqueComponent),
+    data: { seo: SEO.boutique, jsonLd: [...productSchemas()] },
   },
   {
     path: 'blog',

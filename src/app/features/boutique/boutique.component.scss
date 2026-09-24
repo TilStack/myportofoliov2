@@ -1,0 +1,39 @@
+@use '../../../assets/styles/variables' as *;
+
+// Même gabarit d'en-tête que /projects.
+.boutique {
+  min-height: 100svh;
+  padding-top: $navbar-height;
+
+  &__hero {
+    padding-block: $space-16 $space-8;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  &__eyebrow {
+    display: inline-block;
+    margin-bottom: $space-3;
+    font-size: $text-xs;
+    font-weight: $font-semibold;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-accent-text);
+  }
+
+  &__title {
+    margin: 0 0 $space-4;
+    font-family: $font-display;
+    font-size: clamp($text-3xl, 6vw, $text-5xl);
+    font-weight: $font-black;
+    line-height: 1.1;
+    color: var(--color-text);
+  }
+
+  &__intro {
+    margin: 0;
+    max-width: 540px;
+    font-size: clamp($text-base, 2vw, $text-lg);
+    line-height: 1.7;
+    color: var(--color-text-muted);
+  }
+}

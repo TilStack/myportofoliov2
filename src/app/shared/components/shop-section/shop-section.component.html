@@ -1,0 +1,33 @@
+<section class="shop section" aria-labelledby="shop-title">
+  <div class="container">
+    @if (showHeader()) {
+      <div class="shop__header">
+        <span class="shop__eyebrow">{{ i18n.t('shop.eyebrow') }}</span>
+        <h2 id="shop-title" class="section__title">{{ i18n.t('shop.title') }}</h2>
+        <p class="section__subtitle">{{ i18n.t('shop.subtitle') }}</p>
+      </div>
+    } @else {
+      <h2 id="shop-title" class="sr-only">{{ i18n.t('shop.title') }}</h2>
+    }
+
+    <ul class="shop__grid">
+      @for (p of products; track p.id) {
+        <li class="product">
+          <span class="product__kind">{{ i18n.t('shop.kind.' + p.kind) }}</span>
+          <h3 class="product__name">{{ p.name }}</h3>
+          <p class="product__desc">{{ i18n.lang() === 'fr' ? p.descriptionFr : p.descriptionEn }}</p>
+          <app-price [price]="p.price" />
+          <a class="cta product__cta" [href]="p.url" target="_blank" rel="noopener">
+            {{ i18n.t('shop.cta') }}
+            <span class="sr-only"> — {{ p.name }}</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        </li>
+      }
+    </ul>
+
+    @if (showAllLink()) {
+      <p class="shop__all"><a class="cta cta--outline" routerLink="/boutique">{{ i18n.t('shop.seeAll') }}</a></p>
+    }
+  </div>
+</section>

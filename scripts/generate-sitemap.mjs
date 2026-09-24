@@ -30,9 +30,10 @@ if (!SITE_URL) { console.error('sitemap: SITE_URL introuvable dans site.data.ts'
 /** Sources dont dépend le contenu de chaque route (pour lastmod). */
 const APP = 'src/app';
 const SOURCES = {
-  '/':        [`${APP}/features/home`, `${APP}/data/site.data.ts`, `${APP}/data/products.data.ts`],
+  '/':        [`${APP}/features/home`, `${APP}/data/site.data.ts`, `${APP}/data/products.data.ts`, `${APP}/shared/components/shop-section`],
   '/about':   [`${APP}/features/about`],
   '/projects': [`${APP}/features/projects`, `${APP}/data/projects.data.ts`],
+  '/boutique': [`${APP}/features/boutique`, `${APP}/shared/components/shop-section`, `${APP}/data/products.data.ts`],
   '/blog':    [`${APP}/features/blog`],
   '/quotes':  [`${APP}/features/quotes`],
   '/contact': [`${APP}/features/contact`],
