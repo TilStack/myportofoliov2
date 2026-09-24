@@ -1,0 +1,74 @@
+@use '../../../../assets/styles/variables' as *;
+@use '../../../../assets/styles/mixins' as *;
+
+:host { display: block; }
+
+.career {
+  &__header { margin-bottom: $space-8; }
+
+  &__cols {
+    display: grid;
+    gap: $space-8;
+    margin-top: $space-10;
+    @include md { grid-template-columns: 1fr 1fr; }
+  }
+
+  &__subtitle {
+    margin: 0 0 $space-4;
+    font-family: $font-display;
+    font-size: $text-xl;
+    color: var(--color-text);
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: $space-4;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li { display: flex; flex-direction: column; gap: $space-1; color: var(--color-text-muted); }
+    strong { color: var(--color-text); font-weight: $font-semibold; }
+  }
+}
+
+.timeline {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 $space-6;
+  list-style: none;
+  border-left: 2px solid var(--color-border);
+
+  &__item {
+    position: relative;
+    padding-bottom: $space-6;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: calc(-#{$space-6} - 7px);
+      top: 0.45rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: $color-accent;
+      border: 2px solid $color-primary;
+    }
+    &:last-child { padding-bottom: 0; }
+  }
+
+  &__role { margin: 0; font-family: $font-display; font-size: $text-lg; color: var(--color-text); }
+  &__org { margin: $space-1 0 0; color: var(--color-text); font-weight: $font-medium; }
+  &__period, &__detail { margin: $space-1 0 0; color: var(--color-text-muted); font-size: $text-sm; }
+
+  &__now {
+    margin-left: $space-2;
+    padding: 0 $space-2;
+    border-radius: $radius-full;
+    background: $color-primary;
+    color: $color-accent;
+    font-size: $text-xs;
+    font-weight: $font-bold;
+  }
+}

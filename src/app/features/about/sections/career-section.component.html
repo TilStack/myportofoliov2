@@ -1,0 +1,44 @@
+<section class="career section cv-auto" aria-labelledby="career-title">
+  <div class="container">
+    <div class="career__header">
+      <h2 id="career-title" class="section__title">{{ i18n.t('about.careerTitle') }}</h2>
+      <p class="section__subtitle">{{ i18n.t('about.careerSub') }}</p>
+    </div>
+
+    <ol class="timeline">
+      @for (e of experience; track e.id) {
+        <li class="timeline__item">
+          <h3 class="timeline__role">{{ tr(e.role) }}</h3>
+          <p class="timeline__org">
+            {{ e.organization }}@if (e.place) {, {{ e.place }}}
+            @if (e.current) { <span class="timeline__now">{{ i18n.t('about.careerCurrent') }}</span> }
+          </p>
+          @if (e.period) { <p class="timeline__period">{{ tr(e.period) }}</p> }
+          @if (e.detail) { <p class="timeline__detail">{{ tr(e.detail) }}</p> }
+        </li>
+      }
+    </ol>
+
+    <div class="career__cols">
+      <div>
+        <h3 class="career__subtitle">{{ i18n.t('about.educationTitle') }}</h3>
+        <ul class="career__list">
+          @for (e of education; track e.id) {
+            <li>
+              <strong>{{ tr(e.title) }}</strong>
+              <span>{{ e.school }} · {{ e.year }}</span>
+            </li>
+          }
+        </ul>
+      </div>
+      <div>
+        <h3 class="career__subtitle">{{ i18n.t('about.languagesTitle') }}</h3>
+        <ul class="career__list">
+          @for (l of languages; track l.id) {
+            <li><strong>{{ tr(l.label) }}</strong></li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

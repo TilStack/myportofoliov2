@@ -54,6 +54,14 @@
 </section>
 
 <!-- ===== SKILLS ===== -->
+<!-- ===== PARCOURS ===== -->
+@defer (on viewport; hydrate on viewport) {
+  <app-career-section />
+} @placeholder {
+  <div class="defer-ph"></div>
+}
+
+<!-- ===== COMPÉTENCES PAR COUCHES ===== -->
 @defer (on viewport; hydrate on viewport) {
   <section class="skills-section section cv-auto">
     <div class="container">
@@ -62,20 +70,28 @@
         <p class="section__subtitle">{{ i18n.t('about.stackSubtitle') }}</p>
       </div>
       <div class="skills-categories-grid">
-        @for (cat of skillCategories; track cat.label; let ci = $index) {
+        @for (layer of skillLayers; track layer.id; let ci = $index) {
           <div class="skills-category fade-up" appFadeOnScroll [delay]="ci * 60">
             <div class="skills-category__header">
-              <span class="skills-category__icon" aria-hidden="true">{{ cat.icon }}</span>
-              <h3 class="skills-category__label">{{ cat.label }}</h3>
+              <span class="skills-category__icon" aria-hidden="true">{{ layer.icon }}</span>
+              <h3 class="skills-category__label">{{ layer.label[i18n.lang()] }}</h3>
             </div>
             <div class="skills-grid">
-              @for (skill of cat.skills; track skill.name) {
-                <span class="skill-tag" [style.--brand]="skill.color">{{ skill.name }}</span>
+              @for (skill of layer.main; track skill) {
+                <span class="skill-tag">{{ skill }}</span>
               }
             </div>
+            @if (layer.secondary) {
+              <p class="skills-category__secondary">
+                {{ i18n.t('about.skillsSecondary') }} : {{ layer.secondary.join(', ') }}
+              </p>
+            }
           </div>
         }
       </div>
+      <p class="skills-section__multimedia fade-up" appFadeOnScroll>
+        {{ i18n.t('about.skillsMultimedia') }} : {{ multimediaSkills.join(', ') }}
+      </p>
     </div>
   </section>
 } @placeholder {
@@ -178,6 +194,13 @@
 }
 
 <!-- ===== EDUCATOR ===== -->
+<!-- ===== ENSEIGNEMENT & FORMATIONS ===== -->
+@defer (on viewport; hydrate on viewport) {
+  <app-teaching-section />
+} @placeholder {
+  <div class="defer-ph"></div>
+}
+
 @defer (on viewport; hydrate on viewport) {
   <section class="educator-section section cv-auto">
     <div class="container educator-section__inner">

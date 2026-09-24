@@ -1,0 +1,46 @@
+<section class="teaching section cv-auto" aria-labelledby="teaching-title">
+  <div class="container">
+    <h2 id="teaching-title" class="section__title">{{ i18n.t('about.teachingTitle') }}</h2>
+    <p class="section__subtitle">{{ i18n.t('about.teachingSub') }}</p>
+
+    <div class="teaching__grid">
+      <article class="tcard">
+        <h3 class="tcard__title">{{ teaching.organization }}, {{ teaching.place }}</h3>
+        <p class="tcard__meta">{{ tr(teaching.since) }} · {{ i18n.t('about.teachingProgramme') }} {{ teaching.programme }}</p>
+        <ul class="tcard__list">
+          @for (s of teaching.subjects; track s.fr) { <li>{{ tr(s) }}</li> }
+        </ul>
+        <p class="tcard__extra">{{ tr(teaching.supervision.label) }} ({{ teaching.supervision.scheme }})</p>
+      </article>
+
+      <article class="tcard">
+        <h3 class="tcard__title">{{ teaching.createdCourse.name }}</h3>
+        <p class="tcard__meta">{{ i18n.t('about.teachingCourseMeta') }}</p>
+        <p class="tcard__extra">{{ i18n.t('about.teachingCourseText') }}</p>
+        @if (courseUrl(); as url) {
+          <a class="cta cta--outline" [href]="url" target="_blank" rel="noopener">
+            {{ i18n.t('about.teachingCourseCta') }} <span aria-hidden="true">↗</span>
+          </a>
+        }
+      </article>
+    </div>
+
+    @if (interventions.length) {
+      <div class="teaching__interventions">
+        <h3 class="tcard__title">{{ i18n.t('about.interventionsTitle') }}</h3>
+        <ul class="tcard__list tcard__list--plain">
+          @for (i of interventions; track i.id) {
+            <li>
+              @if (i.url) {
+                <a [href]="i.url" target="_blank" rel="noopener">{{ tr(i.title) }}</a>
+              } @else {
+                {{ tr(i.title) }}
+              }
+              — {{ i.event }} · {{ i.date }}
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
+</section>

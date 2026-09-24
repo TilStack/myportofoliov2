@@ -258,6 +258,18 @@ $accent: $color-accent;
   }
 }
 
+.skills-category__secondary {
+  margin: $space-3 0 0;
+  font-size: $text-sm;
+  color: var(--color-text-muted);
+}
+
+.skills-section__multimedia {
+  margin: $space-6 0 0;
+  font-size: $text-sm;
+  color: var(--color-text-muted);
+}
+
 .skills-grid {
   display: flex;
   flex-wrap: wrap;
