@@ -45,10 +45,10 @@
             <span
               class="pcard__status"
               [class.pcard__status--done]="p.status === 'finished'"
-              [class.pcard__status--wip]="p.status === 'in-progress'"
+              [class.pcard__status--wip]="p.status !== 'finished'"
             >
               <span class="pcard__status-dot" aria-hidden="true"></span>
-              {{ p.status === 'finished' ? i18n.t('projects.finished') : i18n.t('projects.inProgress') }}
+              {{ i18n.t(statusKey[p.status]) }}
             </span>
             <button type="button" class="pcard__open-hint" (click)="openModal(p)">
               {{ i18n.t('projects.quickView') }}
@@ -88,10 +88,10 @@
         <span
           class="pmodal__hero-status"
           [class.pmodal__hero-status--done]="selected()!.status === 'finished'"
-          [class.pmodal__hero-status--wip]="selected()!.status === 'in-progress'"
+          [class.pmodal__hero-status--wip]="selected()!.status !== 'finished'"
         >
           <span class="pmodal__status-dot" aria-hidden="true"></span>
-          {{ selected()!.status === 'finished' ? i18n.t('projects.finished') : i18n.t('projects.inProgress') }}
+          {{ i18n.t(statusKey[selected()!.status]) }}
         </span>
 
         <!-- Large icon -->

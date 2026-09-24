@@ -18,7 +18,7 @@ export interface Project {
   name: string;
   icon: string;
   company: string;
-  status: 'finished' | 'in-progress';
+  status: 'finished' | 'in-progress' | 'coming-soon';
   tech: string[];
   liveUrl?: string;
   youtubeUrl?: string;
@@ -31,6 +31,13 @@ export interface Project {
   /** Masqué : absent de la liste, non pré-rendu, absent du sitemap. */
   hidden?: boolean;
 }
+
+/** Clé de traduction (I18nService) du libellé de statut. */
+export const STATUS_KEY: Record<Project['status'], string> = {
+  finished: 'projects.finished',
+  'in-progress': 'projects.inProgress',
+  'coming-soon': 'projects.comingSoonPlay',
+};
 
 export const ISRAEL: Contributor = {
   name: 'Israel Tientcheu',
@@ -150,14 +157,17 @@ export const PROJECTS: Project[] = [
     name: 'Otadex',
     icon: '⚡',
     company: 'Personal',
-    status: 'in-progress',
+    status: 'coming-soon', // « Bientôt sur le Play Store »
     tech: ['Flutter', 'Firebase', 'Claude Code'],
     liveUrl: 'https://otadex.tilstack.me',
-    descEn: 'My first personnal project in building a mobile application',
+    descEn: 'An anime encyclopedia mobile app — my first personal project building a mobile application.',
     descFr:
-      "Mon premier projet personnel de construction d'une application mobile",
-    detailEn: '',
-    detailFr: '',
+      "Une encyclopédie anime sur mobile — mon premier projet personnel de construction d'une application mobile.",
+    // TODO(israel): valider ou réécrire cette description (tirée de l'état du projet Otadex_v1).
+    detailEn:
+      'Otadex is a Flutter and Firebase mobile app built as a solo project: an anime encyclopedia with character, anime and creator pages, a personal collection and rank-based plans (Genin, Jonin, Kage). Coming soon on the Play Store.',
+    detailFr:
+      "Otadex est une application mobile Flutter et Firebase, développée seul : une encyclopédie anime avec des fiches de personnages, d'animés et de créateurs, une collection personnelle et des formules par rang (Genin, Jonin, Kage). Bientôt sur le Play Store.",
     contributors: [
       { ...ISRAEL, roleEn: 'Solo Developer', roleFr: 'Développeur Solo' },
     ],
@@ -203,6 +213,27 @@ export const PROJECTS: Project[] = [
       { ...ISRAEL, roleEn: 'Solo Developer', roleFr: 'Développeur Solo' },
     ],
     images: ['images/projects/pokemon-1.webp'],
+  },
+  {
+    id: 8,
+    slug: 'sela-cantique',
+    name: 'Séla Cantique',
+    icon: '🎵',
+    company: 'Personal',
+    status: 'in-progress',
+    tech: ['Flutter', 'Dart'],
+    // TODO(israel): confirmer que Séla Cantique est bien l'application de cantiques (dépôt fgmcantique),
+    //   puis valider les descriptions, la stack et le statut, et fournir des captures réelles.
+    descEn: 'A mobile hymnal app with hymns in French and English.',
+    descFr: 'Une application mobile de cantiques, en français et en anglais.',
+    detailEn:
+      'Séla Cantique is a Flutter mobile app that puts a hymnal on your phone, with hymns in French and English. The project can be supported with a free-amount donation, from 600 XAF.',
+    detailFr:
+      "Séla Cantique est une application mobile Flutter qui met un recueil de cantiques sur le téléphone, avec des chants en français et en anglais. Le projet peut être soutenu par un don libre, dès 600 XAF.",
+    contributors: [
+      { ...ISRAEL, roleEn: 'Solo Developer', roleFr: 'Développeur Solo' },
+    ],
+    images: ['images/projects/placeholder.svg'], // TODO(israel): captures réelles
   },
 ];
 

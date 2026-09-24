@@ -1,0 +1,37 @@
+@if (subscriptions().length) {
+  <section class="offers" aria-labelledby="offers-plans-title">
+    <h2 id="offers-plans-title" class="offers__title">{{ i18n.t('shop.plansTitle') }}</h2>
+    <ul class="offers__grid">
+      @for (o of subscriptions(); track o.id) {
+        <li class="plan">
+          <h3 class="plan__name">{{ o.name }}</h3>
+          <span class="plan__period">{{ i18n.t(o.period === 'yearly' ? 'shop.yearly' : 'shop.monthly') }}</span>
+          <app-price [price]="o.price" />
+          <span class="plan__unit">{{ i18n.t(o.period === 'yearly' ? 'shop.perYear' : 'shop.perMonth') }}</span>
+        </li>
+      }
+    </ul>
+    <p class="offers__cta">
+      @if (ctaUrl(); as url) {
+        <a class="cta" [href]="url" target="_blank" rel="noopener">{{ i18n.t('shop.plansCta') }} <span aria-hidden="true">↗</span></a>
+      } @else {
+        <span class="cta cta--disabled" aria-disabled="true">{{ i18n.t('shop.soon') }}</span>
+      }
+    </p>
+  </section>
+}
+
+@if (donation(); as d) {
+  <section class="offers" aria-labelledby="offers-donation-title">
+    <h2 id="offers-donation-title" class="offers__title">{{ i18n.t('shop.donationTitle') }}</h2>
+    <p class="offers__text">{{ i18n.t('shop.donationText') }}</p>
+    <app-price [price]="d.price" [minimum]="true" />
+    <p class="offers__cta">
+      @if (ctaUrl(); as url) {
+        <a class="cta" [href]="url" target="_blank" rel="noopener">{{ i18n.t('shop.donationCta') }} <span aria-hidden="true">↗</span></a>
+      } @else {
+        <span class="cta cta--disabled" aria-disabled="true">{{ i18n.t('shop.soon') }}</span>
+      }
+    </p>
+  </section>
+}

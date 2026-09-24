@@ -4,9 +4,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { ProjectOffersComponent } from '../../../shared/components/project-offers/project-offers.component';
 import { I18nService } from '../../../core/services/i18n.service';
 import { SeoService } from '../../../core/services/seo.service';
-import { VISIBLE_PROJECTS, Project } from '../../../data/projects.data';
+import { STATUS_KEY, VISIBLE_PROJECTS, Project } from '../../../data/projects.data';
 import { SEO, projectImage, projectSeo } from '../../../data/seo.data';
 import { DEFAULT_OG_IMAGE } from '../../../data/site.data';
 import { absoluteUrl, projectSchema } from '../../../data/structured-data';
@@ -15,13 +16,14 @@ import { responsiveImage } from '../../../shared/utils/responsive-image';
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [RouterModule, NgOptimizedImage, ButtonComponent],
+  imports: [RouterModule, NgOptimizedImage, ButtonComponent, ProjectOffersComponent],
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss',
 })
 export class ProjectDetailComponent {
   readonly i18n = inject(I18nService);
   private readonly seo = inject(SeoService);
+  readonly statusKey = STATUS_KEY;
 
   private readonly slug = toSignal(
     inject(ActivatedRoute).paramMap.pipe(map(params => params.get('slug'))),

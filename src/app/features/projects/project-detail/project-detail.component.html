@@ -82,13 +82,13 @@
                 <span class="tag">{{ t }}</span>
               }
             </div>
-            <p class="detail-meta__company">{{ project()!.company }} · {{ project()!.status === 'finished' ? i18n.t('projects.finished') : i18n.t('projects.inProgress') }}</p>
+            <p class="detail-meta__company">{{ project()!.company }} · {{ i18n.t(statusKey[project()!.status]) }}</p>
             <div class="detail-meta__desc">{{ body() }}</div>
           </div>
 
+          @if (project()!.liveUrl) {
           <div class="detail-meta__links">
-            @if (project()!.liveUrl) {
-              <app-button variant="accent" size="md">
+            <app-button variant="accent" size="md">
                 <a [href]="project()!.liveUrl" target="_blank" rel="noopener" class="link-btn">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
@@ -97,10 +97,13 @@
                   </svg>
                   Live demo
                 </a>
-              </app-button>
-            }
+            </app-button>
           </div>
+          }
         </div>
+
+        <!-- Abonnements (Otadex) ou don libre (Séla Cantique) : rien pour les autres projets -->
+        <app-project-offers [slug]="project()!.slug" />
       </div>
     }
   </div>
