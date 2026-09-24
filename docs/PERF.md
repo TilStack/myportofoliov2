@@ -40,7 +40,8 @@ SEO 100 et Best Practices 100 partout. Seule cible manquée : TBT de `/about` (2
 
 ## Décisions ouvertes
 
-- **Inter** : évaluée, non supprimée (voir le rapport de phase). Gain mesuré : −47 kB de police, LCP −0,2 à −0,4 s.
+- **Inter** : évaluée (gain mesuré : −47 kB de police, LCP −0,2 à −0,4 s). Décision du 24/09/2026 : on la garde ; le budget des polices sera réévalué en Phase 6, avec JetBrains Mono.
 - **Zoneless** (`provideZonelessChangeDetection`, retrait de zone.js) : essayé, −35 kB de JS initial, gain de score
-  faible (+1 à +2) ; non adopté car `quote-modal` et `blog` mutent des champs non-signal dans des timers.
-- `public/hero/avatar-3d.png` (861 kB) n'est référencé nulle part ; le WebP (51 kB) est celui prévu pour la Phase 6.
+  faible (+1 à +2) ; non adopté pour l'instant (décision du 24/09/2026) car `quote-modal` et `blog` mutent des champs
+  non-signal dans des timers. Tâche de fin de chantier ajoutée au plan.
+- `public/hero/avatar-3d.png` (861 kB), non référencé : supprimé le 24/09/2026, le WebP (51 kB) suffit.

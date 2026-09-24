@@ -55,15 +55,20 @@ grep -c "__ADMIN_UID__" firestore.rules      # doit afficher 0
 ```bash
 npm ci
 npm run build
-npm run test:security        # règles (72) + migration (12) + parcours navigateur (12)
+npm run test:security        # règles (72) + migration (12) + parcours navigateur (14)
 ```
 
 ## 3. Migrer les données (Admin SDK)
 
 Ordre important : **avant** de déployer, car le nouveau site ne lit que `status == 'approved'`.
 
+Le script lit le chemin de la clé dans la variable d'environnement `GOOGLE_APPLICATION_CREDENTIALS`
+(pas d'argument en ligne de commande, pour que le chemin ne reste pas dans l'historique du shell
+avec des options). La clé doit être **hors du dossier du projet** : le script refuse un fichier situé
+dans le dépôt.
+
 ```bash
-export GOOGLE_APPLICATION_CREDENTIALS=~/secrets/tilportofoliov2-sa.json
+export GOOGLE_APPLICATION_CREDENTIALS=~/secrets/tilportofoliov2-sa.json   # chemin absolu, hors dépôt
 
 # a) Simulation : affiche des comptes uniquement, n'écrit rien
 node scripts/migrate-quotes.mjs --dry-run

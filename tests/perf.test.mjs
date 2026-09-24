@@ -7,7 +7,7 @@ import { join } from 'node:path';
 const DIST = 'dist/myportofoliov2/browser';
 const MAX_IMAGE_KB = 200;
 // Non référencé par le site (le WebP de 51 kB est celui servi) : à supprimer sur décision de l'auteur.
-const IMAGE_EXCEPTIONS = new Set(['hero/avatar-3d.png']);
+const IMAGE_EXCEPTIONS = new Set([]);
 
 const results = [];
 const check = async (name, fn) => { try { await fn(); results.push({ name, ok: true }); } catch (e) { results.push({ name, ok: false, error: e.message.split('\n')[0] }); } };

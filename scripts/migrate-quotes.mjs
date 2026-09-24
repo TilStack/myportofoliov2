@@ -17,7 +17,9 @@
  * Le script est idempotent (relançable) et n'affiche que des comptes : jamais le
  * contenu des citations ni les coordonnées des visiteurs.
  */
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, realpathSync } from 'node:fs';
+import { relative, sep } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { initializeApp, applicationDefault } from 'firebase-admin/app';
 import { getFirestore, FieldValue } from 'firebase-admin/firestore';
 
@@ -44,6 +46,11 @@ if (emulator) {
   const key = process.env.GOOGLE_APPLICATION_CREDENTIALS;
   if (!key || !existsSync(key)) {
     console.error('GOOGLE_APPLICATION_CREDENTIALS doit pointer vers un fichier de compte de service existant (hors dépôt).');
+    process.exit(2);
+  }
+  const repoRoot = fileURLToPath(new URL('..', import.meta.url));
+  if (relative(repoRoot, realpathSync(key)).split(sep)[0] !== '..') {
+    console.error('La clé de compte de service est dans le dossier du projet : déplace-la hors du dépôt (ex. ~/secrets/).');
     process.exit(2);
   }
   initializeApp({ credential: applicationDefault(), projectId });

@@ -116,7 +116,7 @@ Contenu centralisé dans des fichiers typés `src/app/data/*.ts`, intégré aux 
    - Otadex, 4 abonnements : Jonin mensuel 2 000 XAF, Kage mensuel 5 000 XAF, Jonin annuel 21 600 XAF, Kage annuel 54 000 XAF (URL : `TODO(israel)`) ;
    - Séla Cantique : don libre à partir de 600 XAF (URL : `TODO(israel)`).
 
-   Chaque prix a la forme `{ amount, currency: 'XAF', compareAt?, updatedAt }` ; à mettre à jour à chaque changement de promo sur Chariow, car le JSON-LD doit correspondre au prix affiché sur la boutique. Le JSON-LD Product (avec `offers`) est branché avec cette section. **À confirmer avant la Phase 4** : afficher ou non les prix sur le site (l'ancienne consigne était « pas de prix affichés »).
+   Chaque prix a la forme `{ amount, currency: 'XAF', compareAt?, updatedAt }` ; à mettre à jour à chaque changement de promo sur Chariow, car le JSON-LD doit correspondre au prix affiché sur la boutique. Le JSON-LD Product (avec `offers`) est branché avec cette section. **Décision du 24/09/2026 : les prix s'affichent en Phase 4** (prix actuel + prix barré `compareAt`), cohérents avec le JSON-LD `offers` (même source : `products.data.ts`). Cela remplace l'ancienne consigne « pas de prix affichés ».
 3. **Enseignement & Formations** : formateur au CEFTI (Douala) depuis septembre 2023, selon le programme MINESEC (informatique générale, algorithmique & programmation, systèmes d'information MERISE/UML, bases de données), encadrement de projets étudiants (ORICEFT) et création de la formation Prof 2.0. Prévois une liste « Interventions » vide, avec un composant qui se masque si elle est vide. N'invente aucune conférence.
 4. **Parcours** (À propos) : CEFTI (depuis 09/2023) ; LEVEGI SARL (stage 2022, puis développeur et encadrant de stagiaires, 01/2023 – 09/2024) ; freelance en développement assisté par IA (depuis 03/2026) ; co-fondateur de DevPea. Formation : Bachelor Conception des Systèmes d'Information (3IL, IUC Logbessou, 2023) ; DEC Programmation & Application mobile (CCNB, 2022). Langues : TCF 2025 (C2/C1), IELTS Academic 2024.
 5. **Compétences** en texte, par couches : Mobile (Flutter/Dart) · Web (Angular, TypeScript) · Backend (FastAPI/Python, REST ; NestJS/Node en secondaire) · Données (MongoDB, Firebase) · DevOps (Docker, Firebase Hosting) · IA (Claude Code, NotebookLM, Gemini). Multimédia en discret : Photoshop, Canva, CapCut.
@@ -187,6 +187,7 @@ Arrête-toi après le hero pour validation (captures desktop et mobile, Lighthou
 
 ## Livrable final du chantier
 
+- **Tâche de fin de chantier** : migration zoneless : convertir `quote-modal` et `blog` en signals, puis `provideZonelessChangeDetection` (retrait de zone.js, environ −35 kB de JS initial).
 - Récapitulatif par phase, avec les commits.
 - Tableau Lighthouse : audit initial → après Phase 3 → après Phase 6.
 - Liste consolidée des `TODO(israel)`.
