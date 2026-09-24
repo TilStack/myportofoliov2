@@ -1,8 +1,8 @@
-import { Component, computed, HostListener, inject, signal } from '@angular/core';
+import { Component, afterNextRender, computed, HostListener, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { of, switchMap, tap } from 'rxjs';
+import { EMPTY, map, of, switchMap, tap } from 'rxjs';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { QuoteModalComponent } from './quote-modal/quote-modal.component';
 import { Quote, QuoteSubmission } from '../../core/models/quote.model';
@@ -11,6 +11,7 @@ import { I18nService } from '../../core/services/i18n.service';
 import { QuoteService } from '../../core/services/quote.service';
 import { AdminAuthService } from '../../core/services/admin-auth.service';
 import { QUOTES } from './quotes.data';
+import { scrollToTop } from '../../shared/utils/motion';
 
 const PAGE_SIZE = 9;
 
@@ -33,15 +34,53 @@ export class QuotesComponent {
   private readonly quoteService = inject(QuoteService);
   readonly admin = inject(AdminAuthService);
 
-  // ── Loading state ─────────────────────────────────────────
-  // Le contenu initial est local (voir rawQuotes) : pas d'état de chargement.
+  // ── Données ───────────────────────────────────────────────
+  // Les 12 citations locales s'affichent immédiatement (aussi dans le HTML pré-rendu). Firestore
+  // n'est chargé qu'après le premier rendu, au repos ou à la première interaction : le SDK
+  // (~350 kB) ne concurrence donc ni le LCP ni le thread principal au chargement.
   readonly loading = signal(false);
+  private readonly remoteEnabled = signal(false);
+  /** true dès que Firestore a répondu : les citations ont alors de vrais identifiants (like, édition). */
+  private readonly remoteReady = signal(false);
 
-  // ── Firebase data (real-time, approved only) ─────────────
   private readonly rawQuotes = toSignal(
-    this.quoteService.getAll().pipe(tap(() => this.loading.set(false))),
+    toObservable(this.remoteEnabled).pipe(
+      switchMap(enabled => enabled ? this.quoteService.getAll() : EMPTY),
+      map(remote => this.inLocalOrder(remote)),
+      tap(() => { this.loading.set(false); this.remoteReady.set(true); }),
+    ),
     { initialValue: QUOTES }
   );
+
+  constructor() {
+    afterNextRender(() => {
+      const events = ['pointerdown', 'keydown', 'touchstart', 'scroll'] as const;
+      let idleHandle: number | undefined;
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      const start = () => {
+        events.forEach(e => window.removeEventListener(e, start));
+        if (timer !== undefined) clearTimeout(timer);
+        if (idleHandle !== undefined && 'cancelIdleCallback' in window) cancelIdleCallback(idleHandle);
+        this.remoteEnabled.set(true);
+      };
+      events.forEach(e => window.addEventListener(e, start, { once: true, passive: true }));
+      // Sans interaction : au repos, après une courte pause qui laisse le premier rendu se stabiliser.
+      timer = setTimeout(() => {
+        if ('requestIdleCallback' in window) idleHandle = requestIdleCallback(start, { timeout: 4000 });
+        else start();
+      }, 1500);
+    });
+  }
+
+  /**
+   * Remet les citations distantes dans l'ordre des citations locales (texte identique), les nouvelles
+   * ensuite par date décroissante : quand Firestore remplace les données, la page ne bouge pas.
+   */
+  private inLocalOrder(remote: Quote[]): Quote[] {
+    const rank = new Map(QUOTES.map((q, i) => [q.text, i]));
+    const rankOf = (q: Quote) => rank.get(q.text) ?? Number.MAX_SAFE_INTEGER;
+    return [...remote].sort((a, b) => rankOf(a) - rankOf(b) || +new Date(b.date) - +new Date(a.date));
+  }
 
   // ── Pending quotes + coordonnées des visiteurs (admin connecté uniquement) ──
   // Les règles Firestore refusent ces lectures aux autres : on ne s'abonne donc pas.
@@ -129,7 +168,7 @@ export class QuotesComponent {
 
   goToPage(page: number): void {
     this.currentPage.set(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop();
   }
 
   initials(author: string): string {
@@ -145,7 +184,8 @@ export class QuotesComponent {
       liked ? next.delete(quote.id) : next.add(quote.id);
       return next;
     });
-    this.quoteService.like(quote.id, liked ? quote.likeCount - 1 : quote.likeCount + 1);
+    // Avant la réponse de Firestore les citations locales n'ont pas de document : pas d'écriture.
+    if (this.remoteReady()) this.quoteService.like(quote.id, liked ? quote.likeCount - 1 : quote.likeCount + 1);
   }
 
   // ── Admin actions (UI visible uniquement si admin.isAdmin(); droits réels : firestore.rules) ──

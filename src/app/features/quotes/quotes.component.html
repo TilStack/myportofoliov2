@@ -82,7 +82,7 @@
     <!-- Quotes grid -->
     @if (!loading()) {
       <div class="quotes-grid">
-        @for (quote of paginatedQuotes(); track quote.id; let i = $index) {
+        @for (quote of paginatedQuotes(); track quote.text; let i = $index) {
           <article
             class="qcard fade-up"
             appFadeOnScroll
