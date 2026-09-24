@@ -10,12 +10,14 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <link rel="manifest" href="manifest.webmanifest" />
     <meta name="theme-color" content="#14213D" />
+    <!-- Police du corps de texte (variable : toutes les graisses) : seule précharge, les titres Poppins se chargent ensuite. -->
+    <link rel="preload" href="fonts/inter-v20-latin.woff2" as="font" type="font/woff2" crossorigin />
     <!-- Avant le premier rendu : applique le thème (localStorage, puis prefers-color-scheme)
-         pour éviter un flash, et signale que le JS est actif (classe js-anim). -->
+         pour éviter un flash. La classe js-anim (révélation au défilement) est posée par l'application
+         une fois le premier écran affiché : jusque-là tout le contenu reste visible. -->
     <script>
       (function () {
         var d = document.documentElement;
-        d.classList.add('js-anim');
         try {
           var t = localStorage.getItem('portfolio-theme');
           if (t !== 'light' && t !== 'dark') {
