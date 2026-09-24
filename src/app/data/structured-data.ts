@@ -47,7 +47,11 @@ export function websiteSchema(): JsonLd {
   };
 }
 
-/** Un Product par produit Chariow, sans `offers` : aucun prix n'est publié. */
+/**
+ * Un Product par produit Chariow, sans `offers` : aucun prix n'est publié.
+ * Non branché : à ajouter au JSON-LD de la page qui affichera la section boutique (Phase 4).
+ * Google exige que le balisage corresponde à du contenu visible sur la page.
+ */
 export function productSchemas(): JsonLd[] {
   return PRODUCTS.map(p => ({
     '@context': 'https://schema.org',

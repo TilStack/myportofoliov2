@@ -12,13 +12,6 @@ export const PERSON_ALIAS = 'TilStack';
 export const DEFAULT_OG_IMAGE = '/assets/og/og-home.jpg';
 export const DEFAULT_OG_IMAGE_ALT = 'TIENTCHEU Israel — TilStack';
 
-/**
- * Jeton de la balise <meta name="google-site-verification"> (Google Search Console, méthode « balise HTML »).
- * Vide = aucune balise émise. La vérification par DNS ne nécessite pas cette valeur.
- * TODO(israel): coller ici le contenu de l'attribut `content` fourni par Search Console.
- */
-export const GOOGLE_SITE_VERIFICATION = '';
-
 export const GITHUB_URL = 'https://github.com/TilStack';
 // TODO(israel): URL LinkedIn correcte ? /in/israel-tientcheu/ (valeur actuelle) ou /in/tientcheuisrael/
 //   (ancien lien de la page d'accueil). Une seule constante à corriger.

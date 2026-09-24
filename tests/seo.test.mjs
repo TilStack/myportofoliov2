@@ -10,7 +10,6 @@ const BASE = 'http://127.0.0.1:5000';
 const read = f => readFileSync(f, 'utf8');
 const site = read('src/app/data/site.data.ts');
 const SITE_URL = site.match(/export const SITE_URL\s*=\s*'([^']+)'/)[1];
-const VERIF = site.match(/export const GOOGLE_SITE_VERIFICATION\s*=\s*'([^']*)'/)[1];
 const projectsSrc = read('src/app/data/projects.data.ts');
 const hiddenSlugs = [...projectsSrc.matchAll(/slug:\s*'([^']+)',\s*hidden:\s*true/g)].map(m => m[1]);
 
@@ -91,9 +90,9 @@ await check('JSON-LD : chaque bloc est du JSON parsable avec @context schema.org
   assert.ok(n >= 4, `blocs : ${n}`);
 });
 const home = pages.find(p => p.route === '/');
-await check('accueil : Person + WebSite + un Product par produit Chariow, sans prix', () => {
+await check('accueil : Person + WebSite, sans Product (pas de section boutique visible avant la Phase 4)', () => {
   const types = ldOf(home).map(o => o['@type']).sort();
-  assert.deepEqual(types, ['Person', 'Product', 'Product', 'WebSite']);
+  assert.deepEqual(types, ['Person', 'WebSite']);
   const person = ldOf(home).find(o => o['@type'] === 'Person');
   assert.equal(person.name, 'TIENTCHEU Israel');
   assert.equal(person.alternateName, 'TilStack');
@@ -101,11 +100,9 @@ await check('accueil : Person + WebSite + un Product par produit Chariow, sans p
   assert.equal(person.address.addressLocality, 'Douala');
   assert.equal(person.address.addressCountry, 'CM');
   assert.ok(person.jobTitle && person.sameAs.length >= 4);
-  for (const pr of ldOf(home).filter(o => o['@type'] === 'Product')) {
-    assert.ok(pr.name && pr.description && pr.url, 'champs du produit');
-    assert.ok(!('offers' in pr), 'pas d\'offers');
-  }
-  assert.ok(!home.ld.join('').match(/"(price|priceCurrency|lowPrice)"/i), 'aucun prix');
+});
+await check('aucun Product ni prix dans le JSON-LD du site', () => {
+  for (const p of pages) assert.ok(!p.ld.join('').match(/"(Product|offers|price|priceCurrency|lowPrice)"/), p.route);
 });
 await check('/about : Person', () => assert.deepEqual(ldOf(pages.find(p => p.route === '/about')).map(o => o['@type']), ['Person']));
 await check('pages projet : CreativeWork cohérent avec le canonical', () => {
@@ -158,10 +155,6 @@ await check('404.html : noindex, lien vers l\'accueil, un <h1>', () => {
   assert.match(h, /<meta name="robots" content="noindex, nofollow"/);
   assert.match(h, /href="\/"[^>]*>[^<]*Retour à l'accueil/);
   assert.equal((h.match(/<h1[\s>]/g) ?? []).length, 1);
-});
-await check('google-site-verification : émise seulement si la constante est renseignée', () => {
-  const tagValue = metaName(home.html, 'google-site-verification');
-  assert.equal(tagValue, VERIF || null);
 });
 await check('og-home.jpg : JPEG 1200×630', () => {
   const b = readFileSync(`${DIST}/assets/og/og-home.jpg`);

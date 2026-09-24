@@ -1,13 +1,13 @@
 import { Routes } from '@angular/router';
 import { SEO } from './data/seo.data';
-import { personSchema, productSchemas, websiteSchema } from './data/structured-data';
+import { personSchema, websiteSchema } from './data/structured-data';
 
 export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
       import('./features/home/home.component').then((m) => m.HomeComponent),
-    data: { seo: SEO.home, jsonLd: [personSchema(), websiteSchema(), ...productSchemas()] },
+    data: { seo: SEO.home, jsonLd: [personSchema(), websiteSchema()] },
   },
   {
     path: 'about',

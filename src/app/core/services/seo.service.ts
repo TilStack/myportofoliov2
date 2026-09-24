@@ -4,7 +4,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import {
-  DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_ALT, GOOGLE_SITE_VERIFICATION, SITE_NAME, TWITTER_URL,
+  DEFAULT_OG_IMAGE, DEFAULT_OG_IMAGE_ALT, SITE_NAME, TWITTER_URL,
 } from '../../data/site.data';
 import { JsonLd, absoluteUrl } from '../../data/structured-data';
 
@@ -87,7 +87,6 @@ export class SeoService {
     this.setName('twitter:image:alt', alt);
 
     this.setName('robots', config.noindex ? 'noindex, nofollow' : null);
-    this.setName('google-site-verification', GOOGLE_SITE_VERIFICATION || null);
   }
 
   /** Remplace les blocs JSON-LD de la page (un `<script type="application/ld+json">` par objet). */
