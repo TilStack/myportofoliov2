@@ -24,7 +24,7 @@
     <!-- Actions -->
     <div class="navbar__actions">
       <!-- Lang toggle -->
-      <button class="navbar__action" (click)="i18n.toggleLang()" aria-label="Switch language">
+      <button class="navbar__action" (click)="i18n.toggleLang()" [attr.aria-label]="'Switch language to ' + (i18n.lang() === 'en' ? 'FR' : 'EN')">
         {{ i18n.lang() === 'en' ? 'FR' : 'EN' }}
       </button>
 

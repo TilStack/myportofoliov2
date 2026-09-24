@@ -83,7 +83,7 @@
     @if (!loading()) {
       <div class="quotes-grid">
         @for (quote of paginatedQuotes(); track quote.text; let i = $index) {
-          <article
+          <div
             class="qcard fade-up"
             appFadeOnScroll
             [delay]="i * 60"
@@ -91,7 +91,6 @@
             role="button"
             tabindex="0"
             (keyup.enter)="openModal(quote)"
-            [attr.aria-label]="'Read more about this quote by ' + quote.author"
           >
             <div class="qcard__mark" aria-hidden="true">&ldquo;</div>
 
@@ -113,7 +112,7 @@
                   [class.liked]="quote.liked"
                   (click)="toggleLike(quote, $event)"
                   title="Like"
-                  aria-label="Like"
+                  [attr.aria-label]="'Like, ' + quote.likeCount"
                 >
                   <svg width="13" height="13" viewBox="0 0 24 24"
                        [attr.fill]="quote.liked ? 'currentColor' : 'none'"
@@ -168,7 +167,7 @@
                 <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
               </svg>
             </div>
-          </article>
+          </div>
         }
       </div>
 

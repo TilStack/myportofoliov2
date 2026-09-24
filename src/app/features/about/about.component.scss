@@ -590,14 +590,19 @@ $accent: $color-accent;
     margin-top: $space-4;
   }
 
+  // Point de 8 px visuel, zone cliquable de 24 px (WCAG 2.5.8) : le padding est compensé par une marge négative.
   &__dot {
+    box-sizing: content-box;
     width: 8px;
     height: 8px;
+    padding: 8px;
+    margin: -8px;
     border-radius: 50%;
     background: var(--color-border);
+    background-clip: content-box;
     transition: background $transition-fast, transform $transition-fast;
 
-    &.active { background: $color-primary; transform: scale(1.4); }
+    &.active { background: $color-primary; background-clip: content-box; transform: scale(1.4); }
   }
 
   &__text {

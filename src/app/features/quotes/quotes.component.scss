@@ -194,7 +194,6 @@
     display: block;
     font-size: $text-xs;
     color: var(--color-text-muted);
-    opacity: 0.6;
     margin-top: $space-3;
   }
 
@@ -410,6 +409,9 @@
   color: var(--color-text-muted);
   transition: color $transition-fast, transform $transition-fast;
   padding: 4px;
+  min-width: 24px;   // cible tactile minimale (WCAG 2.5.8)
+  min-height: 24px;
+  justify-content: center;
   border-radius: $radius-sm;
 
   &:hover { color: #e74c3c; transform: scale(1.1); }
