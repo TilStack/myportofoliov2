@@ -189,8 +189,11 @@
     font-weight: $font-semibold;
     color: var(--color-text-muted);
 
-    &--done { color: #22c55e; }
-    &--wip  { color: $color-accent; }
+    // Textes lisibles sur fond clair (ratio ≥ 4,5:1) ; en thème sombre les couleurs vives d'origine.
+    &--done { color: #15803d; }
+    &--wip  { color: var(--color-accent-text); }
+
+    [data-theme='dark'] &--done { color: #22c55e; }
   }
 
   &__status-dot {
@@ -201,7 +204,7 @@
     background: currentColor;
     flex-shrink: 0;
 
-    .pcard__status--wip & { animation: pulseDot 2s infinite; }
+    .pcard__status--wip & { animation: pulseDot 2s infinite; background: $color-accent; }
   }
 
   // ── open hint ──

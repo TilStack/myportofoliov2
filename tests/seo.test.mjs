@@ -155,6 +155,18 @@ await check('/projects/sela-cantique : « Soutenir le projet », don libre dès 
   assert.ok(s.html.includes(`Dès ${fmt(600)}`) || s.html.includes(fmt(600)), '600 XAF');
   assert.match(s.html, /<span(?=[^>]*aria-disabled="true")(?=[^>]*cta--disabled)[^>]*>/);
 });
+await check('barre de navigation : lien Boutique (même classe que les autres liens), sur toutes les pages', () => {
+  for (const p of pages) {
+    const links = [...p.html.matchAll(/<a\b[^>]*class="navbar__link[^"]*"[^>]*>/g)].map(m => m[0]);
+    assert.ok(links.some(l => /href="\/boutique"/.test(l)), `${p.route} : lien Boutique absent de la navbar`);
+    assert.ok(links.length >= 6, `${p.route} : ${links.length} liens de navbar`);
+  }
+});
+await check('/projects/sela-cantique : description fournie par Israel', () => {
+  const desc = "Recueil de cantiques bilingue et hors ligne pour une assemblée d'église camerounaise, en Flutter.";
+  assert.ok(text(pages.find(p => p.route === '/projects').html).includes(desc), 'liste des projets');
+  assert.equal(pages.find(p => p.route === '/projects/sela-cantique').description, desc, 'meta description');
+});
 await check('/blog : aucune newsletter ni formulaire d\'inscription factice', () => {
   const b = pages.find(p => p.route === '/blog').html;
   assert.ok(!/newsletter/i.test(b), 'newsletter');

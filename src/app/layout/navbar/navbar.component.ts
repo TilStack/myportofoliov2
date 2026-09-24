@@ -27,6 +27,7 @@ export class NavbarComponent {
     { key: 'nav.home',     path: '/'         },
     { key: 'nav.about',    path: '/about'    },
     { key: 'nav.projects', path: '/projects' },
+    { key: 'nav.shop',     path: '/boutique' },
     { key: 'nav.blog',     path: '/blog'     },
     { key: 'nav.quotes',   path: '/quotes'   },
   ];

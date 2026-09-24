@@ -222,14 +222,13 @@ export const PROJECTS: Project[] = [
     company: 'Personal',
     status: 'in-progress',
     tech: ['Flutter', 'Dart'],
-    // TODO(israel): confirmer que Séla Cantique est bien l'application de cantiques (dépôt fgmcantique),
-    //   puis valider les descriptions, la stack et le statut, et fournir des captures réelles.
-    descEn: 'A mobile hymnal app with hymns in French and English.',
-    descFr: 'Une application mobile de cantiques, en français et en anglais.',
+    // TODO(israel): langues proposées par l'application et statut (« en cours » par défaut) ; captures réelles.
+    descEn: 'Bilingual, offline hymnal for a Cameroonian church congregation, built with Flutter.',
+    descFr: "Recueil de cantiques bilingue et hors ligne pour une assemblée d'église camerounaise, en Flutter.",
     detailEn:
-      'Séla Cantique is a Flutter mobile app that puts a hymnal on your phone, with hymns in French and English. The project can be supported with a free-amount donation, from 600 XAF.',
+      'Séla Cantique is a bilingual, offline hymnal for a Cameroonian church congregation, built with Flutter. The project can be supported with a free-amount donation, from 600 XAF.',
     detailFr:
-      "Séla Cantique est une application mobile Flutter qui met un recueil de cantiques sur le téléphone, avec des chants en français et en anglais. Le projet peut être soutenu par un don libre, dès 600 XAF.",
+      "Séla Cantique est un recueil de cantiques bilingue et hors ligne pour une assemblée d'église camerounaise, développé en Flutter. Le projet peut être soutenu par un don libre, dès 600 XAF.",
     contributors: [
       { ...ISRAEL, roleEn: 'Solo Developer', roleFr: 'Développeur Solo' },
     ],
