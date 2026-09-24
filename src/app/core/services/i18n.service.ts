@@ -26,6 +26,12 @@ const EN: Translations = {
     home: 'Home', about: 'About', projects: 'Projects',
     blog: 'Blog', quotes: 'Quotes', contact: 'Contact',
   },
+  notFound: {
+    code:  '404',
+    title: 'Page not found',
+    text:  'This page does not exist or has moved.',
+    home:  'Back to home',
+  },
   hero: {
     greeting:   "Hello, I'm",
     alias:      'But you can call me',
@@ -288,6 +294,12 @@ const FR: Translations = {
   nav: {
     home: 'Accueil', about: 'À propos', projects: 'Projets',
     blog: 'Blog', quotes: 'Citations', contact: 'Contact',
+  },
+  notFound: {
+    code:  '404',
+    title: 'Page introuvable',
+    text:  'Cette page n\'existe pas ou a été déplacée.',
+    home:  'Retour à l\'accueil',
   },
   hero: {
     greeting:   'Bonjour, je suis',

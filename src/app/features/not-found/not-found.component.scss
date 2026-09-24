@@ -1,0 +1,50 @@
+@use '../../../assets/styles/variables' as *;
+@use '../../../assets/styles/mixins'    as *;
+
+.not-found {
+  @include flex-center;
+  flex-direction: column;
+  gap: $space-4;
+  min-height: 100svh;
+  padding: calc(#{$navbar-height} + #{$space-10}) $container-pad-x $space-20;
+  text-align: center;
+
+  &__code {
+    font-family: $font-display;
+    font-size: clamp(5rem, 22vw, 10rem);
+    font-weight: $font-black;
+    line-height: 1;
+    color: var(--color-primary);
+    text-shadow: 0.04em 0.04em 0 $color-accent;
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: clamp($text-2xl, 4vw, $text-4xl);
+    font-weight: $font-black;
+    color: var(--color-text);
+  }
+
+  &__text {
+    font-size: $text-lg;
+    color: var(--color-text-muted);
+    max-width: 420px;
+    line-height: 1.7;
+  }
+
+  &__link {
+    margin-top: $space-4;
+    padding: $space-3 $space-6;
+    background: $color-accent;
+    color: $color-primary;
+    font-weight: $font-bold;
+    border-radius: $radius-full;
+    transition: transform $transition-fast;
+
+    &:hover { transform: translateY(-2px); }
+  }
+}
+
+:root[data-theme='dark'] .not-found__code {
+  color: var(--color-text);
+}
