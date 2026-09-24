@@ -5,12 +5,14 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "postbuild": "node scripts/prepare-404.mjs && node scripts/generate-sitemap.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:rules": "firebase emulators:exec --only firestore --project tilportofoliov2 \"node tests/firestore.rules.test.mjs\"",
     "test:migration": "firebase emulators:exec --only firestore --project tilportofoliov2 \"node tests/migrate-quotes.test.mjs\"",
     "test:security": "npm run test:rules && npm run test:migration && npm run test:e2e",
-    "test:e2e": "firebase emulators:exec --only firestore,hosting --project tilportofoliov2 \"node tests/e2e-quotes.test.mjs\""
+    "test:e2e": "firebase emulators:exec --only firestore,hosting --project tilportofoliov2 \"node tests/e2e-quotes.test.mjs\"",
+    "test:seo": "firebase emulators:exec --only hosting --project tilportofoliov2 \"node tests/seo.test.mjs\""
   },
   "prettier": {
     "overrides": [
