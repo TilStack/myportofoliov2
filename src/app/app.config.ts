@@ -1,5 +1,7 @@
 import {
   ApplicationConfig,
+  inject,
+  provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
 } from '@angular/core';
@@ -8,6 +10,7 @@ import { provideRouter, withViewTransitions, withInMemoryScrolling } from '@angu
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { routes } from './app.routes';
+import { SeoService } from './core/services/seo.service';
 
 /** Configuration commune au navigateur et au pré-rendu (aucun accès Firebase ici). */
 export const appConfig: ApplicationConfig = {
@@ -21,5 +24,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideAnimationsAsync(),
     provideClientHydration(withEventReplay()),
+    // Title, meta, canonical, Open Graph et JSON-LD de chaque route (pré-rendu compris).
+    provideAppInitializer(() => inject(SeoService).watchRoutes()),
   ],
 };

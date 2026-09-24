@@ -3,6 +3,21 @@
  * Modifier ici propage la valeur partout (pages, données projets, futur SEO).
  */
 export const SITE_URL = 'https://tilstack.me';
+export const SITE_NAME = 'TIENTCHEU Israel (TilStack)';
+export const PERSON_NAME = 'TIENTCHEU Israel';
+export const PERSON_ALIAS = 'TilStack';
+
+/** Image de partage par défaut (1200×630), utilisée quand une page n'a pas la sienne. */
+// TODO(israel): remplacer public/assets/og/og-home.jpg (placeholder généré) par ta version Canva 1200×630.
+export const DEFAULT_OG_IMAGE = '/assets/og/og-home.jpg';
+export const DEFAULT_OG_IMAGE_ALT = 'TIENTCHEU Israel — TilStack';
+
+/**
+ * Jeton de la balise <meta name="google-site-verification"> (Google Search Console, méthode « balise HTML »).
+ * Vide = aucune balise émise. La vérification par DNS ne nécessite pas cette valeur.
+ * TODO(israel): coller ici le contenu de l'attribut `content` fourni par Search Console.
+ */
+export const GOOGLE_SITE_VERIFICATION = '';
 
 export const GITHUB_URL = 'https://github.com/TilStack';
 // TODO(israel): URL LinkedIn correcte ? /in/israel-tientcheu/ (valeur actuelle) ou /in/tientcheuisrael/

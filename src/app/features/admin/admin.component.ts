@@ -1,12 +1,12 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { Meta } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { AdminAuthService } from '../../core/services/admin-auth.service';
 import { I18nService } from '../../core/services/i18n.service';
 
 /**
- * Espace admin : connexion Google. Route non pré-rendue, hors sitemap, noindex.
+ * Espace admin : connexion Google. Route non pré-rendue, hors sitemap, noindex
+ * (balise robots via SeoService, plus en-tête X-Robots-Tag dans firebase.json).
  * Aucun lien public n'y mène ; les droits réels sont dans firestore.rules.
  */
 @Component({
@@ -19,13 +19,11 @@ import { I18nService } from '../../core/services/i18n.service';
 export class AdminComponent implements OnInit {
   readonly i18n  = inject(I18nService);
   readonly admin = inject(AdminAuthService);
-  private readonly meta = inject(Meta);
 
   readonly busy  = signal(false);
   readonly error = signal<'forbidden' | 'failed' | null>(null);
 
   ngOnInit(): void {
-    this.meta.updateTag({ name: 'robots', content: 'noindex, nofollow' });
     void this.admin.load();
   }
 
