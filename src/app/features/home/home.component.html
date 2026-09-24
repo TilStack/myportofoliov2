@@ -85,7 +85,7 @@
 
 <!-- ===== MOODBOARD — Quote Grid ===== -->
 @defer (on viewport; hydrate on viewport) {
-  <section class="moodboard section" id="moodboard">
+  <section class="moodboard section cv-auto" id="moodboard">
     <div class="container">
       <div class="moodboard__header fade-up" appFadeOnScroll>
         <h2 class="section__title">{{ i18n.t("quotes.title") }}</h2>
@@ -94,7 +94,7 @@
 
       <div class="moodboard__grid">
         @for (quote of quotes(); track quote.id; let i = $index) {
-          <article
+          <div
             class="quote-card fade-up"
             [class.expanded]="quote.expanded"
             appFadeOnScroll
@@ -117,7 +117,7 @@
                   : i18n.t("home.clickExpand")
               }}
             </span>
-          </article>
+          </div>
         }
 
         <!-- CTA card -->
@@ -150,7 +150,7 @@
 
 <!-- ===== PAGE PREVIEWS ===== -->
 @defer (on viewport; hydrate on viewport) {
-  <section class="discover section">
+  <section class="discover section cv-auto">
     <div class="container">
       <div class="discover__header fade-up" appFadeOnScroll>
         <h2 class="section__title">{{ i18n.t("home.discoverTitle") }}</h2>
@@ -276,7 +276,7 @@
 
 <!-- ===== CAMEROON PHOTO MONTAGE ===== -->
 @defer (on viewport; hydrate on viewport) {
-  <section class="montage" id="cameroon">
+  <section class="montage cv-auto" id="cameroon">
     <div class="container">
       <div class="montage__header fade-up" appFadeOnScroll>
         <h2 class="montage__title">{{ i18n.t("home.montageTitle") }}</h2>

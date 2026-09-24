@@ -116,6 +116,13 @@ $latin: 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, 
 // contient le vrai contenu, ce gabarit n'apparaît qu'avant l'affichage différé.
 .defer-ph { min-height: 480px; }
 
+// Sections sous la ligne de flottaison : le navigateur saute leur mise en page et leur peinture tant qu'elles
+// ne sont pas proches de l'écran (`auto` = taille mémorisée une fois rendues, estimation avant).
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 700px;
+}
+
 // Scroll-reveal classes (driven by IntersectionObserver).
 // Le contenu n'est masqué QUE si l'application a posé `js-anim` sur <html> (App, après le premier écran) :
 // sans JavaScript, avant le démarrage, et dans le HTML pré-rendu lu par un robot, le texte reste visible.

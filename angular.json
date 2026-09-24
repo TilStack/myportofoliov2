@@ -39,6 +39,10 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "index": {
+              "input": "src/index.html",
+              "preloadInitial": false
+            },
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"

@@ -8,7 +8,6 @@ import {
 import { IMAGE_LOADER } from '@angular/common';
 import { provideClientHydration, withEventReplay, withIncrementalHydration } from '@angular/platform-browser';
 import { provideRouter, withViewTransitions, withInMemoryScrolling } from '@angular/router';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { routes } from './app.routes';
 import { SeoService } from './core/services/seo.service';
@@ -24,7 +23,6 @@ export const appConfig: ApplicationConfig = {
       withViewTransitions(),
       withInMemoryScrolling({ scrollPositionRestoration: 'top' }),
     ),
-    provideAnimationsAsync(),
     // NgOptimizedImage : variantes WebP générées à l'avance (npm run images), choisies via le manifeste.
     { provide: IMAGE_LOADER, useValue: imageLoader },
     // Hydratation incrémentale : les blocs `@defer (hydrate on viewport)` sont rendus dans le HTML pré-rendu

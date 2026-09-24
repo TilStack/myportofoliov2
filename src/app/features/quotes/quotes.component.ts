@@ -64,11 +64,12 @@ export class QuotesComponent {
         this.remoteEnabled.set(true);
       };
       events.forEach(e => window.addEventListener(e, start, { once: true, passive: true }));
-      // Sans interaction : au repos, après une courte pause qui laisse le premier rendu se stabiliser.
+      // Sans interaction : au repos, après une pause qui laisse la page devenir interactive (les citations
+      // locales sont déjà affichées : rien d'urgent). Le chargement de Firestore ne pèse pas sur la mesure de chargement.
       timer = setTimeout(() => {
         if ('requestIdleCallback' in window) idleHandle = requestIdleCallback(start, { timeout: 4000 });
         else start();
-      }, 1500);
+      }, 4000);
     });
   }
 

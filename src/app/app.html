@@ -4,6 +4,11 @@
   <router-outlet></router-outlet>
 </main>
 
-<app-footer></app-footer>
-<app-back-to-top></app-back-to-top>
-<app-avatar-mascot></app-avatar-mascot>
+<!-- Éléments secondaires : présents dans le HTML pré-rendu, hydratés au repos (le premier écran d'abord). -->
+@defer (hydrate on idle) {
+  <app-footer></app-footer>
+}
+@defer (hydrate on idle) {
+  <app-back-to-top></app-back-to-top>
+  <app-avatar-mascot></app-avatar-mascot>
+}
