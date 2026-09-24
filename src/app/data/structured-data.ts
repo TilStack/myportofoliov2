@@ -48,9 +48,10 @@ export function websiteSchema(): JsonLd {
 }
 
 /**
- * Un Product par produit Chariow, sans `offers` : aucun prix n'est publié.
+ * Un Product par produit Chariow, avec son `offers` (prix actuel en XAF, en stock).
  * Non branché : à ajouter au JSON-LD de la page qui affichera la section boutique (Phase 4).
- * Google exige que le balisage corresponde à du contenu visible sur la page.
+ * Google exige que le balisage corresponde à du contenu visible, et le prix à celui de la boutique
+ * (à tenir à jour dans products.data.ts).
  */
 export function productSchemas(): JsonLd[] {
   return PRODUCTS.map(p => ({
@@ -61,6 +62,13 @@ export function productSchemas(): JsonLd[] {
     description: p.descriptionFr,
     url: p.url,
     brand: { '@type': 'Brand', name: PERSON_ALIAS },
+    offers: {
+      '@type': 'Offer',
+      price: String(p.price.amount),
+      priceCurrency: p.price.currency,
+      availability: 'https://schema.org/InStock',
+      url: p.url,
+    },
   }));
 }
 

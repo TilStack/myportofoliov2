@@ -76,7 +76,7 @@ Objectif : chaque route publique possède un `index.html` complet, avec du vrai 
 3. **JSON-LD** :
    - `Person` : name, alternateName « TilStack », url, jobTitle, address Douala/CM, sameAs (GitHub, LinkedIn, boutique, DevPea) ;
    - `WebSite` ;
-   - `Product` pour chaque produit Chariow, **sans prix** ;
+   - `Product` pour chaque produit Chariow (au départ sans prix ; depuis le 24/09/2026 les prix sont connus : `offers { price, priceCurrency: "XAF", availability: InStock, url }`, branché en Phase 4 avec la section boutique visible) ;
    - `CreativeWork` sur chaque page projet.
 4. Fichiers : `robots.txt`, `sitemap.xml` (toutes les routes pré-rendues), `theme-color` #14213D, et `manifest.webmanifest`, favicon et apple-touch-icon s'ils manquent.
 5. Un seul `<h1>` par page, une hiérarchie de titres propre et un `alt` descriptif sur toutes les images.
@@ -101,11 +101,23 @@ Cibles Lighthouse mobile : **Performance ≥ 90, SEO 100, Accessibility ≥ 95, 
 Contenu centralisé dans des fichiers typés `src/app/data/*.ts`, intégré aux dictionnaires FR/EN existants de I18nService. On complète l'existant, sans rien dupliquer.
 
 1. **Projets** : ajoute **Séla Cantique**. Mets à jour **Otadex** (lien otadex.tilstack.me conservé, statut « Bientôt sur le Play Store »). Pour Dofa, ajoute les liens stores (`TODO(israel)` s'ils manquent). Supprime BAYARM (voir décision 2).
-2. **Produits digitaux** : nouvelle section (sur l'accueil et/ou une route `/boutique`) :
-   - « 10 Prompts IA — Génération d'épreuves » (BEPC / Probatoire / BAC, avec barèmes) — id Chariow `prd_1bt9cd` ;
-   - « Prof Augmenté » (formation en ligne sur l'IA pédagogique pour enseignants) — id `prd_ehy1y5`.
-   Les CTA pointent vers `https://store.tilstack.me` (URL exacte de chaque produit : vérifie-la, sinon TODO). Pas de prix affichés.
-3. **Enseignement & Formations** : formateur au CEFTI (Douala) depuis septembre 2023, selon le programme MINESEC (informatique générale, algorithmique & programmation, systèmes d'information MERISE/UML, bases de données), encadrement de projets étudiants (ORICEFT) et création de la formation Prof Augmenté. Prévois une liste « Interventions » vide, avec un composant qui se masque si elle est vide. N'invente aucune conférence.
+2. **Produits digitaux** : nouvelle section (sur l'accueil et/ou une route `/boutique`). Données dans `src/app/data/products.data.ts` :
+   - « 10 Prompts IA pour Générer des Épreuves Académiques par Classe en 2 min » (BEPC / Probatoire / BAC, avec barèmes) — id Chariow `prd_1bt9cd` ;
+   - « Prof 2.0 — Digitaliser son enseignement avec l'IA » (formation en ligne sur l'IA pédagogique pour enseignants ; ancien nom « Prof Augmenté ») — id `prd_ehy1y5`.
+   Les CTA pointent vers l'URL exacte de chaque produit : `https://store.tilstack.me/<id>`.
+   **Banque de contenu — offres et prix (relevé du 24/09/2026)** :
+
+   | Offre | URL | Prix actuel | Prix barré |
+   |---|---|---|---|
+   | 10 Prompts IA… (`prd_1bt9cd`) | https://store.tilstack.me/prd_1bt9cd | 1 500 XAF | 3 000 XAF |
+   | Prof 2.0… (`prd_ehy1y5`) | https://store.tilstack.me/prd_ehy1y5 | 6 000 XAF | 15 000 XAF |
+
+   Offres **rattachées aux projets** (pas à la section produits) :
+   - Otadex, 4 abonnements : Jonin mensuel 2 000 XAF, Kage mensuel 5 000 XAF, Jonin annuel 21 600 XAF, Kage annuel 54 000 XAF (URL : `TODO(israel)`) ;
+   - Séla Cantique : don libre à partir de 600 XAF (URL : `TODO(israel)`).
+
+   Chaque prix a la forme `{ amount, currency: 'XAF', compareAt?, updatedAt }` ; à mettre à jour à chaque changement de promo sur Chariow, car le JSON-LD doit correspondre au prix affiché sur la boutique. Le JSON-LD Product (avec `offers`) est branché avec cette section. **À confirmer avant la Phase 4** : afficher ou non les prix sur le site (l'ancienne consigne était « pas de prix affichés »).
+3. **Enseignement & Formations** : formateur au CEFTI (Douala) depuis septembre 2023, selon le programme MINESEC (informatique générale, algorithmique & programmation, systèmes d'information MERISE/UML, bases de données), encadrement de projets étudiants (ORICEFT) et création de la formation Prof 2.0. Prévois une liste « Interventions » vide, avec un composant qui se masque si elle est vide. N'invente aucune conférence.
 4. **Parcours** (À propos) : CEFTI (depuis 09/2023) ; LEVEGI SARL (stage 2022, puis développeur et encadrant de stagiaires, 01/2023 – 09/2024) ; freelance en développement assisté par IA (depuis 03/2026) ; co-fondateur de DevPea. Formation : Bachelor Conception des Systèmes d'Information (3IL, IUC Logbessou, 2023) ; DEC Programmation & Application mobile (CCNB, 2022). Langues : TCF 2025 (C2/C1), IELTS Academic 2024.
 5. **Compétences** en texte, par couches : Mobile (Flutter/Dart) · Web (Angular, TypeScript) · Backend (FastAPI/Python, REST ; NestJS/Node en secondaire) · Données (MongoDB, Firebase) · DevOps (Docker, Firebase Hosting) · IA (Claude Code, NotebookLM, Gemini). Multimédia en discret : Photoshop, Canva, CapCut.
 6. **Blog** : conserve les articles locaux et Zerofiltre, sans modification.
