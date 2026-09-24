@@ -39,7 +39,7 @@ export const ISRAEL: Contributor = {
   initials: 'IT',
   variant: 'primary',
   linkedinUrl: LINKEDIN_URL,
-  photoUrl: 'images/profile/me_pro.jpg',
+  photoUrl: 'images/profile/me_pro.webp',
 };
 
 export const DEVPEA_TEAM: Contributor = {
@@ -49,7 +49,7 @@ export const DEVPEA_TEAM: Contributor = {
   initials: 'DP',
   variant: 'accent',
   linkedinUrl: DEVPEA_LINKEDIN_URL,
-  photoUrl: 'images/projects/devpea_logo.jpeg',
+  photoUrl: 'images/projects/devpea_logo.webp',
 };
 
 export const LEVEGI_TEAM: Contributor = {
@@ -58,7 +58,7 @@ export const LEVEGI_TEAM: Contributor = {
   roleFr: 'Produit & Design',
   initials: 'LV',
   variant: 'accent',
-  photoUrl: 'images/projects/levegi_logo.jpg',
+  photoUrl: 'images/projects/levegi_logo.webp',
 };
 
 export const PROJECTS: Project[] = [
@@ -80,10 +80,10 @@ export const PROJECTS: Project[] = [
       "DOFA est une application mobile éducative qui rend l'apprentissage du code de la route accessible à tous, quelle que soit leur situation financière. Entièrement gratuite et sans publicités, l'application est disponible sur Android (PlayStore) et iOS (AppStore). Développée pour Devpea avec Flutter pour une expérience mobile fluide et Firebase pour la synchronisation des données en temps réel.",
     contributors: [ISRAEL, DEVPEA_TEAM],
     images: [
-      'images/projects/dofa_capture1.jpg',
-      'images/projects/dofa_capture2.jpg',
-      'images/projects/dofa_capture3.jpg',
-      'images/projects/dofa_capture4.jpg',
+      'images/projects/dofa_capture1.webp',
+      'images/projects/dofa_capture2.webp',
+      'images/projects/dofa_capture3.webp',
+      'images/projects/dofa_capture4.webp',
     ],
   },
   {
@@ -104,7 +104,7 @@ export const PROJECTS: Project[] = [
     detailFr:
       "Le site web officiel de Devpea, une société de développement logiciel basée au Cameroun. L'objectif était d'établir une présence en ligne professionnelle, présenter les services et les valeurs de l'entreprise, et attirer des clients potentiels. Développé avec Angular et TypeScript, le site est rapide, entièrement responsive et optimisé pour le référencement.",
     contributors: [ISRAEL, DEVPEA_TEAM],
-    images: ['images/projects/devpea-1.jpg'],
+    images: ['images/projects/devpea-1.webp'],
   },
   {
     id: 3,
@@ -123,7 +123,7 @@ export const PROJECTS: Project[] = [
     detailFr:
       "LEVEFLY est une application mobile ambitieuse conçue pour simplifier les voyages aériens en Afrique. Les utilisateurs peuvent rechercher, comparer et réserver des billets d'avion directement depuis leur smartphone. La stack comprend Flutter pour une expérience mobile multiplateforme fluide, NestJS pour une API REST robuste, et PostgreSQL pour la persistance des données. Le projet est en cours de développement actif.",
     contributors: [ISRAEL, LEVEGI_TEAM],
-    images: ['images/projects/levefly-1.png'],
+    images: ['images/projects/levefly-1.webp'],
   },
   {
     id: 4,
@@ -142,7 +142,7 @@ export const PROJECTS: Project[] = [
     detailFr:
       'MYCAGNOTTE est une plateforme web de financement participatif permettant aux utilisateurs de créer et gérer des campagnes de collecte de fonds en ligne. Simple, transparente et accessible — elle connecte les créateurs de campagnes avec leurs soutiens. Le frontend Angular offre une expérience fluide, le backend NestJS gère la logique métier et les endpoints API, et PostgreSQL assure la persistance des données. Développé pour LEVEGI SARL.',
     contributors: [ISRAEL, LEVEGI_TEAM],
-    images: ['images/projects/cagnotte-1.png'],
+    images: ['images/projects/cagnotte-1.webp'],
   },
   {
     id: 5,
@@ -202,7 +202,7 @@ export const PROJECTS: Project[] = [
     contributors: [
       { ...ISRAEL, roleEn: 'Solo Developer', roleFr: 'Développeur Solo' },
     ],
-    images: ['images/projects/pokemon-1.png'],
+    images: ['images/projects/pokemon-1.webp'],
   },
 ];
 

@@ -28,7 +28,7 @@ export function personSchema(): JsonLd {
     name: PERSON_NAME,
     alternateName: PERSON_ALIAS,
     url: SITE_URL,
-    image: absoluteUrl('images/profile/me_pro.jpg'),
+    image: absoluteUrl('images/profile/me_pro.webp'),
     jobTitle: 'Développeur Fullstack Flutter & Angular · Formateur IT',
     address: { '@type': 'PostalAddress', addressLocality: 'Douala', addressCountry: 'CM' },
     sameAs: [GITHUB_URL, LINKEDIN_URL, STORE_URL, DEVPEA_URL],

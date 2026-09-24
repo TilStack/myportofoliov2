@@ -1,17 +1,21 @@
+import { NgOptimizedImage } from '@angular/common';
 import { Component, HostListener, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { I18nService } from '../../core/services/i18n.service';
 import { Contributor, VISIBLE_PROJECTS, Project } from '../../data/projects.data';
+import { responsiveImage } from '../../shared/utils/responsive-image';
 
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [RouterLink, FadeOnScrollDirective],
+  imports: [RouterLink, NgOptimizedImage, FadeOnScrollDirective],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss',
 })
 export class ProjectsComponent {
+  readonly image = responsiveImage;
+
   readonly i18n = inject(I18nService);
   readonly projects = VISIBLE_PROJECTS;
 

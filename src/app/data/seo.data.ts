@@ -1,4 +1,5 @@
 import { SeoConfig } from '../core/services/seo.service';
+import { IMAGE_MANIFEST } from './image-manifest';
 import { Project } from './projects.data';
 import { SITE_NAME } from './site.data';
 import { absoluteUrl } from './structured-data';
@@ -57,10 +58,13 @@ export const SEO = {
   },
 } satisfies Record<string, SeoConfig>;
 
-/** Image de partage raster d'un projet (Facebook/LinkedIn n'affichent pas les SVG), sinon `undefined` = image par défaut. */
+/**
+ * Image de partage d'un projet : copie JPEG 1200×630 générée par `npm run images` (les réseaux sociaux
+ * n'affichent pas toujours le WebP). Sans capture optimisée (placeholder SVG), `undefined` = image par défaut.
+ */
 export function projectImage(project: Project): string | undefined {
-  const raster = project.images?.find(src => /\.(jpe?g|png|webp)$/i.test(src));
-  return raster ? absoluteUrl(raster) : undefined;
+  const first = project.images?.[0];
+  return first && first in IMAGE_MANIFEST ? absoluteUrl(`assets/og/projects/${project.slug}.jpg`) : undefined;
 }
 
 export function projectSeo(project: Project): SeoConfig {

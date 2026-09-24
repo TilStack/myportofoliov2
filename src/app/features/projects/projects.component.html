@@ -161,9 +161,14 @@
                   aria-hidden="true"
                 >
                   @if (c.photoUrl) {
+                    @let photo = image(c.photoUrl);
                     <img
                       class="contributor__photo"
-                      [src]="c.photoUrl"
+                      [ngSrc]="photo.src"
+                      [width]="photo.width"
+                      [height]="photo.height"
+                      [ngSrcset]="photo.srcset"
+                      sizes="48px"
                       [alt]="c.name"
                     />
                   } @else {
@@ -257,8 +262,13 @@
             </h4>
             <div class="pmodal__gallery">
               <div class="pmodal__gallery-main">
+                @let shot = image(selected()!.images![activeGalleryIdx()]);
                 <img
-                  [src]="selected()!.images![activeGalleryIdx()]"
+                  [src]="shot.src"
+                  [attr.srcset]="shot.srcsetUrls || null"
+                  sizes="(min-width: 768px) 640px, 100vw"
+                  loading="lazy"
+                  decoding="async"
                   [alt]="'Aperçu du projet ' + selected()!.name + ' — capture ' + (activeGalleryIdx() + 1)"
                   class="pmodal__gallery-img"
                 />
@@ -272,7 +282,9 @@
                       (click)="setGalleryIdx(gi)"
                       [attr.aria-label]="'View screenshot ' + (gi + 1)"
                     >
-                      <img [src]="img" [alt]="'Miniature ' + (gi + 1) + ' du projet ' + selected()!.name" />
+                      @let thumb = image(img);
+                      <img [src]="thumb.src" [attr.srcset]="thumb.srcsetUrls || null" sizes="80px" loading="lazy" decoding="async"
+                           [alt]="'Miniature ' + (gi + 1) + ' du projet ' + selected()!.name" />
                     </button>
                   }
                 </div>

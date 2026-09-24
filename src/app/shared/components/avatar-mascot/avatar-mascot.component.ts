@@ -1,7 +1,9 @@
+import { NgOptimizedImage } from '@angular/common';
 import { Component, inject, signal, computed } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { responsiveImage } from '../../utils/responsive-image';
 
 // Transform values relative to the base position (bottom-right corner)
 const FLEE_TRANSFORMS = [
@@ -22,11 +24,13 @@ const ZOOM_ORIGINS = [
 @Component({
   selector: 'app-avatar-mascot',
   standalone: true,
+  imports: [NgOptimizedImage],
   templateUrl: './avatar-mascot.component.html',
   styleUrl: './avatar-mascot.component.scss',
 })
 export class AvatarMascotComponent {
   private router = inject(Router);
+  readonly avatar = responsiveImage('images/profile/tiktok_avatar.webp');
 
   fleeCount    = signal(0);      // how many times it has fled (max 2)
   caught       = signal(false);  // true on 3rd hover – stops fleeing

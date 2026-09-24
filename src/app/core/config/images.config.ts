@@ -60,17 +60,17 @@ export const TRAVEL_PHOTOS: { src: string; alt: string; caption: string }[] = [
 // Laisse src vide ('') pour conserver le placeholder gradient/emoji actuel.
 export const PROFILE_PHOTOS: { src: string; label: string; alt: string }[] = [
   {
-    src: 'images/profile/me_pro.jpg',
+    src: 'images/profile/me_pro.webp',
     label: 'Israel T.',
     alt: "Portrait professionnel d'Israel Tientcheu, développeur Full-Stack basé au Cameroun",
   },
   {
-    src: 'images/profile/me.jpg',
+    src: 'images/profile/me.webp',
     label: 'Full-Stack Dev',
     alt: 'Israel Tientcheu dans son environnement de travail, concentré sur le code',
   },
   {
-    src: 'images/profile/me_charisme.jpg',
+    src: 'images/profile/me_charisme.webp',
     label: 'Explorer',
     alt: 'Israel Tientcheu avec un sourire charismatique, reflet de sa personnalité ouverte et créative',
   },

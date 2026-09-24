@@ -18,7 +18,7 @@
     <span class="mascot__border"></span>
 
     <div class="mascot__img-wrap">
-      <img class="mascot__img" src="images/profile/tiktok_avatar.png" alt="Tilstack avatar" />
+      <img class="mascot__img" [ngSrc]="avatar.src" [width]="avatar.width" [height]="avatar.height" [ngSrcset]="avatar.srcset" sizes="64px" alt="Tilstack avatar" />
     </div>
 
     @if (caught()) {

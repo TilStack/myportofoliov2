@@ -159,6 +159,7 @@
 
     &-photo {
       width: 100%;
+      height: auto; // les attributs width/height (NgOptimizedImage) ne doivent pas fixer la hauteur
       aspect-ratio: 3 / 4;
       object-fit: cover;
       object-position: top center;

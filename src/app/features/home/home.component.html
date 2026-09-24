@@ -60,7 +60,12 @@
       <div class="hero__deco-card">
         <img
           class="hero__deco-photo"
-          src="images/profile/me_simple.jpg"
+          [ngSrc]="heroPhoto.src"
+          [width]="heroPhoto.width"
+          [height]="heroPhoto.height"
+          [ngSrcset]="heroPhoto.srcset"
+          sizes="(min-width: 1024px) 220px, 178px"
+          priority
           alt="Israel Tientcheu — développeur Full-Stack passionné, créateur de TilStack"
         />
       </div>
@@ -156,7 +161,14 @@
         [delay]="0"
       >
         <div class="page-card__visual pv--about">
-          <img class="page-card__cover" src="images/profile/me2.jpg" alt="Israel Tientcheu" />
+          <img
+            class="page-card__cover"
+            [ngSrc]="cardPhoto.src"
+            [ngSrcset]="cardPhoto.srcset"
+            sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
+            fill
+            alt="Israel Tientcheu"
+          />
           <div class="page-card__cover-overlay pco--about"></div>
           <div class="page-card__cover-badges">
             <span class="pcb__badge">{{ i18n.t('home.badgeDev') }}</span>

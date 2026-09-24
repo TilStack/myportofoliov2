@@ -6,6 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "postbuild": "node scripts/prepare-404.mjs && node scripts/generate-sitemap.mjs",
+    "images": "node scripts/optimize-images.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:rules": "firebase emulators:exec --only firestore --project tilportofoliov2 \"node tests/firestore.rules.test.mjs\"",
@@ -54,6 +55,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "playwright-core": "^1.63.0",
+    "sharp": "^0.35.4",
     "typescript": "~5.8.2"
   }
 }

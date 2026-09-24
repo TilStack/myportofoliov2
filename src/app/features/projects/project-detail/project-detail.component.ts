@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import { Component, HostListener, computed, effect, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -9,11 +10,12 @@ import { VISIBLE_PROJECTS, Project } from '../../../data/projects.data';
 import { SEO, projectImage, projectSeo } from '../../../data/seo.data';
 import { DEFAULT_OG_IMAGE } from '../../../data/site.data';
 import { absoluteUrl, projectSchema } from '../../../data/structured-data';
+import { responsiveImage } from '../../../shared/utils/responsive-image';
 
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [RouterModule, ButtonComponent],
+  imports: [RouterModule, NgOptimizedImage, ButtonComponent],
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss',
 })
@@ -55,22 +57,14 @@ export class ProjectDetailComponent {
 
   activeImg = signal(0);
 
-  imageOrientations = signal<Record<string, 'portrait' | 'landscape'>>({});
+  readonly image = responsiveImage;
+
+  /** Orientation connue dès le premier rendu (dimensions du manifeste) : la grille ne bouge pas au chargement. */
+  orientation(src: string): 'portrait' | 'landscape' {
+    const { width, height } = responsiveImage(src);
+    return height > width ? 'portrait' : 'landscape';
+  }
   lightboxSrc = signal<string | null>(null);
-
-  setActiveImg(i: number): void {
-    this.activeImg.set(i);
-  }
-
-  onImageLoad(event: Event, src: string): void {
-    const img = event.target as HTMLImageElement;
-    const orientation = img.naturalHeight > img.naturalWidth ? 'portrait' : 'landscape';
-    this.imageOrientations.update(o => ({ ...o, [src]: orientation }));
-  }
-
-  getOrientation(src: string): string {
-    return this.imageOrientations()[src] ?? 'unknown';
-  }
 
   openLightbox(src: string): void {
     this.lightboxSrc.set(src);

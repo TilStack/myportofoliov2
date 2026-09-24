@@ -7,12 +7,13 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { NgOptimizedImage, isPlatformBrowser } from '@angular/common';
 import { interval, Subscription } from 'rxjs';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { I18nService } from '../../core/services/i18n.service';
 import { PROFILE_PHOTOS, TRAVEL_PHOTOS } from '../../core/config/images.config';
 import { GITHUB_URL, LINKEDIN_URL, TWITTER_URL } from '../../data/site.data';
+import { responsiveImage } from '../../shared/utils/responsive-image';
 
 interface SetupItem {
   icon: string;
@@ -40,7 +41,7 @@ interface TravelImage {
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [FadeOnScrollDirective],
+  imports: [FadeOnScrollDirective, NgOptimizedImage],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss',
 })
@@ -193,6 +194,11 @@ export class AboutComponent implements OnInit, OnDestroy {
   }
 
   // ── educator gallery lightbox ─────────────────────────────
+  readonly image = responsiveImage;
+  readonly formateurPhoto = responsiveImage('images/formateur.webp');
+  readonly mentorPhoto    = responsiveImage('images/mentor.webp');
+  readonly techleadPhoto  = responsiveImage('images/tech_lead.webp');
+
   eduLightbox = signal<{ src: string; alt: string } | null>(null);
 
   openEduLightbox(src: string, alt: string): void {
@@ -253,7 +259,7 @@ export class AboutComponent implements OnInit, OnDestroy {
       label: 'TikTok',
       href: 'https://www.tiktok.com/@tilstack_draw',
       icon: 'tiktok',
-      imgSrc: 'images/profile/tiktok_avatar.png',
+      imgSrc: 'images/profile/tiktok_avatar.webp',
       descKey: 'about.involvementTiktok',
     },
   ];
