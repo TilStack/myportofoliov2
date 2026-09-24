@@ -3,7 +3,6 @@ import { Component, HostListener, computed, effect, inject, signal } from '@angu
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { ProjectOffersComponent } from '../../../shared/components/project-offers/project-offers.component';
 import { I18nService } from '../../../core/services/i18n.service';
 import { SeoService } from '../../../core/services/seo.service';
@@ -16,7 +15,7 @@ import { responsiveImage } from '../../../shared/utils/responsive-image';
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [RouterModule, NgOptimizedImage, ButtonComponent, ProjectOffersComponent],
+  imports: [RouterModule, NgOptimizedImage, ProjectOffersComponent],
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss',
 })
