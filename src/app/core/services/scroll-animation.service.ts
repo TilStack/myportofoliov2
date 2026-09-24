@@ -33,6 +33,20 @@ export class ScrollAnimationService {
       .forEach(el => this.observer!.observe(el));
   }
 
+  /**
+   * Marque `.visible` les éléments déjà dans la fenêtre. Appelé une seule fois au démarrage, juste avant
+   * que `js-anim` ne masque les éléments à révéler : le contenu du premier écran (donc le LCP) ne passe
+   * jamais par un état `opacity: 0` en attente de JavaScript.
+   */
+  revealInViewport(): void {
+    if (!this.isBrowser) return;
+    const height = this.document.defaultView?.innerHeight ?? 0;
+    this.document.querySelectorAll('.fade-up, .fade-left, .fade-right').forEach(el => {
+      const { top, bottom } = el.getBoundingClientRect();
+      if (top < height && bottom > 0) el.classList.add('visible');
+    });
+  }
+
   destroy(): void {
     this.observer?.disconnect();
     this.observer = null;

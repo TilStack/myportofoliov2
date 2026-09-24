@@ -5,6 +5,7 @@ import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.di
 import { I18nService } from '../../core/services/i18n.service';
 import { AdminAuthService } from '../../core/services/admin-auth.service';
 import { BLOG_COVERS } from '../../core/config/images.config';
+import { scrollToTop } from '../../shared/utils/motion';
 
 const PAGE_SIZE = 6;
 
@@ -198,7 +199,7 @@ export class BlogComponent {
 
   goToPage(page: number): void {
     this.currentPage.set(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop();
   }
 
   // ── newsletter ──

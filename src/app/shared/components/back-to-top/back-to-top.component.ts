@@ -1,5 +1,6 @@
 import { Component, HostListener, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { scrollToTop } from '../../utils/motion';
 
 @Component({
   selector: 'app-back-to-top',
@@ -28,6 +29,6 @@ export class BackToTopComponent {
   }
 
   scrollTop(): void {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollToTop();
   }
 }

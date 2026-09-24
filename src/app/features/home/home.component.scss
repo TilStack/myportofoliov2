@@ -777,24 +777,26 @@
   }
 }
 
-// Background images — Cameroun (Unsplash fallback, remplaçable par photos locales)
+// Background images — Cameroun (Unsplash fallback, remplaçable par photos locales).
+// Appliquées seulement une fois la grille révélée (classe .visible, posée à l'approche de l'écran) :
+// sinon le navigateur télécharge ces 5 photos externes dès le chargement de la page.
 // P1 : Yaoundé — capitale, vue urbaine
-.mp--1 {
+.montage__grid.visible .mp--1 {
   background-image: url("https://images.unsplash.com/photo-1578328819058-86e42a8c3c36?w=900&q=80&fit=crop");
 }
 // P2 : Buea / Mont Cameroun — volcan et forêt tropicale
-.mp--2 {
+.montage__grid.visible .mp--2 {
   background-image: url("https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80&fit=crop");
 }
 // P3 : Douala — ville économique, port
-.mp--3 {
+.montage__grid.visible .mp--3 {
   background-image: url("https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=600&q=80&fit=crop");
 }
 // P4 : Kribi — plage, mer atlantique
-.mp--4 {
+.montage__grid.visible .mp--4 {
   background-image: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80&fit=crop");
 }
 // P5 : Limbé — baie volcanique, paysage côtier
-.mp--5 {
+.montage__grid.visible .mp--5 {
   background-image: url("https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=900&q=80&fit=crop");
 }
