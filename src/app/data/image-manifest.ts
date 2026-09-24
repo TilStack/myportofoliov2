@@ -31,6 +31,7 @@ export const IMAGE_MANIFEST: Record<string, ImageInfo> = {
     "h": 1024,
     "widths": [
       320,
+      480,
       576
     ]
   },
@@ -39,6 +40,7 @@ export const IMAGE_MANIFEST: Record<string, ImageInfo> = {
     "h": 1138,
     "widths": [
       320,
+      480,
       640
     ]
   },
@@ -56,6 +58,7 @@ export const IMAGE_MANIFEST: Record<string, ImageInfo> = {
     "h": 853,
     "widths": [
       320,
+      480,
       640
     ]
   },

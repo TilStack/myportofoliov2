@@ -28,9 +28,9 @@ const JOBS = [
   { src: 'images/profile/me_simple.jpg', widths: [220, 330, 440], q: 74, crop: { ratio: 3 / 4 } },
   { src: 'images/profile/me2.jpg', widths: [400, 720], q: 74 },
   // À propos — pile de photos (ratio 3/4) et galerie formation (4/3, lightbox = plus grande)
-  { src: 'images/profile/me_pro.jpg', widths: [320, 640], q: 74 },
-  { src: 'images/profile/me.jpg', widths: [320, 640], q: 74 },
-  { src: 'images/profile/me_charisme.jpg', widths: [320, 576], q: 74 },
+  { src: 'images/profile/me_pro.jpg', widths: [320, 480, 640], q: 68 },
+  { src: 'images/profile/me.jpg', widths: [320, 480, 640], q: 68 },
+  { src: 'images/profile/me_charisme.jpg', widths: [320, 480, 576], q: 66 },
   { src: 'images/formateur.png', widths: [480, 960, 1280], q: 70 },
   { src: 'images/mentor.jpg', widths: [480, 960, 1280], q: 70 },
   { src: 'images/tech_lead.jpg', widths: [480, 960, 1280], q: 70 },

@@ -41,9 +41,20 @@ export class ScrollAnimationService {
   revealInViewport(): void {
     if (!this.isBrowser) return;
     const height = this.document.defaultView?.innerHeight ?? 0;
-    this.document.querySelectorAll('.fade-up, .fade-left, .fade-right').forEach(el => {
+    const inView = (el: Element) => {
       const { top, bottom } = el.getBoundingClientRect();
-      if (top < height && bottom > 0) el.classList.add('visible');
+      return top < height && bottom > 0;
+    };
+    // Une section `content-visibility: auto` hors écran garde son contenu « sauté » : interroger un de ses
+    // descendants forcerait sa mise en page (≈100 ms sur À propos). On ne teste donc que la section elle-même.
+    const containers = new Map<Element, boolean>();
+    this.document.querySelectorAll('.fade-up, .fade-left, .fade-right').forEach(el => {
+      const container = el.closest('.cv-auto');
+      if (container) {
+        if (!containers.has(container)) containers.set(container, inView(container));
+        if (!containers.get(container)) return;
+      }
+      if (inView(el)) el.classList.add('visible');
     });
   }
 
