@@ -105,6 +105,34 @@
     gap: $space-2;
   }
 
+  // --- Lang switch (segment FR | EN) ---
+  &__lang-switch {
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    border-radius: $radius-md;
+    background: var(--color-surface);
+  }
+
+  &__lang-opt {
+    padding: 4px $space-2;
+    font-size: $text-xs;
+    font-weight: $font-bold;
+    letter-spacing: 0.02em;
+    color: var(--color-text-muted);
+    border-radius: calc(#{$radius-md} - 2px);
+    transition: background $transition-fast, color $transition-fast;
+
+    &.active {
+      background: $color-primary;
+      color: $color-accent;
+    }
+
+    &:not(.active):hover {
+      color: var(--color-text);
+    }
+  }
+
   &__action {
     padding: $space-2 $space-3;
     font-size: $text-sm;

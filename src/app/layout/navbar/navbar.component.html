@@ -23,10 +23,23 @@
 
     <!-- Actions -->
     <div class="navbar__actions">
-      <!-- Lang toggle -->
-      <button class="navbar__action" (click)="i18n.toggleLang()" [attr.aria-label]="'Switch language to ' + (i18n.lang() === 'en' ? 'FR' : 'EN')">
-        {{ i18n.lang() === 'en' ? 'FR' : 'EN' }}
-      </button>
+      <!-- Lang switch : segment FR | EN, état actif visible -->
+      <div class="navbar__lang-switch" role="group" aria-label="Language">
+        <button
+          type="button"
+          class="navbar__lang-opt"
+          [class.active]="i18n.lang() === 'fr'"
+          [attr.aria-pressed]="i18n.lang() === 'fr'"
+          (click)="i18n.setLang('fr')"
+        >FR</button>
+        <button
+          type="button"
+          class="navbar__lang-opt"
+          [class.active]="i18n.lang() === 'en'"
+          [attr.aria-pressed]="i18n.lang() === 'en'"
+          (click)="i18n.setLang('en')"
+        >EN</button>
+      </div>
 
       <!-- Theme toggle -->
       <button class="navbar__action navbar__theme-btn" (click)="themeService.toggle()" aria-label="Toggle theme">
