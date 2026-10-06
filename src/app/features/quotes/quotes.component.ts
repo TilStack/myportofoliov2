@@ -12,6 +12,7 @@ import { QuoteService } from '../../core/services/quote.service';
 import { AdminAuthService } from '../../core/services/admin-auth.service';
 import { QUOTES } from './quotes.data';
 import { scrollToTop } from '../../shared/utils/motion';
+import { IconComponent } from '../../shared/components/icon/icon.component';
 
 const PAGE_SIZE = 9;
 
@@ -24,7 +25,7 @@ interface QuoteVM extends Quote {
 @Component({
   selector: 'app-quotes',
   standalone: true,
-  imports: [DatePipe, ReactiveFormsModule, FadeOnScrollDirective, QuoteModalComponent, ButtonComponent],
+  imports: [DatePipe, ReactiveFormsModule, FadeOnScrollDirective, QuoteModalComponent, ButtonComponent, IconComponent],
   templateUrl: './quotes.component.html',
   styleUrl: './quotes.component.scss',
 })

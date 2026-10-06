@@ -92,7 +92,7 @@
             tabindex="0"
             (keyup.enter)="openModal(quote)"
           >
-            <div class="qcard__mark" aria-hidden="true">&ldquo;</div>
+            <div class="qcard__mark"><app-icon name="quote" [size]="48" /></div>
 
             @if (quote.category) {
               <span class="qcard__category">{{ quote.category }}</span>

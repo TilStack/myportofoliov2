@@ -10,11 +10,13 @@ import { QUOTES } from '../quotes/quotes.data';
 import { LINKEDIN_URL } from '../../data/site.data';
 import { responsiveImage } from '../../shared/utils/responsive-image';
 import { ShopSectionComponent } from '../../shared/components/shop-section/shop-section.component';
+import { IconComponent } from '../../shared/components/icon/icon.component';
+import { FeaturedProjectsComponent } from './featured-projects/featured-projects.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, NgOptimizedImage, ButtonComponent, FadeOnScrollDirective, ShopSectionComponent],
+  imports: [RouterLink, NgOptimizedImage, ButtonComponent, FadeOnScrollDirective, ShopSectionComponent, IconComponent, FeaturedProjectsComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
@@ -27,6 +29,8 @@ export class HomeComponent {
 
   readonly linkedinUrl = LINKEDIN_URL;
   readonly montagePhotos = MONTAGE_PHOTOS;
+  /** `true` seulement si toutes les photos du montage sont des fichiers locaux (pas de placeholder Unsplash). */
+  readonly montagePhotosAreLocal = MONTAGE_PHOTOS.every(p => !!p.file);
   readonly quotes = signal<Quote[]>(QUOTES.slice(0, 6));
 
   toggleQuote(quote: Quote): void {

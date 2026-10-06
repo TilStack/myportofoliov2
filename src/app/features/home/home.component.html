@@ -83,9 +83,16 @@
   </a>
 </section>
 
+<!-- ===== PROJETS PHARES ===== -->
+@defer (on viewport; hydrate on idle) {
+  <app-featured-projects />
+} @placeholder {
+  <div class="defer-ph"></div>
+}
+
 <!-- ===== MOODBOARD — Quote Grid ===== -->
-@defer (on viewport; hydrate on viewport) {
-  <section class="moodboard section cv-auto" id="moodboard">
+@defer (on viewport; hydrate on idle) {
+  <section class="moodboard section" id="moodboard">
     <div class="container">
       <div class="moodboard__header fade-up" appFadeOnScroll>
         <h2 class="section__title">{{ i18n.t("quotes.title") }}</h2>
@@ -105,6 +112,7 @@
             tabindex="0"
             (keyup.enter)="toggleQuote(quote)"
           >
+            <span class="quote-card__mark"><app-icon name="quote" [size]="56" /></span>
             <blockquote class="quote-card__text">"{{ quote.text }}"</blockquote>
             <cite class="quote-card__author">— {{ quote.author }}</cite>
             @if (quote.expanded) {
@@ -149,8 +157,8 @@
 }
 
 <!-- ===== PAGE PREVIEWS ===== -->
-@defer (on viewport; hydrate on viewport) {
-  <section class="discover section cv-auto">
+@defer (on viewport; hydrate on idle) {
+  <section class="discover section">
     <div class="container">
       <div class="discover__header fade-up" appFadeOnScroll>
         <h2 class="section__title">{{ i18n.t("home.discoverTitle") }}</h2>
@@ -201,7 +209,7 @@
             <div class="page-card__cover-code" aria-hidden="true">
               <span class="pcc__line"><em>const</em> app = <em>new</em> App();</span>
               <span class="pcc__line"><em>await</em> app.build();</span>
-              <span class="pcc__line pcc__line--dim">// Flutter · Angular · NestJS</span>
+              <span class="pcc__line pcc__line--dim">// Flutter · Angular · FastAPI</span>
               <span class="pcc__cursor"></span>
             </div>
           </div>
@@ -251,7 +259,7 @@
           <div class="page-card__visual pv--quotes">
             <div class="page-card__cover-overlay pco--quotes"></div>
             <div class="page-card__cover-quote" aria-hidden="true">
-              <span class="pcq__mark">"</span>
+              <span class="pcq__mark"><app-icon name="quote" [size]="36" /></span>
               <div class="pcq__lines">
                 <span style="width:85%"></span>
                 <span style="width:65%"></span>
@@ -275,15 +283,15 @@
 }
 
 <!-- ===== BOUTIQUE (produits digitaux) ===== -->
-@defer (on viewport; hydrate on viewport) {
+@defer (on viewport; hydrate on idle) {
   <app-shop-section [showAllLink]="true" />
 } @placeholder {
   <div class="defer-ph"></div>
 }
 
 <!-- ===== CAMEROON PHOTO MONTAGE ===== -->
-@defer (on viewport; hydrate on viewport) {
-  <section class="montage cv-auto" id="cameroon">
+@defer (on viewport; hydrate on idle) {
+  <section class="montage" id="cameroon">
     <div class="container">
       <div class="montage__header fade-up" appFadeOnScroll>
         <h2 class="montage__title">{{ i18n.t("home.montageTitle") }}</h2>
@@ -358,18 +366,17 @@
         </div>
       </div>
 
-      <!-- Attribution -->
+      <!-- Attribution : tant qu'aucune photo locale n'est configurée (images.config.ts), les visuels sont des
+           placeholders Unsplash — on ne prétend pas qu'ils sont d'Israel. -->
       <p class="montage__credit fade-up" appFadeOnScroll [delay]="200">
-        Photos by
-        <a
-          [href]="linkedinUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-          >Israel Tientcheu</a
-        >
-        &amp;
-        <a href="" target="_blank" rel="noopener noreferrer">son Téléphone</a>
-        in Cameroon, 2022-2025.
+        @if (montagePhotosAreLocal) {
+          {{ i18n.t("home.montageCreditBy") }}
+          <a [href]="linkedinUrl" target="_blank" rel="noopener noreferrer">TIENTCHEU Israel</a>,
+          {{ i18n.t("home.montageCreditYears") }}
+        } @else {
+          {{ i18n.t("home.montageCreditPlaceholder") }}
+          <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>.
+        }
       </p>
     </div>
   </section>
