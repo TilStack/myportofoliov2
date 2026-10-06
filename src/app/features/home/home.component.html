@@ -84,14 +84,14 @@
 </section>
 
 <!-- ===== PROJETS PHARES ===== -->
-@defer (on viewport; hydrate on idle) {
+@defer (on viewport; hydrate on viewport) {
   <app-featured-projects />
 } @placeholder {
   <div class="defer-ph"></div>
 }
 
 <!-- ===== MOODBOARD — Quote Grid ===== -->
-@defer (on viewport; hydrate on idle) {
+@defer (on viewport; hydrate on viewport) {
   <section class="moodboard section" id="moodboard">
     <div class="container">
       <div class="moodboard__header fade-up" appFadeOnScroll>
@@ -157,7 +157,7 @@
 }
 
 <!-- ===== PAGE PREVIEWS ===== -->
-@defer (on viewport; hydrate on idle) {
+@defer (on viewport; hydrate on viewport) {
   <section class="discover section">
     <div class="container">
       <div class="discover__header fade-up" appFadeOnScroll>
@@ -283,14 +283,14 @@
 }
 
 <!-- ===== BOUTIQUE (produits digitaux) ===== -->
-@defer (on viewport; hydrate on idle) {
+@defer (on viewport; hydrate on viewport) {
   <app-shop-section [showAllLink]="true" />
 } @placeholder {
   <div class="defer-ph"></div>
 }
 
 <!-- ===== CAMEROON PHOTO MONTAGE ===== -->
-@defer (on viewport; hydrate on idle) {
+@defer (on viewport; hydrate on viewport) {
   <section class="montage" id="cameroon">
     <div class="container">
       <div class="montage__header fade-up" appFadeOnScroll>
