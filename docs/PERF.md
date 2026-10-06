@@ -73,3 +73,23 @@ JSON-LD Product cohérent avec le contenu visible) mais ne coûtent rien au char
 
 Sur cette machine au calme, le TBT de `/about` est de 25 ms (et non 274 ms) : la valeur de la Phase 3 avait
 été relevée sur une machine plus chargée. Les autres résultats de la Phase 3 restent valables.
+
+## Phase 6, étape 6.0 (bugs et cohérence) : contrôle de non-régression
+
+Méthode identique (A/B entrelacé, 5 tours, build servi en brotli). Garde-fou de l'étape : Performance ≥ 90,
+SEO 100, A11y ≥ 95 sur `/`, `/about`, `/projects`, `/boutique`, `/quotes`.
+
+| Route | Perf avant → après | LCP | TBT | A11y |
+|---|---|---|---|---|
+| `/` | 94 → **96** | 1,96 → 1,95 s | 171 → 205 ms | 100 |
+| `/about` | 89 → **94** | 2,41 → 2,40 s | 371 → 204 ms | 100 |
+| `/projects` | 93 → **96** | 1,73 → 1,81 s | 295 → 200 ms | 100 |
+| `/boutique` | 93 → **96** | 1,66 → 1,80 s | 301 → 112 ms | 100 |
+| `/quotes` | 96 → **95** | 2,57 → 1,95 s | 82 → 135 ms | 100 |
+
+CLS à 0, SEO et Best Practices à 100 partout. Garde-fou respecté sur les 5 routes.
+
+**Essai non retenu** : `@defer (hydrate on idle)` sur toutes les sections différées de `/` et `/about` (au lieu
+de `hydrate on viewport`) corrige une bascule de langue en retard sur le contenu pas encore hydraté (voir le
+rapport de l'étape), mais faisait passer le TBT médian de `/about` à 502 ms (Perf 85, sous le garde-fou).
+Reverti. Le bug d'hydratation reste présent et est documenté dans le rapport comme limite connue.
