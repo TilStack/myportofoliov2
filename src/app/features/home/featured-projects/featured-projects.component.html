@@ -1,0 +1,38 @@
+<section class="featured section" aria-labelledby="featured-title">
+  <div class="container">
+    <div class="featured__header">
+      <h2 id="featured-title" class="section__title">{{ i18n.t('home.featuredTitle') }}</h2>
+      <p class="section__subtitle">{{ i18n.t('home.featuredSub') }}</p>
+    </div>
+
+    <div class="featured__grid">
+      @for (p of projects; track p.slug; let i = $index) {
+        <a [routerLink]="['/projects', p.slug]" class="fcard">
+          <div class="fcard__cover">
+            @let cover = image(p.images![0]);
+            <img
+              [ngSrc]="cover.src" [ngSrcset]="cover.srcset" fill
+              sizes="(min-width: 1024px) 360px, 100vw" [priority]="i === 0"
+              [alt]="'Capture du projet ' + p.name"
+            />
+            <span class="fcard__status" [class.fcard__status--done]="p.status === 'finished'">
+              {{ i18n.t(statusKey[p.status]) }}
+            </span>
+          </div>
+          <div class="fcard__body">
+            <h3 class="fcard__title">{{ p.name }}</h3>
+            <p class="fcard__desc">{{ i18n.lang() === 'fr' ? p.descFr : p.descEn }}</p>
+            <div class="fcard__tags">
+              @for (t of p.tech; track t) { <span class="fcard__tag">{{ t }}</span> }
+            </div>
+            <span class="fcard__link">{{ i18n.t('projects.viewDetail') }} →</span>
+          </div>
+        </a>
+      }
+    </div>
+
+    <p class="featured__all">
+      <a routerLink="/projects" class="cta cta--outline">{{ i18n.t('projects.viewAll') }} →</a>
+    </p>
+  </div>
+</section>

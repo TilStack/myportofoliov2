@@ -30,6 +30,8 @@ export interface Project {
   images?: string[];
   /** Masqué : absent de la liste, non pré-rendu, absent du sitemap. */
   hidden?: boolean;
+  /** Mis en avant dans la section « Projets phares » de l'accueil. */
+  featured?: boolean;
 }
 
 /** Clé de traduction (I18nService) du libellé de statut. */
@@ -76,6 +78,7 @@ export const PROJECTS: Project[] = [
     icon: '🚗',
     company: 'Devpea',
     status: 'finished',
+    featured: true,
     tech: ['Flutter', 'Firebase', 'Dart'],
     descEn:
       'Highway code learning platform — free, ad-free, accessible to all. Available on PlayStore and AppStore.',
@@ -158,6 +161,7 @@ export const PROJECTS: Project[] = [
     icon: '⚡',
     company: 'Personal',
     status: 'coming-soon', // « Bientôt sur le Play Store »
+    featured: true,
     tech: ['Flutter', 'Firebase', 'Claude Code'],
     liveUrl: 'https://otadex.tilstack.me',
     descEn: 'An anime encyclopedia mobile app — my first personal project building a mobile application.',
@@ -221,6 +225,7 @@ export const PROJECTS: Project[] = [
     icon: '🎵',
     company: 'Personal',
     status: 'in-progress',
+    featured: true,
     tech: ['Flutter', 'Dart'],
     // TODO(israel): langues proposées par l'application et statut (« en cours » par défaut) ; captures réelles.
     descEn: 'Bilingual, offline hymnal for a Cameroonian church congregation, built with Flutter.',
@@ -238,3 +243,6 @@ export const PROJECTS: Project[] = [
 
 /** Projets affichés : liste, pages détail pré-rendues, sitemap. */
 export const VISIBLE_PROJECTS: Project[] = PROJECTS.filter((p) => !p.hidden);
+
+/** Projets phares (accueil) : marqués `featured`, jamais un projet masqué. */
+export const FEATURED_PROJECTS: Project[] = VISIBLE_PROJECTS.filter((p) => p.featured);
