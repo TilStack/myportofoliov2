@@ -14,6 +14,7 @@
     "test:security": "npm run test:rules && npm run test:migration && npm run test:e2e",
     "test:e2e": "firebase emulators:exec --only firestore,hosting --project tilportofoliov2 \"node tests/e2e-quotes.test.mjs\"",
     "test:seo": "firebase emulators:exec --only hosting --project tilportofoliov2 \"node tests/seo.test.mjs\"",
+    "test:images": "firebase emulators:exec --only hosting --project tilportofoliov2 \"node tests/e2e-images.test.mjs\"",
     "test:perf": "node tests/perf.test.mjs"
   },
   "prettier": {
