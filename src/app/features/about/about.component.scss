@@ -366,9 +366,10 @@ $accent: $color-accent;
     font-size: $text-sm;
     font-weight: $font-medium;
     color: var(--color-text);
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
     overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   &__arrow {

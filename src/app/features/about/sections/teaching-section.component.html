@@ -1,4 +1,4 @@
-<section class="teaching section cv-auto" aria-labelledby="teaching-title">
+<section class="teaching section" aria-labelledby="teaching-title">
   <div class="container">
     <h2 id="teaching-title" class="section__title">{{ i18n.t('about.teachingTitle') }}</h2>
     <p class="section__subtitle">{{ i18n.t('about.teachingSub') }}</p>
@@ -22,6 +22,17 @@
             {{ i18n.t('about.teachingCourseCta') }} <span aria-hidden="true">↗</span>
           </a>
         }
+      </article>
+
+      <!-- Partage : anciennement « The Educator Role », fusionné ici (sans les statistiques faibles). -->
+      <article class="tcard">
+        <h3 class="tcard__title">{{ i18n.t('about.educatorTitle') }}</h3>
+        <p class="tcard__extra">{{ i18n.t('about.educatorDesc') }}</p>
+        <ul class="tcard__list">
+          <li>{{ i18n.t('about.educatorItem1') }}</li>
+          <li>{{ i18n.t('about.educatorItem2') }}</li>
+          <li>{{ i18n.t('about.educatorItem3') }}</li>
+        </ul>
       </article>
     </div>
 

@@ -8,6 +8,7 @@
     display: grid;
     gap: $space-6;
     @include md { grid-template-columns: 1fr 1fr; }
+    @include lg { grid-template-columns: repeat(3, 1fr); }
   }
 
   &__interventions { margin-top: $space-10; }

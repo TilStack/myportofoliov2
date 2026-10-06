@@ -12,17 +12,20 @@ import { interval, Subscription } from 'rxjs';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { I18nService } from '../../core/services/i18n.service';
 import { PROFILE_PHOTOS, TRAVEL_PHOTOS } from '../../core/config/images.config';
-import { GITHUB_URL, LINKEDIN_URL, TWITTER_URL } from '../../data/site.data';
+import { DEVPEA_URL, GITHUB_URL, LINKEDIN_URL, TWITTER_URL } from '../../data/site.data';
 import { responsiveImage } from '../../shared/utils/responsive-image';
 import { MULTIMEDIA_SKILLS, SKILL_LAYERS } from '../../data/skills.data';
 import { CareerSectionComponent } from './sections/career-section.component';
 import { TeachingSectionComponent } from './sections/teaching-section.component';
+import { IconComponent, IconName } from '../../shared/components/icon/icon.component';
+
+interface Bilingual { fr: string; en: string; }
 
 interface SetupItem {
-  icon: string;
-  label: string;
-  value: string;
-  details: string;
+  icon: IconName;
+  label: Bilingual;
+  value: Bilingual;
+  details: Bilingual;
   bgGradient: string;
 }
 
@@ -44,7 +47,7 @@ interface TravelImage {
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [FadeOnScrollDirective, NgOptimizedImage, CareerSectionComponent, TeachingSectionComponent],
+  imports: [FadeOnScrollDirective, NgOptimizedImage, CareerSectionComponent, TeachingSectionComponent, IconComponent],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss',
 })
@@ -59,17 +62,17 @@ export class AboutComponent implements OnInit, OnDestroy {
   // Unsplash photos used as fallback when no local photo is configured
   private readonly unsplashTravel = [
     {
-      src: 'https://images.unsplash.com/photo-MdNOvU9uFuo?w=900&q=80&fit=crop',
+      src: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=900&q=80&fit=crop', // même photo que « Buea » sur l'accueil (montage)
       alt: 'Cameroon highlands',
       caption: 'The highlands of Cameroon',
     },
     {
-      src: 'https://images.unsplash.com/photo-oTrwlvPvpVo?w=900&q=80&fit=crop',
+      src: 'https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=900&q=80&fit=crop', // même photo que « Douala » sur l'accueil (montage)
       alt: 'Douala street life',
       caption: 'Douala — Street Life',
     },
     {
-      src: 'https://images.unsplash.com/photo-Kj7naxthK6c?w=900&q=80&fit=crop',
+      src: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&q=80&fit=crop', // même photo que « Kribi » sur l'accueil (montage)
       alt: 'Kribi daily life',
       caption: 'Kribi, South Cameroon',
     },
@@ -126,51 +129,63 @@ export class AboutComponent implements OnInit, OnDestroy {
   // ── setup items ───────────────────────────────────────────
   setupItems: SetupItem[] = [
     {
-      icon: '💻',
-      label: 'Laptop',
-      value: 'Dell Latitude 5490 — i5-8350U · 16 GB RAM',
-      details:
-        'My main development machine. Runs Ubuntu/Windows dual boot for full-stack development with Angular, NestJS, Flutter, and Docker.',
+      icon: 'laptop',
+      label: { fr: 'Ordinateur', en: 'Laptop' },
+      value: { fr: 'Dell Latitude 5490 — i5-8350U · 16 Go de RAM', en: 'Dell Latitude 5490 — i5-8350U · 16 GB RAM' },
+      details: {
+        fr: 'Ma machine de développement principale. Double démarrage Ubuntu/Windows pour le développement full-stack avec Flutter, Angular, FastAPI et Docker.',
+        en: 'My main development machine. Runs Ubuntu/Windows dual boot for full-stack development with Flutter, Angular, FastAPI, and Docker.',
+      },
       bgGradient: 'linear-gradient(135deg,#1a1a2e 0%,#16213e 100%)',
     },
     {
-      icon: '📱',
-      label: 'Phone',
-      value: 'Pixel 6 - 128gb',
-      details:
-        'Used for mobile app testing and daily productivity. Essential for real-device Flutter testing.',
+      icon: 'mobile',
+      label: { fr: 'Téléphone', en: 'Phone' },
+      value: { fr: 'Pixel 6 — 128 Go', en: 'Pixel 6 — 128 GB' },
+      details: {
+        fr: 'Utilisé pour tester les applications mobiles et au quotidien. Indispensable pour les tests Flutter sur appareil réel.',
+        en: 'Used for mobile app testing and daily productivity. Essential for real-device Flutter testing.',
+      },
       bgGradient: 'linear-gradient(135deg,#134e5e 0%,#71b280 100%)',
     },
     {
-      icon: '🎧',
-      label: 'Audio',
-      value: 'Oraimo headphones | JBL Flip 5 speaker',
-      details:
-        'My go-to for deep work sessions, video calls, and code review. Good noise isolation helps me stay in the zone.',
+      icon: 'audio',
+      label: { fr: 'Audio', en: 'Audio' },
+      value: { fr: 'Écouteurs Oraimo | Enceinte JBL Flip 5', en: 'Oraimo headphones | JBL Flip 5 speaker' },
+      details: {
+        fr: 'Mon allié pour les sessions de concentration, les appels et les revues de code. Une bonne isolation phonique pour rester dans la zone.',
+        en: 'My go-to for deep work sessions, video calls, and code review. Good noise isolation helps me stay in the zone.',
+      },
       bgGradient: 'linear-gradient(135deg,#373b44 0%,#4286f4 100%)',
     },
     {
-      icon: '🌐',
-      label: 'Browsers',
-      value: 'Google Chrome & Opera',
-      details:
-        'Chrome for development (DevTools, extensions) and Opera for day-to-day browsing. Both synced across devices.',
+      icon: 'web',
+      label: { fr: 'Navigateurs', en: 'Browsers' },
+      value: { fr: 'Google Chrome & Opera', en: 'Google Chrome & Opera' },
+      details: {
+        fr: 'Chrome pour le développement (DevTools, extensions) et Opera pour la navigation quotidienne. Synchronisés entre mes appareils.',
+        en: 'Chrome for development (DevTools, extensions) and Opera for day-to-day browsing. Both synced across devices.',
+      },
       bgGradient: 'linear-gradient(135deg,#c31432 0%,#240b36 100%)',
     },
     {
-      icon: '🤖',
-      label: 'AI Tools',
-      value: 'ChatGPT & Claude AI',
-      details:
-        'ChatGPT for brainstorming, debugging and code review. Gemini for quick lookups and Google integrations.',
+      icon: 'ai',
+      label: { fr: 'Outils IA', en: 'AI Tools' },
+      value: { fr: 'Claude Code, NotebookLM, Gemini', en: 'Claude Code, NotebookLM, Gemini' },
+      details: {
+        fr: 'Claude Code pour développer et faire de la revue de code. NotebookLM pour synthétiser mes sources. Gemini pour les recherches rapides et les intégrations Google.',
+        en: 'Claude Code for development and code review. NotebookLM to synthesise my sources. Gemini for quick lookups and Google integrations.',
+      },
       bgGradient: 'linear-gradient(135deg,#0f3460 0%,#533483 100%)',
     },
     {
-      icon: '⚙️',
-      label: 'OS',
-      value: 'Ubuntu / Windows (Dual Boot)',
-      details:
-        'Ubuntu for development (Docker, native tools, terminal) and Windows for compatibility testing and multimedia.',
+      icon: 'devops',
+      label: { fr: 'Système', en: 'OS' },
+      value: { fr: 'Ubuntu / Windows (double démarrage)', en: 'Ubuntu / Windows (Dual Boot)' },
+      details: {
+        fr: 'Ubuntu pour le développement (Docker, outils natifs, terminal) et Windows pour les tests de compatibilité et le multimédia.',
+        en: 'Ubuntu for development (Docker, native tools, terminal) and Windows for compatibility testing and multimedia.',
+      },
       bgGradient: 'linear-gradient(135deg,#11998e 0%,#38ef7d 100%)',
     },
   ];
@@ -262,15 +277,26 @@ export class AboutComponent implements OnInit, OnDestroy {
       label: 'TikTok',
       href: 'https://www.tiktok.com/@tilstack_draw',
       icon: 'tiktok',
-      imgSrc: 'images/profile/tiktok_avatar.webp',
       descKey: 'about.involvementTiktok',
+    },
+    {
+      label: 'DevPea',
+      href: DEVPEA_URL,
+      icon: 'devpea',
+      descKey: 'about.involvementDevpea',
+    },
+    {
+      label: 'Boutique',
+      href: '/boutique',
+      icon: 'shop',
+      descKey: 'about.involvementShop',
     },
   ];
 
   // ── other roles ───────────────────────────────────────────────
-  otherRoles = [
+  otherRoles: { icon: IconName; titleKey: string; descKey: string; links: { label: string; href: string }[] }[] = [
     {
-      icon: '📸',
+      icon: 'camera',
       titleKey: 'about.rolePhotographer',
       descKey: 'about.rolePhotographerDesc',
       links: [
@@ -281,7 +307,7 @@ export class AboutComponent implements OnInit, OnDestroy {
       ],
     },
     {
-      icon: '🎬',
+      icon: 'video',
       titleKey: 'about.roleVideoEditor',
       descKey: 'about.roleVideoEditorDesc',
       links: [
@@ -296,7 +322,7 @@ export class AboutComponent implements OnInit, OnDestroy {
       ],
     },
     {
-      icon: '📱',
+      icon: 'megaphone',
       titleKey: 'about.roleCommunity',
       descKey: 'about.roleCommunityDesc',
       links: [
