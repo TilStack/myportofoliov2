@@ -26,6 +26,9 @@ const EN: Translations = {
     home: 'Home', about: 'About', projects: 'Projects',
     blog: 'Blog', quotes: 'Quotes', contact: 'Contact', shop: 'Shop',
   },
+  footer: {
+    rights: 'All rights reserved.',
+  },
   notFound: {
     code:  '404',
     title: 'Page not found',
@@ -44,6 +47,9 @@ const EN: Translations = {
     seeAllQuotes: 'See all quotes',
     clickExpand:  'Click to expand',
     clickClose:   'Click to close',
+    // Featured projects
+    featuredTitle: 'Featured Projects',
+    featuredSub:   'A few things I\'ve shipped, from mobile to web.',
     // Page preview section
     discoverTitle: 'Explore My World',
     discoverSub:   'From code to creativity — everything I work on, in one place.',
@@ -54,7 +60,7 @@ const EN: Translations = {
     blogCard:      'What I Write',
     blogCardDesc:  'Technical articles and thoughts on development.',
     quotesCard:    'What Inspires Me',
-    quotesCardDesc: 'Words from great minds that fuel my journey.',
+    quotesCardDesc: 'My own maxims, born from experience.',
     contactCard:   "Let's Connect",
     contactCardDesc: 'Open to projects, collabs & conversations.',
     explore:       'Explore',
@@ -63,7 +69,10 @@ const EN: Translations = {
     badgeTeacher:  'Teacher',
     // Cameroon montage
     montageTitle: 'Cameroon, My Home',
-    montageSub:   'The land that shaped who I am — a thousand hills, a thousand stories.',
+    montageCreditBy:          'Photos by',
+    montageCreditYears:       'Cameroon, 2022–2025.',
+    montageCreditPlaceholder: 'Placeholder photos, to be replaced — source:',
+    montageSub:   'The land that shaped who I am — often called “Africa in miniature”.',
     montageTag:   'Africa · Cameroon',
   },
   about: {
@@ -128,6 +137,8 @@ const EN: Translations = {
     involvementZerofiltre:  'Technical articles',
     involvementTwitter:     'Thoughts & updates',
     involvementTiktok:      'Creative content & drawing',
+    involvementDevpea:      'Software development company I co-founded',
+    involvementShop:        'Digital products for teachers',
     // Educator gallery
     educatorGalleryTitle: 'Teaching Moments',
     educatorGallerySub:   'Moments from workshops, tutorials, and mentoring sessions.',
@@ -326,6 +337,9 @@ const FR: Translations = {
     home: 'Accueil', about: 'À propos', projects: 'Projets',
     blog: 'Blog', quotes: 'Citations', contact: 'Contact', shop: 'Boutique',
   },
+  footer: {
+    rights: 'Tous droits réservés.',
+  },
   notFound: {
     code:  '404',
     title: 'Page introuvable',
@@ -344,6 +358,9 @@ const FR: Translations = {
     seeAllQuotes: 'Voir toutes les citations',
     clickExpand:  'Cliquer pour développer',
     clickClose:   'Cliquer pour fermer',
+    // Projets phares
+    featuredTitle: 'Projets phares',
+    featuredSub:   'Quelques réalisations, du mobile au web.',
     // Page preview section
     discoverTitle: 'Explorez mon univers',
     discoverSub:   'Du code à la créativité — tout ce sur quoi je travaille, en un seul endroit.',
@@ -354,13 +371,16 @@ const FR: Translations = {
     blogCard:      'Ce que j\'écris',
     blogCardDesc:  'Articles techniques et réflexions sur le développement.',
     quotesCard:    'Ce qui m\'inspire',
-    quotesCardDesc: 'Des mots de grands esprits qui alimentent mon parcours.',
+    quotesCardDesc: 'Mes propres maximes, nées de l\'expérience.',
     contactCard:   'Prenons contact',
     contactCardDesc: 'Ouvert aux projets, collaborations et conversations.',
     explore:       'Explorer',
     // Cameroon montage
     montageTitle: 'Le Cameroun, ma patrie',
-    montageSub:   'La terre qui m\'a façonné — mille collines, mille histoires.',
+    montageCreditBy:          'Photos de',
+    montageCreditYears:       'Cameroun, 2022–2025.',
+    montageCreditPlaceholder: 'Photos provisoires, à remplacer — source :',
+    montageSub:   'La terre qui m\'a façonné — souvent surnommée « l\'Afrique en miniature ».',
     montageTag:   'Afrique · Cameroun',
     badgeDev:     'Dev',
     badgeAI:      'IA',
@@ -428,6 +448,8 @@ const FR: Translations = {
     involvementZerofiltre:  'Articles techniques',
     involvementTwitter:     'Réflexions & actualités',
     involvementTiktok:      'Contenu créatif & dessin',
+    involvementDevpea:      'Société de développement logiciel que j\'ai co-fondée',
+    involvementShop:        'Ressources numériques pour enseignants',
     // Educator gallery
     educatorGalleryTitle: 'Moments d\'enseignement',
     educatorGallerySub:   'Instants de workshops, tutoriels et sessions de mentorat.',
