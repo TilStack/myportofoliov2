@@ -30,4 +30,6 @@
     background: $color-accent;
     color: $color-primary;
   }
+
+  @media (max-width: 1023.98px) { bottom: calc(88px + env(safe-area-inset-bottom, 0px)); right: $space-4; }
 }

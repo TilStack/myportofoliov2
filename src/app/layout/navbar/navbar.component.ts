@@ -7,6 +7,7 @@ import { I18nService } from '../../core/services/i18n.service';
 interface NavLink {
   key: string;
   path: string;
+  icon: 'home' | 'user' | 'folder' | 'bag' | 'blog' | 'quote' | 'mail';
 }
 
 @Component({
@@ -21,28 +22,19 @@ export class NavbarComponent {
   i18n         = inject(I18nService);
 
   scrolled  = signal(false);
-  menuOpen  = signal(false);
 
   links: NavLink[] = [
-    { key: 'nav.home',     path: '/'         },
-    { key: 'nav.about',    path: '/about'    },
-    { key: 'nav.projects', path: '/projects' },
-    { key: 'nav.shop',     path: '/boutique' },
-    { key: 'nav.blog',     path: '/blog'     },
-    { key: 'nav.quotes',   path: '/quotes'   },
-    { key: 'nav.contact',  path: '/contact'  },
+    { key: 'nav.home',     path: '/', icon: 'home'         },
+    { key: 'nav.about',    path: '/about', icon: 'user'    },
+    { key: 'nav.projects', path: '/projects', icon: 'folder' },
+    { key: 'nav.shop',     path: '/boutique', icon: 'bag' },
+    { key: 'nav.blog',     path: '/blog', icon: 'blog'     },
+    { key: 'nav.quotes',   path: '/quotes', icon: 'quote'   },
+    { key: 'nav.contact',  path: '/contact', icon: 'mail'  },
   ];
 
   @HostListener('window:scroll')
   onScroll(): void {
     this.scrolled.set(window.scrollY > 20);
-  }
-
-  toggleMenu(): void {
-    this.menuOpen.update(v => !v);
-  }
-
-  closeMenu(): void {
-    this.menuOpen.set(false);
   }
 }
