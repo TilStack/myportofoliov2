@@ -13,11 +13,12 @@
     margin-inline: auto;
     padding: $space-16 $container-pad-x;
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: $space-12;
     align-items: start;
 
     @include lg {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       align-items: center;
     }
   }

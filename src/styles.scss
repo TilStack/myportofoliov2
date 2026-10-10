@@ -230,3 +230,17 @@ html.js-anim {
     scroll-behavior: auto !important;
   }
 }
+
+// Cibles tactiles : sur écran tactile, les petits liens/boutons de texte ont une zone cliquable d'au moins 44 px
+// de haut (WCAG 2.5.8 / recommandations mobiles), sans changer leur apparence.
+@media (pointer: coarse) {
+  .footer__link,
+  .navbar__logo,
+  .contact-social,
+  .pcard__open-hint,
+  .blog-card__read-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}

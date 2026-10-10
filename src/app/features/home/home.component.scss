@@ -268,10 +268,11 @@
 .moodboard {
   &__layout {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: $space-8;
     align-items: stretch;
 
-    @include lg { grid-template-columns: 1.25fr 1fr; gap: $space-12; }
+    @include lg { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: $space-12; }
   }
 
   &__more { margin-top: $space-10; text-align: center; }
