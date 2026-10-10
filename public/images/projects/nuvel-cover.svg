@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Illustration : réseau de personnes autour d'une communauté">
+  <rect width="800" height="500" fill="#E8F1FB"/>
+  <g fill="#CFE2F7" opacity=".8">
+    <circle cx="80" cy="430" r="70"/><circle cx="740" cy="70" r="54"/><circle cx="690" cy="440" r="30"/>
+  </g>
+  <!-- liens du réseau -->
+  <g stroke="#1B3A5C" stroke-width="4" stroke-linecap="round" opacity=".55" fill="none">
+    <path d="M400 250L170 140M400 250L640 130M400 250L150 360M400 250L660 370M400 250L400 70M170 140L150 360M640 130L660 370" stroke-dasharray="2 12"/>
+  </g>
+  <!-- membres -->
+  <g stroke="#1B3A5C" stroke-width="5" stroke-linejoin="round">
+    <g><circle cx="170" cy="140" r="44" fill="#FBD38D"/><circle cx="170" cy="128" r="15" fill="#FFF"/><path d="M142 168c4-18 14-24 28-24s24 6 28 24" fill="#FFF"/></g>
+    <g><circle cx="640" cy="130" r="44" fill="#9AE6B4"/><circle cx="640" cy="118" r="15" fill="#FFF"/><path d="M612 158c4-18 14-24 28-24s24 6 28 24" fill="#FFF"/></g>
+    <g><circle cx="150" cy="360" r="44" fill="#FEB2B2"/><circle cx="150" cy="348" r="15" fill="#FFF"/><path d="M122 388c4-18 14-24 28-24s24 6 28 24" fill="#FFF"/></g>
+    <g><circle cx="660" cy="370" r="44" fill="#BEE3F8"/><circle cx="660" cy="358" r="15" fill="#FFF"/><path d="M632 398c4-18 14-24 28-24s24 6 28 24" fill="#FFF"/></g>
+    <g><circle cx="400" cy="70" r="38" fill="#D6BCFA"/><circle cx="400" cy="60" r="13" fill="#FFF"/><path d="M376 94c3-15 12-20 24-20s21 5 24 20" fill="#FFF"/></g>
+  </g>
+  <!-- bulle centrale avec croix -->
+  <g stroke="#1B3A5C" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M290 190h220a30 30 0 0 1 30 30v100a30 30 0 0 1-30 30H430l-46 46v-46h-94a30 30 0 0 1-30-30V220a30 30 0 0 1 30-30z" fill="#FFFFFF"/>
+    <path d="M400 218v84M358 252h84" stroke="#D69E2E" stroke-width="14"/>
+  </g>
+  <!-- petites bulles -->
+  <g fill="#FFFFFF" stroke="#1B3A5C" stroke-width="4" stroke-linejoin="round">
+    <path d="M236 70h70a12 12 0 0 1 12 12v22a12 12 0 0 1-12 12h-40l-14 14v-14h-16a12 12 0 0 1-12-12V82a12 12 0 0 1 12-12z"/>
+    <path d="M520 400h80a12 12 0 0 1 12 12v22a12 12 0 0 1-12 12h-14v14l-16-14h-50a12 12 0 0 1-12-12v-22a12 12 0 0 1 12-12z"/>
+  </g>
+  <g stroke="#1B3A5C" stroke-width="4" stroke-linecap="round"><path d="M244 94h50M530 424h60"/></g>
+</svg>

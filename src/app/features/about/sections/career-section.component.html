@@ -6,8 +6,8 @@
     </div>
 
     <ol class="timeline">
-      @for (e of experience; track e.id) {
-        <li class="timeline__item">
+      @for (e of experience; track e.id; let i = $index) {
+        <li class="timeline__item fade-up" appFadeOnScroll [delay]="i * 90">
           <h3 class="timeline__role">{{ tr(e.role) }}</h3>
           <p class="timeline__org">
             {{ e.organization }}@if (e.place) {, {{ e.place }}}

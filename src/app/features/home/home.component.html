@@ -99,57 +99,35 @@
         <p class="section__subtitle">{{ i18n.t("quotes.subtitle") }}</p>
       </div>
 
-      <div class="moodboard__grid">
-        @for (quote of quotes(); track quote.id; let i = $index) {
-          <div
-            class="quote-card fade-up"
-            [class.expanded]="quote.expanded"
-            appFadeOnScroll
-            [delay]="i * 80"
-            (click)="toggleQuote(quote)"
-            role="button"
-            [attr.aria-expanded]="quote.expanded"
-            tabindex="0"
-            (keyup.enter)="toggleQuote(quote)"
-          >
-            <span class="quote-card__mark"><app-icon name="quote" [size]="56" /></span>
-            <blockquote class="quote-card__text">"{{ quote.text }}"</blockquote>
-            <cite class="quote-card__author">— {{ quote.author }}</cite>
-            @if (quote.expanded) {
-              <p class="quote-card__explanation">{{ quote.explanation }}</p>
-            }
-            <span class="quote-card__hint">
-              {{
-                quote.expanded
-                  ? i18n.t("home.clickClose")
-                  : i18n.t("home.clickExpand")
-              }}
-            </span>
-          </div>
-        }
+      <div class="moodboard__layout">
+        <!-- Citation mise en avant -->
+        <figure class="featured-quote fade-up" appFadeOnScroll>
+          <span class="featured-quote__label">{{ i18n.t("home.latestQuote") }}</span>
+          <span class="featured-quote__mark" aria-hidden="true"><app-icon name="quote" [size]="64" /></span>
+          <blockquote class="featured-quote__text">{{ featuredQuote.text }}</blockquote>
+          <figcaption class="featured-quote__author">{{ featuredQuote.author }}</figcaption>
+        </figure>
 
-        <!-- CTA card -->
-        <div
-          class="moodboard__cta fade-up"
-          appFadeOnScroll
-          [delay]="quotes().length * 80"
-        >
-          <a routerLink="/quotes" class="moodboard__cta-link">
-            {{ i18n.t("home.seeAllQuotes") }}
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
-        </div>
+        <!-- Quelques autres citations, sobres -->
+        <ul class="quote-list" role="list">
+          @for (quote of quotes(); track quote.id; let i = $index) {
+            <li class="quote-list__item fade-up" appFadeOnScroll [delay]="(i + 1) * 100">
+              <blockquote class="quote-list__text">{{ quote.text }}</blockquote>
+              <cite class="quote-list__author">{{ quote.author }}</cite>
+            </li>
+          }
+        </ul>
       </div>
+
+      <p class="moodboard__more fade-up" appFadeOnScroll>
+        <a routerLink="/quotes" class="moodboard__cta-link">
+          {{ i18n.t("home.seeAllQuotes") }}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </p>
     </div>
   </section>
 } @placeholder {
@@ -174,6 +152,7 @@
           [delay]="0"
         >
           <div class="page-card__visual pv--about">
+            <span class="page-card__index" aria-hidden="true">01</span>
             <img
               class="page-card__cover"
               [ngSrc]="cardPhoto.src"
@@ -205,13 +184,17 @@
           [delay]="80"
         >
           <div class="page-card__visual pv--projects">
+            <span class="page-card__index" aria-hidden="true">02</span>
             <div class="page-card__cover-overlay pco--projects"></div>
-            <div class="page-card__cover-code" aria-hidden="true">
-              <span class="pcc__line"><em>const</em> app = <em>new</em> App();</span>
-              <span class="pcc__line"><em>await</em> app.build();</span>
-              <span class="pcc__line pcc__line--dim">// Flutter · Angular · FastAPI</span>
-              <span class="pcc__cursor"></span>
-            </div>
+            <ul class="page-card__cover-projects" aria-hidden="true">
+              @for (p of previewProjects; track p.slug) {
+                <li class="pcp__row">
+                  <span class="pcp__dot" [class.pcp__dot--done]="p.status === 'finished'"></span>
+                  <span class="pcp__name">{{ p.name }}</span>
+                  <span class="pcp__tech">{{ p.tech[0] }}</span>
+                </li>
+              }
+            </ul>
           </div>
           <div class="page-card__body">
             <span class="page-card__eyebrow">{{ i18n.t("nav.projects") }}</span>
@@ -229,16 +212,13 @@
           [delay]="160"
         >
           <div class="page-card__visual pv--blog">
+            <span class="page-card__index" aria-hidden="true">03</span>
             <div class="page-card__cover-overlay pco--blog"></div>
             <div class="page-card__cover-article" aria-hidden="true">
-              <div class="pca__header">
-                <span class="pca__pill">Angular</span>
-                <span class="pca__pill pca__pill--dim">Flutter</span>
+              <span class="pca__label">{{ i18n.t('home.blogTopics') }}</span>
+              <div class="pca__tags">
+                @for (t of blogTopics; track t) { <span class="pca__pill">{{ t }}</span> }
               </div>
-              <div class="pca__title"></div>
-              <div class="pca__row" style="width:85%"></div>
-              <div class="pca__row" style="width:65%"></div>
-              <div class="pca__row" style="width:75%"></div>
             </div>
           </div>
           <div class="page-card__body">
@@ -257,15 +237,12 @@
           [delay]="240"
         >
           <div class="page-card__visual pv--quotes">
+            <span class="page-card__index" aria-hidden="true">04</span>
             <div class="page-card__cover-overlay pco--quotes"></div>
             <div class="page-card__cover-quote" aria-hidden="true">
-              <span class="pcq__mark"><app-icon name="quote" [size]="36" /></span>
-              <div class="pcq__lines">
-                <span style="width:85%"></span>
-                <span style="width:65%"></span>
-                <span style="width:75%"></span>
-              </div>
-              <div class="pcq__author"></div>
+              <span class="pcq__mark"><app-icon name="quote" [size]="30" /></span>
+              <p class="pcq__text">{{ previewQuote.text }}</p>
+              <span class="pcq__author">— {{ previewQuote.author }}</span>
             </div>
           </div>
           <div class="page-card__body">
@@ -376,6 +353,14 @@
         } @else {
           {{ i18n.t("home.montageCreditPlaceholder") }}
           <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>.
+        }
+        @if (montageCredits.length) {
+          <br />
+          {{ i18n.t("home.montageCreditCommons") }}
+          @for (c of montageCredits; track c.place; let last = $last) {
+            {{ c.place }} —
+            <a [href]="c.url" target="_blank" rel="noopener noreferrer">{{ c.author }}</a>{{ last ? "." : ";" }}
+          }
         }
       </p>
     </div>

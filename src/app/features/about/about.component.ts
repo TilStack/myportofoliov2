@@ -14,7 +14,7 @@ import { I18nService } from '../../core/services/i18n.service';
 import { PROFILE_PHOTOS, TRAVEL_PHOTOS } from '../../core/config/images.config';
 import { DEVPEA_URL, GITHUB_URL, LINKEDIN_URL, TWITTER_URL } from '../../data/site.data';
 import { responsiveImage } from '../../shared/utils/responsive-image';
-import { MULTIMEDIA_SKILLS, SKILL_LAYERS } from '../../data/skills.data';
+import { MULTIMEDIA_SKILLS, SKILL_LAYERS, TECH_LOGOS } from '../../data/skills.data';
 import { CareerSectionComponent } from './sections/career-section.component';
 import { TeachingSectionComponent } from './sections/teaching-section.component';
 import { IconComponent, IconName } from '../../shared/components/icon/icon.component';
@@ -294,52 +294,66 @@ export class AboutComponent implements OnInit, OnDestroy {
   ];
 
   // ── other roles ───────────────────────────────────────────────
-  otherRoles: { icon: IconName; titleKey: string; descKey: string; links: { label: string; href: string }[] }[] = [
+  /**
+   * Autres casquettes : tout est tiré des pages publiques de la Full Gospel Mission Kotto (Douala), relevées le
+   * 10/10/2026 : Facebook (4,3 K abonnés), TikTok (1 290 abonnés, 8 151 j'aime), chaîne YouTube. Les chiffres bougent :
+   * à mettre à jour de temps en temps.
+   */
+  readonly otherRolesOrg = { name: 'Full Gospel Mission Kotto', place: 'Kotto-Bonamoussadi, Douala' };
+  otherRoles: {
+    icon: IconName; titleKey: string; descKey: string;
+    stats: { value: string; labelKey: string }[];
+    links: { label: string; href: string; logo: 'facebook' | 'tiktok' | 'youtube' }[];
+  }[] = [
     {
       icon: 'camera',
       titleKey: 'about.rolePhotographer',
       descKey: 'about.rolePhotographerDesc',
-      links: [
-        {
-          label: 'Facebook',
-          href: 'https://www.facebook.com/fullgospelkotto16',
-        },
-      ],
+      stats: [{ value: '4,3 K', labelKey: 'about.statFacebook' }],
+      links: [{ label: 'Facebook', href: 'https://www.facebook.com/fullgospelkotto16', logo: 'facebook' }],
     },
     {
       icon: 'video',
       titleKey: 'about.roleVideoEditor',
       descKey: 'about.roleVideoEditorDesc',
+      stats: [
+        { value: '8 151', labelKey: 'about.statLikes' },
+        { value: '1 290', labelKey: 'about.statTiktok' },
+      ],
       links: [
-        {
-          label: 'TikTok',
-          href: 'https://www.tiktok.com/@fgmkotto?_r=1&_t=ZS-95MnCV51dZA',
-        },
-        {
-          label: 'Facebook',
-          href: 'https://www.facebook.com/fullgospelkotto16',
-        },
+        { label: 'TikTok', href: 'https://www.tiktok.com/@fgmkotto', logo: 'tiktok' },
+        { label: 'YouTube', href: 'https://www.youtube.com/@fgmkotto9790', logo: 'youtube' },
       ],
     },
     {
       icon: 'megaphone',
       titleKey: 'about.roleCommunity',
       descKey: 'about.roleCommunityDesc',
+      stats: [
+        { value: '4,3 K', labelKey: 'about.statFacebook' },
+        { value: '1 290', labelKey: 'about.statTiktok' },
+      ],
       links: [
-        {
-          label: 'TikTok',
-          href: 'https://www.tiktok.com/@fgmkotto?_r=1&_t=ZS-95MnCV51dZA',
-        },
-        {
-          label: 'Facebook',
-          href: 'https://www.facebook.com/fullgospelkotto16',
-        },
+        { label: 'Facebook', href: 'https://www.facebook.com/fullgospelkotto16', logo: 'facebook' },
+        { label: 'TikTok', href: 'https://www.tiktok.com/@fgmkotto', logo: 'tiktok' },
+        { label: 'YouTube', href: 'https://www.youtube.com/@fgmkotto9790', logo: 'youtube' },
       ],
     },
   ];
 
   // ── compétences par couches (skills.data.ts) ───────────────
   readonly skillLayers = SKILL_LAYERS;
+
+  /** Texte de la pastille quand une technologie n'a pas de logo. */
+  shortLabel(name: string): string {
+    return name === 'REST' ? 'API' : name === 'ChatGPT' ? 'GPT' : name.slice(0, 3);
+  }
+
+  /** Logo d'une technologie (masque CSS + couleur), ou `null` si elle n'en a pas. */
+  logo(name: string): { url: string; color: string } | null {
+    const l = TECH_LOGOS[name];
+    return l ? { url: `url(/images/tech/${l.file}.svg)`, color: l.color ?? 'var(--color-text)' } : null;
+  }
   readonly multimediaSkills = MULTIMEDIA_SKILLS;
 
   ngOnInit(): void {

@@ -2,10 +2,19 @@ import { Bilingual } from './career.data';
 
 /** Enseignement & Formations (page À propos). Aucune information au-delà de celles fournies par Israel. */
 
-export interface TeachingRole {
-  organization: string;
-  place: string;
+export interface School {
+  id: string;
+  name: string;
+  /** Début de l'enseignement dans cet établissement. */
   since: Bilingual;
+  /** Logo (sous public/) ; absent : pastille avec les initiales. */
+  logo?: string;
+  initials: string;
+}
+
+export interface TeachingRole {
+  /** Établissements, du plus récent au plus ancien : les matières ci-dessous sont les mêmes dans les deux. */
+  schools: School[];
   /** Programme officiel suivi. */
   programme: string;
   subjects: Bilingual[];
@@ -16,9 +25,11 @@ export interface TeachingRole {
 }
 
 export const TEACHING: TeachingRole = {
-  organization: 'CEFTI',
-  place: 'Douala',
-  since: { fr: 'Depuis septembre 2023', en: 'Since September 2023' },
+  schools: [
+    // TODO(israel): ville / adresse du Collège INTAC. Logo fourni par Israel (Fondation TUETO).
+    { id: 'intac', name: 'Collège INTAC', initials: 'IN', logo: 'images/teaching/intac-logo.webp', since: { fr: 'Depuis septembre 2026', en: 'Since September 2026' } },
+    { id: 'cefti', name: 'CEFTI', initials: 'CE', logo: 'images/teaching/cefti-logo.webp', since: { fr: 'Depuis septembre 2023', en: 'Since September 2023' } },
+  ],
   programme: 'MINESEC',
   subjects: [
     { fr: 'Informatique générale', en: 'General computer science' },

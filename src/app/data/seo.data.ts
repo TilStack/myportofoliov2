@@ -9,9 +9,9 @@ const titled = (section: string) => `${section} | ${SITE_NAME}`;
 
 export const SEO = {
   home: {
-    title: 'TIENTCHEU Israel (TilStack) | Développeur Fullstack Flutter & Angular · Formateur IT — Douala',
+    title: 'Ingénieur logiciel & formateur en informatique | TilStack',
     description:
-      'Développeur fullstack web & mobile (Flutter, Angular, FastAPI), formateur en informatique au CEFTI et co-fondateur de DevPea. Je crée des apps et des ressources IA pour enseignants. Basé à Douala, Cameroun.',
+      'TIENTCHEU Israel (TilStack) — ingénieur logiciel et formateur en informatique : développeur fullstack web & mobile (Flutter, Angular, FastAPI), enseignant en informatique au Collège INTAC et au CEFTI, et co-fondateur de DevPea. Je crée des apps et des ressources IA pour enseignants. Basé à Douala, Cameroun.',
     path: '/',
   },
   about: {

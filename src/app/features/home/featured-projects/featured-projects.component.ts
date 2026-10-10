@@ -7,7 +7,7 @@ import { responsiveImage } from '../../../shared/utils/responsive-image';
 
 /**
  * Projets phares, juste après le hero : la première chose qu'un visiteur développeur veut voir.
- * Projets marqués `featured: true` dans projects.data.ts (Dofa, Otadex, Séla Cantique).
+ * Projets marqués `featured: true` dans projects.data.ts (Dofa, Otadex, Nuvel).
  */
 @Component({
   selector: 'app-featured-projects',

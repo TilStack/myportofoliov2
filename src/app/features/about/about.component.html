@@ -84,31 +84,44 @@
       <h2 class="section__title">{{ i18n.t("about.stackTitle") }}</h2>
       <p class="section__subtitle">{{ i18n.t("about.stackSubtitle") }}</p>
     </div>
-    <div class="skills-categories-grid">
+    <ol class="stack">
       @for (layer of skillLayers; track layer.id; let ci = $index) {
-        <div class="skills-category fade-up" appFadeOnScroll [delay]="ci * 60">
-          <div class="skills-category__header">
-            <span class="skills-category__icon">
-              <app-icon [name]="layer.icon" [size]="20" />
-            </span>
-            <h3 class="skills-category__label">
-              {{ layer.label[i18n.lang()] }}
-            </h3>
+        <li class="stack__row fade-up" appFadeOnScroll [delay]="ci * 70">
+          <div class="stack__head">
+            <span class="stack__index" aria-hidden="true">{{ ci + 1 < 10 ? "0" + (ci + 1) : ci + 1 }}</span>
+            <span class="stack__icon"><app-icon [name]="layer.icon" [size]="20" /></span>
+            <h3 class="stack__label">{{ layer.label[i18n.lang()] }}</h3>
           </div>
-          <div class="skills-grid">
-            @for (skill of layer.main; track skill) {
-              <span class="skill-tag">{{ skill }}</span>
+          <div class="stack__body">
+            <ul class="tech-list" role="list">
+              @for (skill of layer.main; track skill) {
+                <li class="tech" [style.--tint]="logo(skill)?.color">
+                  @if (logo(skill); as l) {
+                    <span class="tech__logo" aria-hidden="true" [style.--logo]="l.url"></span>
+                  } @else {
+                    <span class="tech__logo tech__logo--text" aria-hidden="true">{{ shortLabel(skill) }}</span>
+                  }
+                  <span class="tech__name">{{ skill }}</span>
+                </li>
+              }
+            </ul>
+            @if (layer.secondary) {
+              <ul class="tech-list tech-list--secondary" role="list" [attr.aria-label]="i18n.t('about.skillsSecondary')">
+                <li class="tech-list__also" aria-hidden="true">{{ i18n.t("about.skillsSecondary") }}</li>
+                @for (skill of layer.secondary; track skill) {
+                  <li class="tech tech--small" [style.--tint]="logo(skill)?.color">
+                    @if (logo(skill); as l) {
+                      <span class="tech__logo" aria-hidden="true" [style.--logo]="l.url"></span>
+                    }
+                    <span class="tech__name">{{ skill }}</span>
+                  </li>
+                }
+              </ul>
             }
           </div>
-          @if (layer.secondary) {
-            <p class="skills-category__secondary">
-              {{ i18n.t("about.skillsSecondary") }} :
-              {{ layer.secondary.join(", ") }}
-            </p>
-          }
-        </div>
+        </li>
       }
-    </div>
+    </ol>
     <p class="skills-section__multimedia fade-up" appFadeOnScroll>
       {{ i18n.t("about.skillsMultimedia") }} : {{ multimediaSkills.join(", ") }}
     </p>
@@ -570,29 +583,37 @@
       </div>
       <div class="other-roles-grid">
         @for (role of otherRoles; track role.titleKey; let i = $index) {
-          <div class="role-card fade-up" appFadeOnScroll [delay]="i * 100">
-            <div class="role-card__icon-wrap">
-              <app-icon [name]="role.icon" [size]="24" />
+          <article class="role-card fade-up" appFadeOnScroll [delay]="i * 100">
+            <div class="role-card__top">
+              <span class="role-card__icon-wrap"><app-icon [name]="role.icon" [size]="26" /></span>
+              <p class="role-card__org">
+                <span>{{ otherRolesOrg.name }}</span>
+                <span class="role-card__place">{{ otherRolesOrg.place }}</span>
+              </p>
             </div>
             <h3 class="role-card__title">{{ i18n.t(role.titleKey) }}</h3>
             <p class="role-card__desc">{{ i18n.t(role.descKey) }}</p>
-            @if (role.links.length) {
-              <div class="role-card__links">
-                @for (link of role.links; track link.href) {
-                  <a
-                    [href]="link.href"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="role-card__link"
-                  >
-                    {{ link.label }} ↗
-                  </a>
-                }
-              </div>
-            }
-          </div>
+            <dl class="role-card__stats">
+              @for (st of role.stats; track st.labelKey) {
+                <div class="role-card__stat">
+                  <dt>{{ i18n.t(st.labelKey) }}</dt>
+                  <dd>{{ st.value }}</dd>
+                </div>
+              }
+            </dl>
+            <div class="role-card__links">
+              @for (link of role.links; track link.href) {
+                <a [href]="link.href" target="_blank" rel="noopener noreferrer" class="role-card__link">
+                  <span class="role-card__logo" aria-hidden="true" [style.--logo]="'url(/images/brands/' + link.logo + '.svg)'"></span>
+                  {{ link.label }}
+                  <span aria-hidden="true">↗</span>
+                </a>
+              }
+            </div>
+          </article>
         }
       </div>
+      <p class="other-roles-section__note">{{ i18n.t("about.rolesAsOf") }}</p>
     </div>
   </section>
 } @placeholder {

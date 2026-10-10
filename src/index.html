@@ -2,7 +2,7 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <title>TilStack — Portfolio</title>
+    <title>Ingénieur logiciel &amp; formateur en informatique | TilStack</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
@@ -24,6 +24,90 @@
             t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
           }
           d.setAttribute('data-theme', t);
+        } catch (e) {}
+      })();
+    </script>
+    <!-- Splash « TilStack » (TEST) : le logo se construit pièce par pièce (c'est lui qui donne le tempo, jusqu'à la
+         fin), puis « TilStack » ; l'avatar 3D bouge en fond ; « Être exceptionnel » est sous le nom.
+         À chaque chargement ou rechargement de la page ; un clic ou une touche le ferme tout de suite.
+         Injecté ici, avant le premier rendu, et jamais dans le HTML pré-rendu : le contenu de la page se rend
+         normalement dessous. Absent pour les robots/tests automatisés (webdriver, Lighthouse), avec
+         prefers-reduced-motion, et avec ?nosplash.
+         Pour le revoir à tout moment : ouvrir /?splash. Durée : variable DUREE ci-dessous (en ms).
+         Logo : tracé au trait puis rempli, d'après ton logo vectorisé (3 pièces). Personnage : public/images/splash/avatar-illustre.webp (dessin détouré).
+         Pour le désactiver : supprimer ce bloc <script>. -->
+    <script>
+      (function () {
+        try {
+          var DUREE = 4900;
+          var d = document.documentElement;
+          var ua = navigator.userAgent || '';
+          var force = /[?&]splash(=|&|$)/.test(location.search); // /?splash : toujours afficher (pour le test)
+          if (
+            !force &&
+            (navigator.webdriver ||
+              /Lighthouse|HeadlessChrome/i.test(ua) ||
+              location.search.indexOf('nosplash') > -1 ||
+              window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+          ) return;
+
+          var css =
+            '#splash{position:fixed;inset:0;z-index:2147483000;background:#14213D;color:#fff;overflow:hidden;cursor:pointer;' +
+            'display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:1;transition:opacity .35s ease}' +
+            '#splash.out{opacity:0;pointer-events:none}' +
+            '#splash .sp-bg{position:absolute;inset:0;background-image:conic-gradient(rgba(255,255,255,.04) 25%,transparent 0 50%,rgba(255,255,255,.04) 0 75%,transparent 0);background-size:88px 88px}' +
+            // personnage illustré (détouré) : à droite, ancré en bas, il bouge doucement
+            '#splash .sp-stage{position:absolute;bottom:0;right:max(5vw,0px);height:min(56vh,480px);aspect-ratio:.98;--o:1;opacity:var(--o);transform-origin:50% 100%;animation:spSway 2.8s ease-in-out infinite alternate}' +
+            '#splash .sp-stage img{position:absolute;left:50%;bottom:0;height:100%;width:auto;transform:translateX(-50%);opacity:0;' +
+            'animation:spA 1.1s .5s cubic-bezier(.22,.8,.3,1) forwards}' +
+            '#splash .sp-stage::before{content:"";position:absolute;left:50%;bottom:6%;width:150%;height:70%;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(255,222,89,.14),transparent);animation:spGlow 2.2s ease-in-out infinite alternate}' +
+            // logo : tracé au trait, pièce par pièce (T, haut du S, diagonale), puis remplissage — il donne le tempo
+            '#splash .sp-logo{position:relative;width:clamp(150px,27vw,270px);height:auto;overflow:visible}' +
+            '#splash .sp-logo path{fill:#FFDE59;fill-opacity:0;stroke:#FFDE59;stroke-width:7;stroke-linejoin:miter;stroke-linecap:square;stroke-dasharray:100;stroke-dashoffset:100}' +
+            '#splash .sp-d1{animation:spDraw 1.2s .3s ease-in-out forwards,spFill .7s 1.4s ease forwards}' +
+            '#splash .sp-d2{animation:spDraw 1.3s 1.4s ease-in-out forwards,spFill .7s 2.6s ease forwards}' +
+            '#splash .sp-d3{animation:spDraw 1.2s 2.6s ease-in-out forwards,spFill .7s 3.7s ease forwards}' +
+            '#splash .sp-name{position:relative;margin-top:20px;font:800 clamp(2.2rem,7vw,3.6rem)/1 Poppins,Inter,system-ui,sans-serif;letter-spacing:-.02em;' +
+            'opacity:0;transform:translateY(12px);animation:spIn .7s 3.9s ease-out forwards}' +
+            '#splash .sp-name b{font-weight:900}' +
+            '#splash .sp-tag{position:relative;margin-top:14px;font:italic 500 clamp(1rem,2.6vw,1.3rem)/1.4 Inter,system-ui,sans-serif;letter-spacing:.04em;color:rgba(255,255,255,.88);opacity:0;animation:spQ .9s 4.3s ease-out forwards}' +
+            '@keyframes spA{0%{opacity:0;transform:translateX(-50%) translateY(30px) scale(.95)}12%{opacity:1;transform:translateX(-50%) translateY(0) scale(.98)}100%{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}}' +
+            '@keyframes spDraw{to{stroke-dashoffset:0}}' +
+            '@keyframes spFill{to{fill-opacity:1}}' +
+            '@keyframes spQ{to{opacity:1}}' +
+            '@keyframes spGlow{from{opacity:.5}to{opacity:1}}' +
+            '@keyframes spSway{from{transform:translateY(0) rotate(-1.1deg)}to{transform:translateY(-10px) rotate(1.1deg)}}' +
+            '@keyframes spIn{to{opacity:1;transform:none}}' +
+            '@media (max-width:767px){#splash .sp-stage{--o:.28;right:50%;transform:translateX(50%);animation:none}}';
+          var st = document.createElement('style');
+          st.textContent = css;
+          d.appendChild(st);
+
+          var el = document.createElement('div');
+          el.id = 'splash';
+          el.setAttribute('aria-hidden', 'true');
+          el.innerHTML =
+            '<div class="sp-bg"></div>' +
+            '<div class="sp-stage"><img src="images/splash/avatar-illustre.webp" width="626" height="640" alt="" decoding="async" fetchpriority="low"></div>' +
+            '<svg class="sp-logo" viewBox="300 455 1000 790" aria-hidden="true">' +
+            '<path class="sp-d1" pathLength="100" d="M317.7 473H1283.2L1208.6 556L712 557.3L711.5 1227.8L630 1110.2V557H393.1Z"/>' +
+            '<path class="sp-d2" pathLength="100" d="M1197.4 575.2L729.7 576L731 843H982.9L1019.9 803.5L815.8 805L819.3 660.5L1126.9 655.5Z"/>' +
+            '<path class="sp-d3" pathLength="100" d="M730 858H979.1L728.5 1226.2L730.8 1115.2L856.2 900.5L860.4 893.7L731.3 894.9Z"/>' +
+            '</svg>' +
+            '<div class="sp-name">Til<b>Stack</b></div>' +
+            '<p class="sp-tag">Être exceptionnel</p>';
+          d.appendChild(el);
+
+          var done = false;
+          function close() {
+            if (done) return;
+            done = true;
+            el.className = 'out';
+            setTimeout(function () { el.remove(); st.remove(); }, 400);
+          }
+          setTimeout(close, DUREE);
+          el.addEventListener('click', close);
+          document.addEventListener('keydown', close, { once: true });
         } catch (e) {}
       })();
     </script>

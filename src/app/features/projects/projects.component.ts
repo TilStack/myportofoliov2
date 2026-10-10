@@ -1,15 +1,16 @@
 import { NgOptimizedImage } from '@angular/common';
-import { Component, HostListener, inject, signal } from '@angular/core';
+import { Component, HostListener, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { I18nService } from '../../core/services/i18n.service';
-import { Contributor, STATUS_KEY, VISIBLE_PROJECTS, Project } from '../../data/projects.data';
+import { CATEGORY_KEYS, Contributor, STATUS_KEY, VISIBLE_PROJECTS, Project, ProjectCategory } from '../../data/projects.data';
+import { ProjectIconComponent } from '../../shared/components/project-icon/project-icon.component';
 import { responsiveImage } from '../../shared/utils/responsive-image';
 
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [RouterLink, NgOptimizedImage, FadeOnScrollDirective],
+  imports: [RouterLink, NgOptimizedImage, FadeOnScrollDirective, ProjectIconComponent],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss',
 })
@@ -19,6 +20,23 @@ export class ProjectsComponent {
   readonly i18n = inject(I18nService);
   readonly statusKey = STATUS_KEY;
   readonly projects = VISIBLE_PROJECTS;
+
+  /** Filtre actif : toutes les catégories ou une seule. */
+  readonly filter = signal<'all' | ProjectCategory>('all');
+  readonly categoryKeys = CATEGORY_KEYS;
+
+  /** Catégories qui contiennent au moins un projet, dans l'ordre d'affichage, avec leurs projets. */
+  readonly groups = computed(() =>
+    (Object.keys(CATEGORY_KEYS) as ProjectCategory[])
+      .map((cat) => ({ cat, items: this.projects.filter((p) => p.category === cat) }))
+      .filter((g) => g.items.length > 0),
+  );
+
+  /** Groupes affichés selon le filtre. */
+  readonly visibleGroups = computed(() => {
+    const f = this.filter();
+    return f === 'all' ? this.groups() : this.groups().filter((g) => g.cat === f);
+  });
 
   selected = signal<Project | null>(null);
 
@@ -48,6 +66,23 @@ export class ProjectsComponent {
     if ((event.target as HTMLElement).classList.contains('pmodal__backdrop')) {
       this.closeModal();
     }
+  }
+
+  /** Inclinaison légère et déterministe (identique au rendu serveur) : cartes « posées » à la main. */
+  tilt(i: number): string {
+    return ['-1.1deg', '0.8deg', '-0.6deg', '1deg', '-0.9deg', '0.6deg'][i % 6];
+  }
+
+  /** « Depuis mars 2024 » à partir de `startedAt` (AAAA-MM) ; chaîne vide si la date est inconnue. */
+  since(p: Project): string {
+    if (!p.startedAt) return '';
+    const [y, m] = p.startedAt.split('-').map(Number);
+    if (!y || !m) return '';
+    const lang = this.i18n.lang();
+    const month = new Date(Date.UTC(y, m - 1, 1)).toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-GB', {
+      month: 'long', year: 'numeric', timeZone: 'UTC',
+    });
+    return `${this.i18n.t('projects.since')} ${month}`;
   }
 
   desc(p: Project): string {

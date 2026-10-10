@@ -30,6 +30,14 @@ export const EXPERIENCE: CareerEntry[] = [
     current: true,
   },
   {
+    id: 'intac',
+    role: { fr: 'Enseignant en informatique', en: 'IT teacher' },
+    organization: 'Collège INTAC',
+    // TODO(israel): ville du Collège INTAC (champ `place`).
+    period: { fr: 'Depuis septembre 2026', en: 'Since September 2026' },
+    current: true,
+  },
+  {
     id: 'cefti',
     role: { fr: 'Formateur en informatique', en: 'IT trainer' },
     organization: 'CEFTI',

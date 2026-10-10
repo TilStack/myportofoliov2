@@ -3,7 +3,7 @@
 
 // ===== HERO =====
 .hero {
-  position: relative;
+  @include chess-spot(15%, 26%, $navbar-height);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
@@ -24,7 +24,7 @@
       transparent 1px
     );
     background-size: 32px 32px;
-    opacity: 0.5;
+    opacity: 0;  // remplacé par le damier du fond (voir --chess-image)
     pointer-events: none;
   }
 
@@ -264,89 +264,104 @@
   }
 }
 
-// ===== QUOTE CARD =====
-.quote-card {
+// ===== CITATIONS (accueil) : une citation mise en avant + une courte liste =====
+.moodboard {
+  &__layout {
+    display: grid;
+    gap: $space-8;
+    align-items: stretch;
+
+    @include lg { grid-template-columns: 1.25fr 1fr; gap: $space-12; }
+  }
+
+  &__more { margin-top: $space-10; text-align: center; }
+}
+
+.featured-quote {
+  position: relative;
+  margin: 0;
+  padding: $space-10 $space-8 $space-8;
   background: var(--color-card-bg);
   border: 1px solid var(--color-border);
-  border-radius: $radius-xl;
-  padding: $space-6;
-  cursor: pointer;
-  transition:
-    border-color $transition-base,
-    box-shadow $transition-base,
-    transform $transition-base,
-    background $transition-base;
-  position: relative;
-  overflow: hidden;
+  border-radius: $radius-2xl;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @include corner-dots;
+
+  &__label {
+    font-size: $text-xs;
+    font-weight: $font-semibold;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: $space-5;
+  }
 
   &__mark {
     position: absolute;
-    top: $space-4;
-    left: $space-4;
+    top: $space-6;
+    right: $space-6;
     color: $color-accent;
-    opacity: 0.18;
+    opacity: 0.35;
     line-height: 1;
     pointer-events: none;
   }
 
-  &:hover {
-    border-color: $color-accent;
-    box-shadow: var(--shadow-card);
-    transform: translateY(-4px);
-  }
-
-  &.expanded {
-    border-color: $color-accent;
-    background: rgba(255, 222, 89, 0.04);
-  }
-
   &__text {
-    font-style: italic;
-    font-size: $text-base;
+    font-family: $font-display;
+    font-size: clamp($text-2xl, 4vw, $text-4xl);
+    font-weight: $font-bold;
+    line-height: 1.25;
     color: var(--color-text);
-    line-height: 1.7;
-    margin-bottom: $space-3;
-    @include line-clamp(3);
-  }
-
-  &.expanded &__text {
-    -webkit-line-clamp: unset;
-    display: block;
+    margin: 0 0 $space-6;
   }
 
   &__author {
     font-size: $text-sm;
     font-weight: $font-semibold;
-    color: var(--color-accent-text);
-    display: block;
-    margin-bottom: $space-3;
+    color: var(--color-text-muted);
+
+    &::before { content: '— '; }
+  }
+}
+
+.quote-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: $space-6;
+
+  // barre jaune à DROITE de chaque citation
+  &__item {
+    padding-right: $space-5;
+    border-right: 3px solid $color-accent;
   }
 
-  &__explanation {
+  &__text {
+    margin: 0 0 $space-2;
+    font-size: $text-lg;
+    line-height: 1.55;
+    color: var(--color-text);
+    @include line-clamp(3);
+  }
+
+  &__author {
     font-size: $text-sm;
+    font-style: normal;
     color: var(--color-text-muted);
-    line-height: 1.7;
-    margin-top: $space-3;
-    padding-top: $space-3;
-    border-top: 1px solid var(--color-border);
-    animation: fadeInUp 300ms both;
-  }
-
-  &__hint {
-    display: block;
-    font-size: $text-xs;
-    color: var(--color-text-muted);
-    opacity: 0.6;
-    margin-top: $space-2;
-    text-align: right;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
   }
 }
 
 // ===== PAGE PREVIEWS =====
 .discover {
   background: var(--color-surface);
+  @include chess-spot(100%, 28%);
 
   &__header {
     margin-bottom: $space-12;
@@ -370,7 +385,7 @@
   display: flex;
   flex-direction: column;
   background: var(--color-card-bg);
-  border: 1px solid var(--color-border);
+  border: 2px solid var(--color-border);
   border-radius: $radius-2xl;
   overflow: hidden;
   transition:
@@ -380,14 +395,17 @@
   text-decoration: none;
   color: inherit;
 
-  &:hover {
-    border-color: $color-accent;
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-card);
+  &:hover,
+  &:focus-visible {
+    border-color: $color-primary;
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 $color-primary;
+
+    [data-theme='dark'] & { border-color: $color-accent; box-shadow: 6px 6px 0 $color-accent; }
 
     .page-card__link {
       gap: $space-2;
-      color: $color-accent;
+      color: var(--color-accent-text);
     }
     .page-card__visual {
       filter: brightness(1.08);
@@ -405,9 +423,9 @@
     transition: filter $transition-base;
 
     &.pv--about   { background: #0d0d1a; }
-    &.pv--projects { background: #0a1628; }
-    &.pv--blog    { background: #1a0533; }
-    &.pv--quotes  { background: #0e1e35; }
+    &.pv--projects,
+    &.pv--blog,
+    &.pv--quotes  { background: var(--color-surface); }
     &.pv--contact { background: #0a2e1a; }
   }
 
@@ -433,15 +451,9 @@
     &.pco--about {
       background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.05) 60%);
     }
-    &.pco--projects {
-      background: linear-gradient(135deg, #0a1628 0%, #0f3460 100%);
-    }
-    &.pco--blog {
-      background: linear-gradient(135deg, #1a0533 0%, #2d0b55 100%);
-    }
-    &.pco--quotes {
-      background: linear-gradient(135deg, #0e1e35 0%, #1a3a5c 100%);
-    }
+    &.pco--projects,
+    &.pco--blog,
+    &.pco--quotes { display: none; }
   }
 
   // ── About card: identity badges ──
@@ -472,73 +484,72 @@
   }
 }
 
-// ── Projects card: code snippet visual ──
-.page-card__cover-code {
+// ── Projects card: vrais projets ──
+.page-card__cover-projects {
   position: relative;
   z-index: 2;
-  font-family: 'Courier New', monospace;
-  font-size: $text-xs;
-  line-height: 1.9;
-  color: rgba(255,255,255,0.75);
-  padding: $space-4;
+  list-style: none;
   width: 100%;
-
-  em {
-    font-style: normal;
-    color: $color-accent;
-    font-weight: $font-semibold;
-  }
+  padding: $space-10 $space-5 $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
-.pcc__line { display: block; &--dim { opacity: 0.4; font-size: 0.7rem; } }
-.pcc__cursor {
-  display: inline-block;
+.pcp__row {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: 4px $space-3;
+  border-radius: $radius-md;
+  background: var(--color-card-bg);
+  color: var(--color-text);
+  font-size: $text-sm;
+  box-shadow: 0 1px 3px rgba(20, 33, 61, 0.08);
+}
+.pcp__dot {
   width: 8px;
-  height: 14px;
+  height: 8px;
+  border-radius: 50%;
   background: $color-accent;
-  border-radius: 1px;
-  animation: cursorBlink 1.1s step-end infinite;
-  vertical-align: text-bottom;
+  flex-shrink: 0;
+  &--done { background: #4ade80; }
 }
+.pcp__name { font-weight: $font-semibold; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pcp__tech { font-size: $text-xs; color: var(--color-text-muted); }
 
-// ── Blog card: article preview visual ──
+// ── Blog card: sujets réels ──
 .page-card__cover-article {
   position: relative;
   z-index: 2;
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: $space-2;
-  padding: $space-4;
+  gap: $space-3;
+  padding: $space-10 $space-5 $space-4;
 }
-.pca__header { display: flex; gap: $space-2; }
+.pca__label {
+  font-size: $text-xs;
+  font-weight: $font-semibold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+.pca__tags { display: flex; flex-wrap: wrap; gap: $space-2; }
 .pca__pill {
-  padding: 2px 8px;
+  padding: 4px 12px;
   border-radius: $radius-full;
-  font-size: 0.65rem;
+  font-size: $text-xs;
   font-weight: $font-bold;
-  background: rgba(255,222,89,0.25);
-  color: $color-accent;
-  border: 1px solid rgba(255,222,89,0.35);
-  &--dim { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); border-color: transparent; }
-}
-.pca__title {
-  height: 10px;
-  background: rgba(255,255,255,0.85);
-  border-radius: $radius-full;
-  width: 75%;
-}
-.pca__row {
-  height: 7px;
-  background: rgba(255,255,255,0.2);
-  border-radius: $radius-full;
+  background: var(--tag-bg);
+  color: var(--color-text);
 }
 
-// ── Quotes card: big quote visual ──
+// ── Quotes card: une vraie citation ──
 .page-card__cover-quote {
   position: relative;
   z-index: 2;
-  width: 90%;
-  padding: $space-4;
+  width: 100%;
+  padding: $space-10 $space-5 $space-5;
   display: flex;
   flex-direction: column;
   gap: $space-2;
@@ -546,25 +557,35 @@
 .pcq__mark {
   display: block;
   color: $color-accent;
-  opacity: 0.7;
+  opacity: 0.8;
 }
-.pcq__lines {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  span {
-    height: 7px;
-    background: rgba(255,255,255,0.18);
-    border-radius: $radius-full;
-    display: block;
-  }
+.pcq__text {
+  font-family: $font-display;
+  font-size: $text-xl;
+  font-weight: $font-bold;
+  line-height: 1.3;
+  color: var(--color-text);
+  @include line-clamp(3);
 }
 .pcq__author {
-  margin-top: $space-1;
-  height: 6px;
-  width: 40%;
-  background: rgba(255,222,89,0.4);
+  font-size: $text-xs;
+  font-weight: $font-medium;
+  color: var(--color-text-muted);
+}
+
+// ── Numéro de la carte ──
+.page-card__index {
+  position: absolute;
+  top: $space-3;
+  left: $space-3;
+  z-index: 3;
+  padding: 2px 8px;
   border-radius: $radius-full;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: $text-xs;
+  font-weight: $font-bold;
+  color: $color-primary;
+  background: $color-accent;
 }
 
 @keyframes cursorBlink {
@@ -585,7 +606,7 @@
   font-weight: $font-bold;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: $color-accent;
+  color: var(--color-accent-text);
   margin-bottom: $space-2;
 }
 

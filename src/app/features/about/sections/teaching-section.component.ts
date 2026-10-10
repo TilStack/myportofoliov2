@@ -1,5 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
 import { I18nService } from '../../../core/services/i18n.service';
+import { FadeOnScrollDirective } from '../../../shared/directives/fade-on-scroll.directive';
 import { PRODUCTS } from '../../../data/products.data';
 import { INTERVENTIONS, TEACHING } from '../../../data/teaching.data';
 
@@ -10,6 +11,7 @@ import { INTERVENTIONS, TEACHING } from '../../../data/teaching.data';
 @Component({
   selector: 'app-teaching-section',
   standalone: true,
+  imports: [FadeOnScrollDirective],
   templateUrl: './teaching-section.component.html',
   styleUrl: './teaching-section.component.scss',
 })

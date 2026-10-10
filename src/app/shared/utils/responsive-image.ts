@@ -42,7 +42,8 @@ export function imageLoader({ src, width }: ImageLoaderConfig): string {
 export function responsiveImage(src: string): ResponsiveImage {
   const key = normalize(src);
   const info = IMAGE_MANIFEST[key];
-  if (!info) return { src: key, width: FALLBACK.w, height: FALLBACK.h, srcset: '', srcsetUrls: '' };
+  // Hors manifeste (SVG de substitution…) : `NgOptimizedImage` refuse un `ngSrcset` vide, d'où le descripteur unique.
+  if (!info) return { src: key, width: FALLBACK.w, height: FALLBACK.h, srcset: `${FALLBACK.w}w`, srcsetUrls: '' };
   const multiple = info.widths.length > 1;
   return {
     src: key,

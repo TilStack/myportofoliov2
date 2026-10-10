@@ -47,11 +47,21 @@
     border-radius: $radius-full;
     font-size: $text-xs;
     font-weight: $font-semibold;
-    background: rgba(0, 0, 0, 0.55);
-    color: $color-accent;
-    backdrop-filter: blur(4px);
+    background: rgba(255, 255, 255, 0.92);
+    color: $color-primary;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
 
-    &--done { color: #86efac; }
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 6px;
+      border-radius: 50%;
+      background: #f59e0b;
+    }
+
+    &--done::before { background: #22c55e; }
   }
 
   &__body {

@@ -27,7 +27,7 @@ import { Price, discountPercent, formatPrice } from '../../../data/products.data
     .price__now { font-family: var(--font-display, 'Poppins', sans-serif); font-size: var(--price-size, 1.5rem); font-weight: 700; color: var(--color-text); }
     .price__old { color: var(--color-text-muted); font-size: 1rem; }
     .price__badge {
-      padding: 0.125rem 0.5rem; border-radius: 9999px; background: #14213d; color: #ffde59;
+      padding: 0.125rem 0.5rem; border-radius: 9999px; background: rgba(34, 197, 94, 0.14); color: #166534;
       font-size: 0.75rem; font-weight: 700;
     }
   `,

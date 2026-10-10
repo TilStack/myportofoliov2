@@ -10,6 +10,7 @@
   padding-top: $navbar-height;
 
   &__header {
+    @include chess-spot(0%, 30%);
     padding-block: $space-16 $space-12;
     border-bottom: 1px solid var(--color-border);
   }
@@ -46,16 +47,56 @@
 }
 
 // =====================================================
+// CATÉGORIES
+// =====================================================
+.cat-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin-bottom: $space-10;
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-2 $space-4;
+    border-radius: $radius-full;
+    background: var(--tag-bg);
+    color: var(--color-text);
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    transition: background $transition-fast, color $transition-fast;
+
+    &:hover { background: color-mix(in srgb, var(--color-accent) 40%, transparent); }
+    &.is-active { background: var(--color-accent); color: $color-primary; }
+  }
+
+  &__n { font-size: $text-xs; opacity: 0.7; }
+}
+
+.projects-group {
+  & + & { margin-top: $space-16; }
+
+  &__title {
+    margin: 0 0 $space-8;
+    font-family: $font-display;
+    font-size: $text-2xl;
+    font-weight: $font-bold;
+    color: var(--color-text);
+  }
+}
+
+// =====================================================
 // GRID
 // =====================================================
 .projects-grid {
   list-style: none;
   display: grid;
-  gap: $space-2;
+  gap: $space-6;
   grid-template-columns: 1fr;
 
-  @include sm { grid-template-columns: repeat(2, 1fr); gap: $space-4; }
-  @include lg { grid-template-columns: repeat(3, 1fr); gap: $space-6; }
+  @include sm { grid-template-columns: repeat(2, 1fr); gap: $space-8; }
+  @include lg { grid-template-columns: repeat(3, 1fr); gap: $space-10 $space-8; }
 }
 
 // =====================================================
@@ -66,10 +107,69 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: $space-6;
+  padding: $space-8 $space-6 $space-6;
+  margin-top: $space-4; // place pour l'épingle
   border-radius: $radius-xl;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 6px 14px -8px rgba(20, 33, 61, 0.18);
   cursor: pointer;
   outline: none;
+  rotate: var(--tilt, 0deg); // propriété `rotate` : indépendante du `transform` de l'animation d'entrée
+  transition: rotate $transition-base $ease-out-cubic, transform $transition-base $ease-out-cubic, box-shadow $transition-base $ease-out-cubic;
+
+  @media (prefers-reduced-motion: reduce) {
+    rotate: none;
+    transition: none;
+  }
+
+  &:hover {
+    rotate: 0deg;
+    transform: translateY(-4px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 16px 28px -12px rgba(20, 33, 61, 0.3);
+  }
+
+  // ── épingle ──
+  &__pin {
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    z-index: 2;
+    margin-left: -13px;
+    pointer-events: none;
+    overflow: visible;
+    transform: rotate(calc(var(--tilt, 0deg) * -1.5));
+  }
+  &__pin-needle  { stroke: #8a8f99; stroke-width: 2; stroke-linecap: round; fill: none; }
+  &__pin-head    { fill: $color-accent; stroke: $color-primary; stroke-width: 2; }
+  &__pin-shine   { stroke: rgba(255, 255, 255, 0.9); stroke-width: 2; stroke-linecap: round; fill: none; }
+  &__pin-shadow  { fill: rgba(0, 0, 0, 0.16); }
+
+  // ── ligne icône + date ──
+  &__top {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $space-3;
+    margin-bottom: $space-5;
+  }
+
+  &__since {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px $space-2;
+    font-size: $text-xs;
+    font-weight: $font-medium;
+    color: var(--color-text-muted);
+    border: 1px dashed var(--color-border);
+    border-radius: $radius-sm;
+    transform: rotate(1.2deg);
+    white-space: nowrap;
+  }
 
   &:focus-visible { box-shadow: 0 0 0 3px $color-accent; }
 
@@ -89,22 +189,23 @@
 
   &:hover &__hover-bg { opacity: 1; transform: scale(1); }
 
-  // ── icon badge ──
+  // ── icon badge (croquis dans un cadre de papier) ──
   &__icon {
     position: relative;
     z-index: 1;
-    width: 48px;
-    height: 48px;
+    width: 56px;
+    height: 56px;
     border-radius: $radius-lg;
-    background: $color-primary;
+    background: var(--color-surface);
+    border: 1.5px solid $color-primary;
+    color: $color-primary;
     @include flex-center;
-    font-size: 1.375rem;
-    margin-bottom: $space-5;
     flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba($color-primary, 0.25);
+    transform: rotate(-3deg);
 
     [data-theme='dark'] & {
-      background: color.adjust($color-primary, $lightness: 6%);
+      border-color: $color-accent;
+      color: #f3f4f6;
     }
   }
 
@@ -368,7 +469,7 @@
   }
 
   &__hero-icon {
-    font-size: 4rem;
+    color: #fff;
     line-height: 1;
     filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.4));
     position: relative;

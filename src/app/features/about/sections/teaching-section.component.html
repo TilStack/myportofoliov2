@@ -3,20 +3,55 @@
     <h2 id="teaching-title" class="section__title">{{ i18n.t('about.teachingTitle') }}</h2>
     <p class="section__subtitle">{{ i18n.t('about.teachingSub') }}</p>
 
-    <div class="teaching__grid">
-      <article class="tcard">
-        <h3 class="tcard__title">{{ teaching.organization }}, {{ teaching.place }}</h3>
-        <p class="tcard__meta">{{ tr(teaching.since) }} · {{ i18n.t('about.teachingProgramme') }} {{ teaching.programme }}</p>
-        <ul class="tcard__list">
-          @for (s of teaching.subjects; track s.fr) { <li>{{ tr(s) }}</li> }
-        </ul>
-        <p class="tcard__extra">{{ tr(teaching.supervision.label) }} ({{ teaching.supervision.scheme }})</p>
-      </article>
+    <!-- Établissements : la salle de cours (INTAC) + l'essentiel en pastilles -->
+    <div class="teaching__main">
+      <figure class="shot shot--class fade-up" appFadeOnScroll>
+        <img src="images/teaching/intac-classe.webp" width="1200" height="675" loading="lazy" decoding="async"
+             [alt]="i18n.t('about.teachingAltClass')" />
+        <figcaption class="shot__tag">{{ teaching.schools[0].name }} · {{ tr(teaching.schools[0].since) }}</figcaption>
+      </figure>
 
-      <article class="tcard">
-        <h3 class="tcard__title">{{ teaching.createdCourse.name }}</h3>
-        <p class="tcard__meta">{{ i18n.t('about.teachingCourseMeta') }}</p>
-        <p class="tcard__extra">{{ i18n.t('about.teachingCourseText') }}</p>
+      <div class="school fade-up" appFadeOnScroll [delay]="100">
+        <ul class="school__list" role="list">
+          @for (sc of teaching.schools; track sc.id) {
+            <li class="school__item">
+              <span class="school__logo">
+                @if (sc.logo) {
+                  <img [src]="sc.logo" width="240" height="240" loading="lazy" decoding="async" [alt]="'Logo ' + sc.name" />
+                } @else {
+                  <span class="school__initials" aria-hidden="true">{{ sc.initials }}</span>
+                }
+              </span>
+              <div>
+                <h3 class="school__name">{{ sc.name }}</h3>
+                <p class="school__since">{{ tr(sc.since) }}</p>
+              </div>
+            </li>
+          }
+        </ul>
+
+        <ul class="chips" role="list">
+          @for (s of teaching.subjects; track s.fr) { <li class="chip">{{ tr(s) }}</li> }
+        </ul>
+        <ul class="chips chips--soft" role="list">
+          <li class="chip">{{ teaching.programme }}</li>
+          <li class="chip">{{ tr(teaching.supervision.label) }} · {{ teaching.supervision.scheme }}</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- L'équipe -->
+    <figure class="shot shot--team fade-up" appFadeOnScroll>
+      <img src="images/teaching/cefti-equipe.webp" width="1400" height="1050" loading="lazy" decoding="async"
+           [alt]="i18n.t('about.teachingAltTeam')" />
+      <figcaption class="shot__tag">{{ i18n.t('about.teachingTeam') }}</figcaption>
+    </figure>
+
+    <!-- Prof 2.0 + partage -->
+    <div class="teaching__row">
+      <article class="mini fade-up" appFadeOnScroll>
+        <p class="mini__label">{{ i18n.t('about.teachingCourseMeta') }}</p>
+        <h3 class="mini__title">{{ teaching.createdCourse.name }}</h3>
         @if (courseUrl(); as url) {
           <a class="cta cta--outline" [href]="url" target="_blank" rel="noopener">
             {{ i18n.t('about.teachingCourseCta') }} <span aria-hidden="true">↗</span>
@@ -24,22 +59,20 @@
         }
       </article>
 
-      <!-- Partage : anciennement « The Educator Role », fusionné ici (sans les statistiques faibles). -->
-      <article class="tcard">
-        <h3 class="tcard__title">{{ i18n.t('about.educatorTitle') }}</h3>
-        <p class="tcard__extra">{{ i18n.t('about.educatorDesc') }}</p>
-        <ul class="tcard__list">
-          <li>{{ i18n.t('about.educatorItem1') }}</li>
-          <li>{{ i18n.t('about.educatorItem2') }}</li>
-          <li>{{ i18n.t('about.educatorItem3') }}</li>
+      <article class="mini fade-up" appFadeOnScroll [delay]="100">
+        <p class="mini__label">{{ i18n.t('about.educatorEyebrow') }}</p>
+        <ul class="chips" role="list">
+          <li class="chip">{{ i18n.t('about.educatorChip1') }}</li>
+          <li class="chip">{{ i18n.t('about.educatorChip2') }}</li>
+          <li class="chip">{{ i18n.t('about.educatorChip3') }}</li>
         </ul>
       </article>
     </div>
 
     @if (interventions.length) {
       <div class="teaching__interventions">
-        <h3 class="tcard__title">{{ i18n.t('about.interventionsTitle') }}</h3>
-        <ul class="tcard__list tcard__list--plain">
+        <h3 class="mini__title">{{ i18n.t('about.interventionsTitle') }}</h3>
+        <ul class="list-plain" role="list">
           @for (i of interventions; track i.id) {
             <li>
               @if (i.url) {

@@ -29,9 +29,20 @@
 export const MONTAGE_PHOTOS = [
   { file: '', caption: 'Yaoundé' }, // P1 — grande colonne gauche
   { file: '', caption: 'Buea' }, // P2 — haut milieu
-  { file: '', caption: 'Douala' }, // P3 — haut droite
-  { file: '', caption: 'Kribi' }, // P4 — bas milieu
-  { file: '', caption: 'Limbé' }, // P5 — grande colonne droite
+  { file: 'images/montage/douala.webp', caption: 'Douala' }, // P3 — haut droite (Commons, voir MONTAGE_CREDITS)
+  { file: 'images/montage/kribi.webp', caption: 'Kribi' }, // P4 — bas milieu
+  { file: 'images/montage/limbe.webp', caption: 'Limbé' }, // P5 — grande colonne droite
+];
+
+/**
+ * Crédits des photos de Douala, Kribi et Limbé : photos libres (CC BY-SA 4.0) de Wikimedia Commons, pas de moi.
+ * L'attribution est obligatoire : elle est affichée sous la grille. Pour les remplacer par tes propres photos,
+ * change `file` ci-dessus et retire l'entrée correspondante ici.
+ */
+export const MONTAGE_CREDITS: { place: string; author: string; url: string }[] = [
+  { place: 'Douala', author: 'Minette Lontsie', url: 'https://commons.wikimedia.org/wiki/File:Bonanjo_douala.jpg' },
+  { place: 'Kribi', author: 'Sid Mbog', url: 'https://commons.wikimedia.org/wiki/File:Plage_de_kribi_(3).jpg' },
+  { place: 'Limbé', author: 'Eric Joel MAMA NKE', url: 'https://commons.wikimedia.org/wiki/File:Down_Beach_Limbe_vue_a%C3%A9rienne_-_Ndongere_-_R%C3%A9gion_du_Sud-Ouest_-_Cameroun.jpg' },
 ];
 // Exemple une fois les photos ajoutées :
 //   { file: 'images/montage/photo-1.jpg', caption: 'Yaoundé' },

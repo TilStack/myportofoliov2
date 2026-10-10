@@ -93,9 +93,4 @@ export const PROJECT_OFFERS: Record<string, ProjectOffer[]> = {
       price: { amount: 54000, currency: 'XAF', updatedAt: UPDATED } },
     // TODO(israel): URL d'achat des abonnements Otadex (champ `url` de chaque offre).
   ],
-  'sela-cantique': [
-    { id: 'sela-cantique-don', name: 'Don libre', kind: 'donation', isMinimum: true,
-      price: { amount: 600, currency: 'XAF', updatedAt: UPDATED } },
-    // TODO(israel): URL de la page de don Séla Cantique (champ `url`).
-  ],
 };

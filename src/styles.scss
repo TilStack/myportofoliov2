@@ -47,6 +47,13 @@ $latin: 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, 
   --shadow-card:        #{$shadow-md};
   // Accent used as TEXT — dark in light mode (readable), yellow in dark mode
   --color-accent-text:  #{$color-primary};
+  // Fond en damier (échiquier) très discret : une teinte translucide, donc valable sur tous les fonds.
+  // Pour le régler : changer l'opacité de `--chess-tint` ; pour le retirer : `--chess-image: none`.
+  // Étiquettes discrètes (statuts, liens courts) : teinte neutre, sans bordure ni fond sombre
+  --tag-bg:             rgba(20, 33, 61, 0.07);
+  --chess-tint:         rgba(20, 33, 61, 0.045);
+  --chess-size:         88px; // 2 × 2 cases de 44 px
+  --chess-image:        conic-gradient(var(--chess-tint) 25%, transparent 0 50%, var(--chess-tint) 0 75%, transparent 0);
 }
 
 // ============================================================
@@ -63,7 +70,30 @@ $latin: 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, 
   --shadow-card:        0 4px 16px rgba(0,0,0,0.4);
   // Yellow accent text is readable on dark backgrounds
   --color-accent-text:  #{$color-accent};
+  --tag-bg:             rgba(255, 255, 255, 0.1);
+  --chess-tint:         rgba(255, 255, 255, 0.06);
 }
+
+// ============================================================
+// DAMIER SOUS LE CURSEUR
+// Couche fixe derrière tout le contenu (z-index -1) : visible sur le fond de page, jamais par-dessus un texte
+// ni une carte. Les variables --mx/--my sont mises à jour par ChessSpotlightService ; `chess-live` est posé
+// pendant que le curseur bouge, puis retiré (fondu) quand il s'arrête.
+// ============================================================
+body::before {
+  content: '';
+  position: fixed;
+  inset: $navbar-height 0 0 0; // sous la barre de menu : elle reste intacte
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--chess-image);
+  background-size: var(--chess-size) var(--chess-size);
+  -webkit-mask-image: radial-gradient(circle 110px at var(--mx, 50%) var(--my, 50%), #000 0, transparent 100%);
+  mask-image: radial-gradient(circle 110px at var(--mx, 50%) var(--my, 50%), #000 0, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+html.chess-live body::before { opacity: 1; }
 
 // ============================================================
 // UTILITY CLASSES

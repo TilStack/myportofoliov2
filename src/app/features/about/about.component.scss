@@ -6,6 +6,7 @@ $accent: $color-accent;
 
 // ===== ABOUT HERO =====
 .about-hero {
+  @include chess-spot(0%, 30%, $navbar-height);
   padding-top: calc(#{$navbar-height} + #{$space-8});
   padding-bottom: $space-12;
 
@@ -210,58 +211,64 @@ $accent: $color-accent;
 // ===== SKILLS =====
 .skills-section {
   background: var(--color-surface);
+  @include chess-spot(100%, 28%);
   &__header { margin-bottom: $space-10; }
 }
 
-// ── Categories grid ──────────────────────────────────────────────
-.skills-categories-grid {
-  display: grid;
-  gap: $space-4;
-  grid-template-columns: 1fr;
-  @include sm { grid-template-columns: repeat(2, 1fr); }
-  @include lg { grid-template-columns: repeat(3, 1fr); }
-}
+// ── Mon Stack : couches empilées, lignes fines et tons gris ─────────────────────
+.stack {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--color-border);
 
-// ── Category card ─────────────────────────────────────────────────
-.skills-category {
-  padding: $space-5 $space-6;
-  background: var(--color-card-bg);
-  border: 1px solid var(--color-border);
-  border-radius: $radius-xl;
-  transition: border-color $transition-base, box-shadow $transition-base;
+  &__row {
+    display: grid;
+    gap: $space-3 $space-8;
+    padding: $space-6 $space-3;
+    border-bottom: 1px solid var(--color-border);
+    transition: background $transition-base;
 
-  &:hover {
-    border-color: var(--color-accent);
-    box-shadow: var(--shadow-card);
+    @include md { grid-template-columns: minmax(200px, 260px) 1fr; align-items: center; }
+
+    &:hover { background: var(--tag-bg); }
   }
 
-  &__header {
-    display: flex;
-    align-items: center;
-    gap: $space-2;
-    margin-bottom: $space-4;
-    padding-bottom: $space-3;
-    border-bottom: 1px solid var(--color-border);
+  &__head { display: flex; align-items: center; gap: $space-4; }
+
+  &__index {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: $text-xs;
+    font-weight: $font-bold;
+    color: var(--color-text-muted);
+    min-width: 1.6rem;
   }
 
   &__icon {
-    font-size: $text-xl;
-    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: $radius-lg;
+    background: var(--tag-bg);
+    color: var(--color-text);
+    flex-shrink: 0;
   }
 
   &__label {
-    font-size: $text-sm;
+    margin: 0;
+    font-family: $font-display;
+    font-size: $text-lg;
     font-weight: $font-bold;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    color: var(--color-text);
+  }
+
+  &__secondary {
+    margin: $space-3 0 0;
+    font-size: $text-sm;
     color: var(--color-text-muted);
   }
-}
-
-.skills-category__secondary {
-  margin: $space-3 0 0;
-  font-size: $text-sm;
-  color: var(--color-text-muted);
 }
 
 .skills-section__multimedia {
@@ -270,34 +277,83 @@ $accent: $color-accent;
   color: var(--color-text-muted);
 }
 
-.skills-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: $space-2;
+// Pastille de technologie : logo (masque coloré) + nom, sans bordure
+.tech-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: $space-3;
+  grid-template-columns: repeat(auto-fill, minmax(172px, 1fr));
+
+  &--secondary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $space-2;
+    margin-top: $space-4;
+  }
+
+  &__also {
+    font-size: $text-xs;
+    font-weight: $font-semibold;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-right: $space-1;
+  }
 }
 
-.skill-tag {
-  padding: $space-2 $space-4;
-  background: var(--color-card-bg);
-  border: 1px solid var(--color-border);
-  border-radius: $radius-full;
-  font-size: $text-sm;
-  font-weight: $font-medium;
-  color: var(--color-text);
-  cursor: default;
-  transition:
-    border-color  0.2s ease,
-    background    0.2s ease,
-    color         0.2s ease,
-    transform     0.2s ease,
-    box-shadow    0.2s ease;
+.tech {
+  --tint: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-3 $space-4;
+  background: var(--tag-bg);
+  border-radius: $radius-lg;
+  transition: background 0.2s ease, transform 0.2s ease;
 
   &:hover {
-    border-color: var(--brand, $color-accent);
-    background:   color-mix(in srgb, var(--brand, $color-accent) 12%, transparent);
-    color:        var(--brand, var(--color-text));
-    transform:    translateY(-3px);
-    box-shadow:   0 4px 12px color-mix(in srgb, var(--brand, $color-accent) 30%, transparent);
+    background: color-mix(in srgb, var(--tint) 16%, transparent);
+    transform: translateY(-2px);
+  }
+
+  &__logo {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    background-color: var(--tint);
+    -webkit-mask: var(--logo) center / contain no-repeat;
+    mask: var(--logo) center / contain no-repeat;
+
+    // pas de logo : trois lettres en pastille
+    &--text {
+      -webkit-mask: none;
+      mask: none;
+      background: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: $text-xs;
+      font-weight: $font-bold;
+      color: var(--color-text-muted);
+    }
+  }
+
+  &__name {
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    color: var(--color-text);
+  }
+
+  &--small {
+    padding: $space-1 $space-3;
+    gap: $space-2;
+
+    .tech__logo { width: 16px; height: 16px; }
+    .tech__name { font-size: $text-xs; font-weight: $font-medium; }
   }
 }
 
@@ -308,16 +364,23 @@ $accent: $color-accent;
   }
 
   &__eyebrow {
-    display: inline-block;
-    padding: $space-1 $space-3;
-    background: $color-primary;
-    color: $accent;
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    color: var(--color-text-muted);
     font-size: $text-xs;
-    font-weight: $font-bold;
-    border-radius: $radius-full;
+    font-weight: $font-semibold;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     margin-bottom: $space-3;
+
+    &::before {
+      content: '';
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: $color-accent;
+    }
   }
 }
 
@@ -636,12 +699,13 @@ $accent: $color-accent;
 .involvement-grid {
   display: grid;
   gap: $space-4;
-  grid-template-columns: 1fr;
-  @include sm { grid-template-columns: repeat(2, 1fr); }
-  @include lg { grid-template-columns: repeat(4, 1fr); }
+  grid-template-columns: minmax(0, 1fr);
+  @include sm { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @include lg { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
 .involvement-card {
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: $space-4;
@@ -712,9 +776,8 @@ $accent: $color-accent;
   &__desc {
     font-size: $text-xs;
     color: var(--color-text-muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    line-height: 1.4;
+    @include line-clamp(2);
   }
 
   &__arrow {
@@ -883,6 +946,12 @@ $accent: $color-accent;
   &__header { margin-bottom: $space-10; }
 }
 
+.other-roles-section__note {
+  margin-top: $space-6;
+  font-size: $text-xs;
+  color: var(--color-text-muted);
+}
+
 .other-roles-grid {
   display: grid;
   gap: $space-6;
@@ -891,27 +960,52 @@ $accent: $color-accent;
 }
 
 .role-card {
-  padding: $space-8;
+  padding: $space-6;
   background: var(--color-card-bg);
   border: 1px solid var(--color-border);
   border-radius: $radius-2xl;
   display: flex;
   flex-direction: column;
   gap: $space-3;
-  transition: border-color $transition-base, transform $transition-base;
+  transition: transform $transition-base, box-shadow $transition-base;
 
   &:hover {
-    border-color: $color-accent;
-    transform: translateY(-3px);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card);
   }
 
-  &__icon-wrap {
-    font-size: 2.25rem;
-    line-height: 1;
+  &__top {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
     margin-bottom: $space-2;
   }
 
+  &__icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: $radius-lg;
+    background: var(--tag-bg);
+    color: var(--color-text);
+    flex-shrink: 0;
+  }
+
+  &__org {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    font-size: $text-xs;
+    font-weight: $font-semibold;
+    color: var(--color-text);
+    line-height: 1.35;
+  }
+  &__place { font-weight: $font-normal; color: var(--color-text-muted); }
+
   &__title {
+    margin: 0;
     font-family: $font-display;
     font-size: $text-xl;
     font-weight: $font-bold;
@@ -919,32 +1013,66 @@ $accent: $color-accent;
   }
 
   &__desc {
+    margin: 0;
     font-size: $text-sm;
     color: var(--color-text-muted);
-    line-height: 1.75;
+    line-height: 1.7;
     flex: 1;
+  }
+
+  &__stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-6;
+    margin: $space-2 0 0;
+    padding-top: $space-4;
+    border-top: 1px solid var(--color-border);
+  }
+  &__stat {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 2px;
+
+    dt { font-size: $text-xs; color: var(--color-text-muted); }
+    dd {
+      margin: 0;
+      font-family: $font-display;
+      font-size: $text-2xl;
+      font-weight: $font-bold;
+      color: var(--color-text);
+      line-height: 1.1;
+    }
   }
 
   &__links {
     display: flex;
     flex-wrap: wrap;
     gap: $space-2;
-    margin-top: $space-1;
+    margin-top: $space-2;
   }
 
   &__link {
     display: inline-flex;
     align-items: center;
+    gap: 6px;
     padding: $space-1 $space-3;
-    background: $color-primary;
-    color: $color-accent;
+    background: var(--tag-bg);
+    color: var(--color-text);
     font-size: $text-xs;
     font-weight: $font-semibold;
     border-radius: $radius-full;
     text-decoration: none;
     transition: background $transition-fast;
 
-    &:hover { background: color.adjust($color-primary, $lightness: 8%); }
+    &:hover { background: color-mix(in srgb, var(--color-accent) 45%, transparent); }
+  }
+
+  &__logo {
+    width: 14px;
+    height: 14px;
+    background-color: currentColor;
+    -webkit-mask: var(--logo) center / contain no-repeat;
+    mask: var(--logo) center / contain no-repeat;
   }
 }
 

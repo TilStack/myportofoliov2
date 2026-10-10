@@ -111,3 +111,46 @@
   0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+
+// Damier d'ambiance (voir --chess-* dans styles.scss) : deux taches de damier, une sur chaque bord (la gauche plus petite), qui
+// s'estompent vers le centre pour laisser le contenu libre. `$y` = hauteur d'ancrage (0% haut, 100% bas),
+// `$reach` = étendue de la tache de droite en largeur ; celle de gauche est plus petite (60 %).
+@mixin chess-spot($y: 0%, $reach: 30%, $top: 0px) {
+  position: relative;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: $top 0 0 0; // `$top` = hauteur de la barre de menu pour les sections qui démarrent sous elle
+    z-index: -1;
+    pointer-events: none;
+    background-image: var(--chess-image);
+    background-size: var(--chess-size) var(--chess-size);
+    -webkit-mask-image:
+      radial-gradient(ellipse calc(#{$reach} * 0.6) 80% at 0% #{$y}, #000 0, transparent 100%),
+      radial-gradient(ellipse #{$reach} 90% at 100% #{$y}, #000 0, transparent 100%);
+    mask-image:
+      radial-gradient(ellipse calc(#{$reach} * 0.6) 80% at 0% #{$y}, #000 0, transparent 100%),
+      radial-gradient(ellipse #{$reach} 90% at 100% #{$y}, #000 0, transparent 100%);
+  }
+}
+
+// Repère de carte : un gros point jaune dans le coin haut gauche et un autre dans le coin bas droit, à l'intérieur
+// de la case (`$inset` = distance au bord). Remplace les barres jaunes latérales.
+@mixin corner-dots($size: 14px, $inset: 12px) {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    width: $size;
+    height: $size;
+    border-radius: 50%;
+    background: var(--color-accent);
+    pointer-events: none;
+  }
+  &::before { top: $inset; left: $inset; }
+  &::after  { bottom: $inset; right: $inset; }
+}

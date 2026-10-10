@@ -1,11 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { I18nService } from '../../../core/services/i18n.service';
+import { FadeOnScrollDirective } from '../../../shared/directives/fade-on-scroll.directive';
 import { EDUCATION, EXPERIENCE, LANGUAGES } from '../../../data/career.data';
 
 /** Parcours : expériences, formations, langues (données : career.data.ts). */
 @Component({
   selector: 'app-career-section',
   standalone: true,
+  imports: [FadeOnScrollDirective],
   templateUrl: './career-section.component.html',
   styleUrl: './career-section.component.scss',
 })

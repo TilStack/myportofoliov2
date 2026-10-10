@@ -7,6 +7,7 @@ import { FooterComponent } from './layout/footer/footer.component';
 import { BackToTopComponent } from './shared/components/back-to-top/back-to-top.component';
 import { ThemeService } from './core/services/theme.service';
 import { ScrollAnimationService } from './core/services/scroll-animation.service';
+import { ChessSpotlightService } from './core/services/chess-spotlight.service';
 
 @Component({
   selector: 'app-root',
@@ -21,9 +22,12 @@ export class App implements OnInit {
   private router       = inject(Router);
   private isBrowser    = isPlatformBrowser(inject(PLATFORM_ID));
   private injector     = inject(Injector);
+  private chess        = inject(ChessSpotlightService);
 
   ngOnInit(): void {
     if (!this.isBrowser) return;
+
+    this.chess.start(); // damier révélé sous le curseur
 
     // Premier écran visible d'emblée : on marque ce qui est dans la fenêtre PUIS on active js-anim
     // (qui masque le reste jusqu'au défilement). Sans JS, ou avant ce point, tout le contenu reste visible.

@@ -4,17 +4,89 @@
 :host { display: block; }
 
 .teaching {
-  &__grid {
+  &__main {
     display: grid;
     gap: $space-6;
+    margin-top: $space-8;
+    @include lg { grid-template-columns: 1.35fr 1fr; align-items: stretch; }
+  }
+
+  &__row {
+    display: grid;
+    gap: $space-6;
+    margin-top: $space-6;
     @include md { grid-template-columns: 1fr 1fr; }
-    @include lg { grid-template-columns: repeat(3, 1fr); }
   }
 
   &__interventions { margin-top: $space-10; }
 }
 
-.tcard {
+// Photos : coins arrondis, légende en pastille blanche
+.shot {
+  position: relative;
+  margin: 0;
+  border-radius: $radius-2xl;
+  overflow: hidden;
+  background: var(--color-surface);
+
+  img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  &--class { min-height: 260px; img { aspect-ratio: 16 / 9; } @include lg { img { aspect-ratio: auto; } } }
+  &--team { margin-top: $space-6; img { aspect-ratio: 16 / 9; object-position: center 92%; } }
+
+  &__tag {
+    position: absolute;
+    left: $space-4;
+    bottom: $space-4;
+    padding: $space-1 $space-3;
+    background: rgba(255, 255, 255, 0.92);
+    color: $color-primary;
+    font-size: $text-xs;
+    font-weight: $font-semibold;
+    border-radius: $radius-full;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Carte CEFTI
+.school {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+  padding: $space-6;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: $radius-2xl;
+
+  &__list { display: flex; flex-direction: column; gap: $space-4; margin: 0; padding: 0; list-style: none; }
+  &__item { display: flex; align-items: center; gap: $space-4; }
+
+  &__logo {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    padding: $space-1;
+    background: #fff;
+    border-radius: $radius-lg;
+    box-shadow: 0 1px 4px rgba(20, 33, 61, 0.12);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    img { width: 100%; height: 100%; object-fit: contain; }
+  }
+  &__initials {
+    font-family: $font-display;
+    font-weight: $font-bold;
+    font-size: $text-lg;
+    color: $color-primary;
+  }
+
+  &__name { margin: 0; font-family: $font-display; font-size: $text-xl; color: var(--color-text); }
+  &__since { margin: 2px 0 0; font-size: $text-sm; color: var(--color-text-muted); }
+}
+
+// Petites cartes (Prof 2.0, partage)
+.mini {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -22,18 +94,36 @@
   padding: $space-6;
   background: var(--color-card-bg);
   border: 1px solid var(--color-border);
-  border-radius: $radius-xl;
+  border-radius: $radius-2xl;
 
-  &__title { margin: 0; font-family: $font-display; font-size: $text-xl; color: var(--color-text); }
-  &__meta { margin: 0; color: var(--color-text-muted); font-size: $text-sm; }
-  &__extra { margin: 0; color: var(--color-text); }
-
-  &__list {
+  &__label {
     margin: 0;
-    padding-left: $space-5;
-    color: var(--color-text);
-    li { margin-bottom: $space-1; }
-
-    &--plain { padding-left: 0; list-style: none; }
+    font-size: $text-xs;
+    font-weight: $font-semibold;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
   }
+  &__title { margin: 0; font-family: $font-display; font-size: $text-2xl; color: var(--color-text); }
 }
+
+// Pastilles
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.chip {
+  padding: $space-1 $space-3;
+  background: var(--tag-bg);
+  color: var(--color-text);
+  font-size: $text-sm;
+  font-weight: $font-medium;
+  border-radius: $radius-full;
+}
+.chips--soft .chip { font-size: $text-xs; color: var(--color-text-muted); }
+
+.list-plain { margin: $space-3 0 0; padding: 0; list-style: none; color: var(--color-text); }

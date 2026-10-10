@@ -4,7 +4,7 @@ import { PROJECT_OFFERS, ProjectOffer } from '../../../data/products.data';
 import { PriceComponent } from '../price/price.component';
 
 /**
- * Offres rattachées à un projet (`PROJECT_OFFERS[slug]`) : abonnements (Otadex) ou don libre (Séla Cantique).
+ * Offres rattachées à un projet (`PROJECT_OFFERS[slug]`) : abonnements (Otadex).
  * Rien ne s'affiche pour un projet sans offre. Tant qu'une offre n'a pas d'URL (TODO(israel) dans
  * products.data.ts), le CTA est un libellé inactif « Bientôt disponible », jamais un lien mort.
  */

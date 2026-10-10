@@ -11,22 +11,58 @@
     </div>
   </header>
 
-  <!-- ===== PROJECT GRID ===== -->
+  <!-- ===== FILTRE PAR CATÉGORIE ===== -->
   <main class="container projects-page__main">
-    <ul class="projects-grid" role="list">
-      @for (p of projects; track p.id; let i = $index) {
-        <li class="pcard fade-up" appFadeOnScroll [delay]="i * 80">
+    @if (groups().length > 1) {
+      <div class="cat-filter" role="group" [attr.aria-label]="i18n.t('projects.title')">
+        <button type="button" class="cat-filter__btn" [class.is-active]="filter() === 'all'"
+                [attr.aria-pressed]="filter() === 'all'" (click)="filter.set('all')">{{ i18n.t('projects.catAll') }}</button>
+        @for (g of groups(); track g.cat) {
+          <button type="button" class="cat-filter__btn" [class.is-active]="filter() === g.cat"
+                  [attr.aria-pressed]="filter() === g.cat" (click)="filter.set(g.cat)">
+            {{ i18n.t(categoryKeys[g.cat]) }} <span class="cat-filter__n">{{ g.items.length }}</span>
+          </button>
+        }
+      </div>
+    }
+
+    @for (g of visibleGroups(); track g.cat) {
+      <section class="projects-group" [attr.aria-labelledby]="'cat-' + g.cat">
+        <h2 class="projects-group__title" [id]="'cat-' + g.cat">{{ i18n.t(categoryKeys[g.cat]) }}</h2>
+        <ul class="projects-grid" role="list">
+          @for (p of g.items; track p.id; let i = $index) {
+          <li class="pcard fade-up" appFadeOnScroll [delay]="i * 80" [style.--tilt]="tilt(i)">
+          <!-- Épingle -->
+          <svg class="pcard__pin" width="26" height="34" viewBox="0 0 26 34" aria-hidden="true" focusable="false">
+            <ellipse cx="14" cy="31" rx="5" ry="1.6" class="pcard__pin-shadow" />
+            <path d="M13 17v14" class="pcard__pin-needle" />
+            <circle cx="13" cy="10" r="8.5" class="pcard__pin-head" />
+            <path d="M8.5 7.5c1.2-2.2 3.2-3.2 5.5-3" class="pcard__pin-shine" />
+          </svg>
+
           <!-- Hover reveal background -->
           <div class="pcard__hover-bg" aria-hidden="true"></div>
 
-          <!-- Icon badge -->
-          <div class="pcard__icon" aria-hidden="true">{{ p.icon }}</div>
+          <div class="pcard__top">
+            <!-- Icon badge (croquis) -->
+            <div class="pcard__icon" aria-hidden="true">
+              <app-project-icon [slug]="p.slug" [fallback]="p.icon" [size]="34" />
+            </div>
+            @if (since(p); as when) {
+              <span class="pcard__since">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3.5" y="5" width="17" height="15" rx="2" /><path d="M3.5 10h17M8 3v4M16 3v4" />
+                </svg>
+                {{ when }}
+              </span>
+            }
+          </div>
 
           <!-- Name + company -->
           <div class="pcard__header">
-            <h2 class="pcard__name">
+            <h3 class="pcard__name">
               <a class="pcard__link" [routerLink]="['/projects', p.slug]">{{ p.name }}</a>
-            </h2>
+            </h3>
             <span class="pcard__company">{{ p.company }}</span>
           </div>
 
@@ -34,11 +70,13 @@
           <p class="pcard__desc">{{ desc(p) }}</p>
 
           <!-- Tech pills -->
-          <div class="pcard__tech">
-            @for (t of p.tech; track t) {
-              <span class="pcard__tag">{{ t }}</span>
-            }
-          </div>
+          @if (p.tech.length) {
+            <div class="pcard__tech">
+              @for (t of p.tech; track t) {
+                <span class="pcard__tag">{{ t }}</span>
+              }
+            </div>
+          }
 
           <!-- Footer: status + link hint -->
           <div class="pcard__footer">
@@ -55,8 +93,10 @@
             </button>
           </div>
         </li>
-      }
-    </ul>
+          }
+        </ul>
+      </section>
+    }
   </main>
 
 </div>
@@ -95,7 +135,9 @@
         </span>
 
         <!-- Large icon -->
-        <div class="pmodal__hero-icon" aria-hidden="true">{{ selected()!.icon }}</div>
+        <div class="pmodal__hero-icon" aria-hidden="true">
+          <app-project-icon [slug]="selected()!.slug" [fallback]="selected()!.icon" [size]="72" />
+        </div>
 
         <!-- Floating tech pills -->
         <div class="pmodal__hero-pills" aria-hidden="true">
@@ -193,6 +235,10 @@
                       </svg>
                       LinkedIn ↗
                     </a>
+                  }
+                  @if (c.portfolioUrl) {
+                    <a [href]="c.portfolioUrl" target="_blank" rel="noopener noreferrer" class="contributor__linkedin"
+                       [attr.aria-label]="'Portfolio — ' + c.name">Portfolio ↗</a>
                   }
                 </div>
 

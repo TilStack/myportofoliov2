@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Illustration : fiches d'une encyclopédie anime">
+  <rect width="800" height="500" fill="#FFF3E2"/>
+  <g fill="#FFD9A8" opacity=".7">
+    <circle cx="90" cy="80" r="46"/><circle cx="730" cy="430" r="62"/><circle cx="700" cy="70" r="26"/>
+  </g>
+  <g fill="none" stroke="#F97316" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity=".55">
+    <path d="M120 400l12 24 26 4-19 18 5 26-24-13-24 13 5-26-19-18 26-4z" transform="translate(-20 -60) scale(.8)"/>
+    <path d="M650 150l10 20 22 3-16 15 4 22-20-11-20 11 4-22-16-15 22-3z"/>
+  </g>
+  <!-- cartes -->
+  <g stroke="#1F2937" stroke-width="5" stroke-linejoin="round">
+    <rect x="210" y="92" width="250" height="320" rx="24" fill="#FDBA74" transform="rotate(-10 335 252)"/>
+    <rect x="340" y="82" width="250" height="320" rx="24" fill="#FCD34D" transform="rotate(9 465 242)"/>
+    <rect x="270" y="70" width="260" height="340" rx="26" fill="#FFFFFF"/>
+  </g>
+  <!-- fiche de face -->
+  <g stroke="#1F2937" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="292" y="94" width="216" height="150" rx="16" fill="#FFEDD5"/>
+    <circle cx="400" cy="152" r="34" fill="#FFFFFF"/>
+    <path d="M338 238c4-34 30-50 62-50s58 16 62 50" fill="#F97316"/>
+    <path d="M366 140c10-22 40-24 54-2" fill="none"/>
+    <path d="M376 160h.1M424 160h.1" stroke-width="9"/>
+    <path d="M388 176q12 8 24 0" fill="none"/>
+  </g>
+  <g fill="none" stroke="#1F2937" stroke-width="6" stroke-linecap="round">
+    <path d="M296 282h120M296 312h170M296 342h90"/>
+  </g>
+  <!-- rangs -->
+  <g stroke="#1F2937" stroke-width="4" stroke-linejoin="round">
+    <circle cx="298" cy="378" r="13" fill="#FDBA74"/><circle cx="332" cy="378" r="13" fill="#FCD34D"/><circle cx="366" cy="378" r="13" fill="#F97316"/>
+  </g>
+  <!-- loupe -->
+  <g fill="none" stroke="#1F2937" stroke-width="9" stroke-linecap="round">
+    <circle cx="590" cy="330" r="46" fill="#FFFFFF" fill-opacity=".75"/>
+    <path d="M624 364l54 56"/>
+  </g>
+</svg>

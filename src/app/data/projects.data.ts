@@ -8,17 +8,33 @@ export interface Contributor {
   variant: 'primary' | 'accent';
   videoUrl?: string;
   linkedinUrl?: string;
+  /** Lien vers le portfolio du contributeur (affiché seulement s'il est renseigné). */
+  portfolioUrl?: string;
   photoUrl?: string;
 }
 
+/** Catégorie d'un projet (page Projets). `school` : projets scolaires / d'enseignement. */
+export type ProjectCategory = 'personal' | 'team' | 'school';
+
+/** Clé de traduction (I18nService) du titre de chaque catégorie, dans l'ordre d'affichage. */
+export const CATEGORY_KEYS: Record<ProjectCategory, string> = {
+  personal: 'projects.catPersonal',
+  team: 'projects.catTeam',
+  school: 'projects.catSchool',
+};
+
 export interface Project {
   id: number;
+  /** Catégorie d'affichage sur la page Projets. */
+  category: ProjectCategory;
   /** Segment d'URL de la page détail : /projects/:slug */
   slug: string;
   name: string;
   icon: string;
   company: string;
   status: 'finished' | 'in-progress' | 'coming-soon';
+  /** Début du projet, « AAAA-MM » (affiché « Depuis … » sur la carte). Absent : rien n'est affiché. */
+  startedAt?: string;
   tech: string[];
   liveUrl?: string;
   youtubeUrl?: string;
@@ -70,10 +86,23 @@ export const LEVEGI_TEAM: Contributor = {
   photoUrl: 'images/projects/levegi_logo.webp',
 };
 
+/** Concepteur de Nuvel (projet en collaboration : Israel en est le partenaire). */
+export const DANIEL: Contributor = {
+  name: 'Daniel',
+  roleEn: 'Creator & Designer',
+  roleFr: 'Concepteur du projet',
+  initials: 'D',
+  variant: 'accent',
+  // TODO(israel): lien du portfolio de Daniel (champ `portfolioUrl`) + son nom de famille si tu veux l'afficher.
+};
+
+// TODO(israel): projets scolaires / d'enseignement (ex. projets d'étudiants encadrés) : aucun n'est renseigné, la
+// catégorie « school » reste donc masquée tant qu'elle est vide.
 export const PROJECTS: Project[] = [
   {
     id: 1,
     slug: 'dofa',
+    category: 'team',
     name: 'DOFA',
     icon: '🚗',
     company: 'Devpea',
@@ -99,6 +128,7 @@ export const PROJECTS: Project[] = [
   {
     id: 2,
     slug: 'devpea-website',
+    category: 'team',
     name: 'Devpea Website',
     icon: '🌐',
     company: 'Devpea',
@@ -119,6 +149,7 @@ export const PROJECTS: Project[] = [
   {
     id: 3,
     slug: 'levefly',
+    category: 'team',
     name: 'LEVEFLY',
     icon: '✈️',
     company: 'LEVEGI SARL',
@@ -138,6 +169,7 @@ export const PROJECTS: Project[] = [
   {
     id: 4,
     slug: 'mycagnotte',
+    category: 'team',
     name: 'MYCAGNOTTE',
     icon: '💰',
     company: 'LEVEGI SARL',
@@ -157,6 +189,7 @@ export const PROJECTS: Project[] = [
   {
     id: 5,
     slug: 'otadex',
+    category: 'personal',
     name: 'Otadex',
     icon: '⚡',
     company: 'Personal',
@@ -175,12 +208,13 @@ export const PROJECTS: Project[] = [
     contributors: [
       { ...ISRAEL, roleEn: 'Solo Developer', roleFr: 'Développeur Solo' },
     ],
-    images: ['images/projects/placeholder.svg'], // TODO(israel): capture réelle
+    images: ['images/projects/otadex-cover.svg'], // illustration en attendant les vraies captures — TODO(israel)
   },
   {
     id: 6,
     slug: 'tiltine',
     hidden: true, // TODO(israel): fournir description + capture réelle pour l'afficher
+    category: 'personal',
     name: 'Tiltine',
     icon: '⚡',
     company: 'Personal',
@@ -199,6 +233,7 @@ export const PROJECTS: Project[] = [
   {
     id: 7,
     slug: 'mypokemon',
+    category: 'personal',
     name: 'MyPokemon',
     icon: '⚡',
     company: 'Personal',
@@ -220,24 +255,23 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 8,
-    slug: 'sela-cantique',
-    name: 'Séla Cantique',
-    icon: '🎵',
-    company: 'Personal',
+    slug: 'nuvel',
+    category: 'team',
+    name: 'Nuvel',
+    icon: '✝️',
+    company: 'Collaboration',
     status: 'in-progress',
     featured: true,
-    tech: ['Flutter', 'Dart'],
-    // TODO(israel): langues proposées par l'application et statut (« en cours » par défaut) ; captures réelles.
-    descEn: 'Bilingual, offline hymnal for a Cameroonian church congregation, built with Flutter.',
-    descFr: "Recueil de cantiques bilingue et hors ligne pour une assemblée d'église camerounaise, en Flutter.",
+    // TODO(israel): date de début (startedAt), stack technique et captures réelles.
+    tech: [],
+    descEn: 'A social network for Christians, designed by Daniel — currently in development, not yet released.',
+    descFr: "Un réseau social chrétien conçu par Daniel — en cours de développement, pas encore sorti.",
     detailEn:
-      'Séla Cantique is a bilingual, offline hymnal for a Cameroonian church congregation, built with Flutter. The project can be supported with a free-amount donation, from 600 XAF.',
+      'Nuvel is a Christian social app that brings believers together as a community network. The project was designed by Daniel; I am his partner on it and we are building it together. It is currently under development and is not yet released or online.',
     detailFr:
-      "Séla Cantique est un recueil de cantiques bilingue et hors ligne pour une assemblée d'église camerounaise, développé en Flutter. Le projet peut être soutenu par un don libre, dès 600 XAF.",
-    contributors: [
-      { ...ISRAEL, roleEn: 'Solo Developer', roleFr: 'Développeur Solo' },
-    ],
-    images: ['images/projects/placeholder.svg'], // TODO(israel): captures réelles
+      "Nuvel est une application sociale chrétienne qui réunit les croyants dans un réseau communautaire. Le projet a été conçu par Daniel ; j'en suis le partenaire et nous le construisons ensemble. Il est en cours de développement et n'est pas encore sorti ni en ligne.",
+    contributors: [DANIEL, { ...ISRAEL, roleEn: 'Partner', roleFr: 'Partenaire' }],
+    images: ['images/projects/nuvel-cover.svg'], // illustration en attendant les vraies captures — TODO(israel)
   },
 ];
 

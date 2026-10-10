@@ -58,17 +58,58 @@
     &:last-child { padding-bottom: 0; }
   }
 
+  // Écran large : axe central, les étapes alternent de part et d'autre (la première à droite).
+  @include md {
+    padding: 0;
+    border-left: none;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      margin-left: -1px;
+      background: var(--color-border);
+    }
+
+    &__item {
+      width: 50%;
+      padding-bottom: $space-8;
+
+      // étapes impaires (1re, 3e…) : à droite de l'axe
+      &:nth-child(odd) { margin-left: 50%; padding-left: $space-10; }
+      &:nth-child(odd)::before { left: -7px; }
+
+      // étapes paires : à gauche, texte aligné vers l'axe
+      &:nth-child(even) { padding-right: $space-10; text-align: right; }
+      &:nth-child(even)::before { left: auto; right: -7px; }
+    }
+  }
+
   &__role { margin: 0; font-family: $font-display; font-size: $text-lg; color: var(--color-text); }
   &__org { margin: $space-1 0 0; color: var(--color-text); font-weight: $font-medium; }
   &__period, &__detail { margin: $space-1 0 0; color: var(--color-text-muted); font-size: $text-sm; }
 
   &__now {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     margin-left: $space-2;
-    padding: 0 $space-2;
+    padding: 1px $space-2;
     border-radius: $radius-full;
-    background: $color-primary;
-    color: $color-accent;
+    background: var(--tag-bg);
+    color: var(--color-text);
     font-size: $text-xs;
-    font-weight: $font-bold;
+    font-weight: $font-semibold;
+
+    &::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+    }
   }
 }
