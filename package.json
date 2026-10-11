@@ -56,8 +56,12 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "lmdb": "^3.5.7",
     "playwright-core": "^1.63.0",
     "sharp": "^0.35.4",
     "typescript": "~5.8.2"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-win32-x64-msvc": "^4.59.0"
   }
 }
