@@ -189,7 +189,7 @@
     transition: flex-grow $transition-base, background $transition-base, color $transition-fast;
 
     &.active {
-      flex-grow: 3.6;
+      flex-grow: 4.4;
       padding-inline: $space-2;
       background: $color-accent;
       color: $color-primary;

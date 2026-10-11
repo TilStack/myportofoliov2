@@ -42,7 +42,7 @@
                     class="profile-ph__real-photo"
                     [ngSrc]="photo.src"
                     [ngSrcset]="photo.srcset"
-                    sizes="(min-width: 1024px) 320px, 270px"
+                    sizes="(min-width: 1024px) 320px, min(420px, 100vw)"
                     fill
                     [priority]="i === 0"
                     [alt]="img.alt || img.label"

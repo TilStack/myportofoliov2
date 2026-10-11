@@ -22,9 +22,10 @@ $accent: $color-accent;
 
   &__inner {
     display: grid;
-    gap: $space-12;
+    gap: $space-8;
     align-items: center;
-    @include lg { grid-template-columns: 1fr 1fr; }
+    grid-template-columns: minmax(0, 1fr);
+    @include lg { grid-template-columns: 1fr 1fr; gap: $space-12; }
   }
 
   &__tag {
@@ -64,7 +65,9 @@ $accent: $color-accent;
 
   &__img-wrapper {
     position: relative;
-    width: min(300px, 100%);
+    width: 100%;
+
+    @include lg { width: min(300px, 100%); }
   }
 
   // Caché sur mobile — remplacé par un simple outline sur desktop
@@ -89,11 +92,14 @@ $accent: $color-accent;
     position: relative;
     @include flex-center;
 
-    // Limite la hauteur du stack photo sur mobile
-    max-width: min(300px, 90vw);
+    // Mobile / tablette : la photo passe AVANT le texte et occupe toute la largeur (portrait en grand plan)
+    order: -1;
+    width: 100%;
+    max-width: min(420px, 100%);
     margin-inline: auto;
 
     @include lg {
+      order: 0;
       max-width: none;
       margin-inline: 0;
     }
