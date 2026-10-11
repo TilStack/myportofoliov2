@@ -1,3 +1,4 @@
+import { OWNER_AVATAR, isOwnerAuthor } from '../quote-author';
 import {
   Component, Input, Output, EventEmitter,
   HostListener, OnInit, ElementRef, ViewChild, afterNextRender,
@@ -80,6 +81,9 @@ export class QuoteModalComponent implements OnInit {
       day: 'numeric', month: 'long', year: 'numeric',
     }).format(this.quote.date);
   }
+
+  readonly ownerAvatar = OWNER_AVATAR;
+  get isOwner(): boolean { return isOwnerAuthor(this.quote.author); }
 
   get initials(): string {
     return this.quote.author.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);

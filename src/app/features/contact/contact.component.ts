@@ -1,3 +1,4 @@
+import { PresenterComponent } from '../../shared/components/presenter/presenter.component';
 import { Component, inject } from '@angular/core';
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
@@ -9,7 +10,7 @@ import { CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL, TWITTER_URL } from '../../data
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, FadeOnScrollDirective],
+  imports: [CommonModule, ReactiveFormsModule, ButtonComponent, FadeOnScrollDirective, PresenterComponent],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss',
 })

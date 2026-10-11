@@ -15,7 +15,7 @@
         <a
           [routerLink]="link.path"
           routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+          [routerLinkActiveOptions]="link.path === '/' ? exactPath : subsetPath"
           class="navbar__link"
         >{{ i18n.t(link.key) }}</a>
       }
@@ -58,7 +58,7 @@
     <a
       [routerLink]="link.path"
       routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+      [routerLinkActiveOptions]="link.path === '/' ? exactPath : subsetPath"
       class="tabbar__item"
       [attr.aria-label]="i18n.t(link.key)"
     >

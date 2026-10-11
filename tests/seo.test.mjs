@@ -97,14 +97,14 @@ const products = [...productsSrc.matchAll(/id: '(prd_\w+)',\s*name: '((?:[^'\\]|
 // Prix tel qu'affiché, comparé sur du texte décodé où l'espace insécable (&nbsp;) est normalisée en espace.
 const fmt = n => `${String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} XAF`;
 const text = html => unescape(html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ')).replace(/\s+/g, ' ');
-await check('products.data.ts : 2 produits Chariow lus (nom, URL, prix, prix barré)', () => {
-  assert.equal(products.length, 2);
-  assert.deepEqual(products.map(p => p.id), ['prd_1bt9cd', 'prd_ehy1y5']);
+await check('products.data.ts : 3 produits Chariow lus (nom, URL, prix, prix barré)', () => {
+  assert.equal(products.length, 3);
+  assert.deepEqual(products.map(p => p.id), ['prd_1bt9cd', 'prd_ehy1y5', 'prd_t6xzuw62']);
   for (const p of products) { assert.equal(p.url, `https://store.tilstack.me/${p.id}`); assert.ok(p.compareAt > p.amount); }
 });
 await check('accueil : Person + WebSite + un Product par produit', () => {
   const types = ldOf(home).map(o => o['@type']).sort();
-  assert.deepEqual(types, ['Person', 'Product', 'Product', 'WebSite']);
+  assert.deepEqual(types, ['Person', 'Product', 'Product', 'Product', 'WebSite']);
   const person = ldOf(home).find(o => o['@type'] === 'Person');
   assert.equal(person.name, 'TIENTCHEU Israel');
   assert.equal(person.alternateName, 'TilStack');

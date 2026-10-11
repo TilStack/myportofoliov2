@@ -84,6 +84,11 @@
       <h2 class="section__title">{{ i18n.t("about.stackTitle") }}</h2>
       <p class="section__subtitle">{{ i18n.t("about.stackSubtitle") }}</p>
     </div>
+    <div class="skills-section__layout">
+      <aside class="skills-section__presenter fade-up" appFadeOnScroll>
+        <app-presenter pose="stack" [label]="i18n.t('about.presenterStack')" />
+      </aside>
+      <div class="skills-section__stack">
     <ol class="stack">
       @for (layer of skillLayers; track layer.id; let ci = $index) {
         <li class="stack__row fade-up" appFadeOnScroll [delay]="ci * 70">
@@ -125,6 +130,8 @@
     <p class="skills-section__multimedia fade-up" appFadeOnScroll>
       {{ i18n.t("about.skillsMultimedia") }} : {{ multimediaSkills.join(", ") }}
     </p>
+      </div>
+    </div>
   </div>
 </section>
 

@@ -46,10 +46,10 @@ await check('accueil : grille « Cameroon, My Home », les 5 photos ont un fond 
   await page.goto(`${BASE}/`, { waitUntil: 'load' });
   await scrollThrough();
   await page.waitForFunction(
-    () => [...document.querySelectorAll('.montage__photo')].every(el => getComputedStyle(el).backgroundImage !== 'none'),
+    () => [...document.querySelectorAll('.montage__img')].every(el => getComputedStyle(el).backgroundImage !== 'none'),
     { timeout: 10000 },
   );
-  const urls = await bgImagesOf('.montage__photo');
+  const urls = await bgImagesOf('.montage__img');
   assert.equal(urls.length, 5, `5 photos attendues, ${urls.length} trouvées`);
   assert.ok(urls.every(Boolean), `au moins un bloc sans image de fond : ${JSON.stringify(urls)}`);
   await checkUrlsLoad(urls, 'montage');

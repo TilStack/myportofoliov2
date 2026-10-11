@@ -9,6 +9,17 @@
   min-height: 100svh;
   padding-top: $navbar-height;
 
+  &__header-inner {
+    display: grid;
+    gap: $space-6;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: end;
+
+    @include md { grid-template-columns: minmax(0, 1fr) auto; }
+  }
+
+  &__presenter { justify-self: start; --h: 200px; @include md { justify-self: end; } }
+
   &__header {
     @include chess-spot(0%, 30%);
     padding-block: $space-16 $space-12;

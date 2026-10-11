@@ -23,4 +23,6 @@ export class ShopSectionComponent {
   /** Sur l'accueil : titre en h2 et lien « Voir la boutique ». Sur /boutique la page porte déjà le h1. */
   readonly showHeader = input(true);
   readonly showAllLink = input(false);
+  /** Prix affichés en euros (indicatif, avec le prix XAF réel dessous). */
+  readonly euro = input(false);
 }

@@ -4,7 +4,6 @@ import { ButtonComponent } from '../../shared/components/button/button.component
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { I18nService } from '../../core/services/i18n.service';
 import { AdminAuthService } from '../../core/services/admin-auth.service';
-import { BLOG_COVERS } from '../../core/config/images.config';
 import { scrollToTop } from '../../shared/utils/motion';
 
 const PAGE_SIZE = 6;
@@ -36,49 +35,8 @@ export interface Article {
 }
 
 // ── Static data ────────────────────────────────────────────────────────────
+// Uniquement des articles réellement publiés par Israel (Zerofiltre). Les articles d'exemple fictifs ont été retirés.
 const ARTICLES: Article[] = [
-  // ── Local articles (fictional, editable later) ──
-  {
-    id: 'angular-signals-guide',
-    title: 'Getting Started with Angular Signals',
-    excerpt:
-      'Angular 17+ introduced Signals as a powerful new reactive primitive. In this guide, I break down how they work, how they compare to RxJS observables, and how to adopt them effectively in your components.',
-    coverUrl:      BLOG_COVERS['angular-signals-guide'] || undefined,
-    coverGradient: 'linear-gradient(135deg, #c31432 0%, #240b36 100%)',
-    coverIcon: '⚡',
-    tags: ['Angular', 'TypeScript', 'Signals'],
-    date: new Date('2024-11-15'),
-    source: 'local',
-    readTime: 8,
-    featured: true,
-  },
-  {
-    id: 'nestjs-postgresql-api',
-    title: 'Building a REST API with NestJS & PostgreSQL',
-    excerpt:
-      'A step-by-step guide to building a production-ready REST API using NestJS, TypeORM, and PostgreSQL — from project setup and entity design all the way to deployment on a VPS.',
-    coverUrl:      BLOG_COVERS['nestjs-postgresql-api'] || undefined,
-    coverGradient: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
-    coverIcon: '🔗',
-    tags: ['NestJS', 'NodeJS', 'PostgreSQL', 'Backend'],
-    date: new Date('2024-09-20'),
-    source: 'local',
-    readTime: 12,
-  },
-  {
-    id: 'flutter-vs-react-native-2025',
-    title: 'Flutter vs React Native in 2025',
-    excerpt:
-      'An honest, developer-focused comparison of the two leading cross-platform mobile frameworks. I cover performance, developer experience, community size, ecosystem, and real-world job market data.',
-    coverUrl:      BLOG_COVERS['flutter-vs-react-native-2025'] || undefined,
-    coverGradient: 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)',
-    coverIcon: '📱',
-    tags: ['Flutter', 'Mobile', 'React Native'],
-    date: new Date('2025-01-05'),
-    source: 'local',
-    readTime: 10,
-  },
-
   // ── Zerofiltre articles (real, published externally) ──
   {
     id: 'zerofiltre-docker-debian',
@@ -90,6 +48,7 @@ const ARTICLES: Article[] = [
     tags: ['Docker', 'Débutant', 'DevOps'],
     date: new Date('2024-03-27'),
     source: 'zerofiltre',
+    featured: true,
     externalUrl:
       'https://zerofiltre.tech/articles/287-conqu%C3%A9rir-l-%C3%A9cosysteme-docker-sur-les-distributions-debian',
     readTime: 6,
@@ -166,11 +125,7 @@ export class BlogComponent {
     return all;
   });
 
-  featuredArticle = computed<Article | null>(() =>
-    this.activeFilter() !== 'zerofiltre'
-      ? (ARTICLES.find(a => a.featured) ?? null)
-      : null
-  );
+  featuredArticle = computed<Article | null>(() => ARTICLES.find(a => a.featured) ?? null);
 
   gridArticles = computed<Article[]>(() =>
     this.filteredArticles().filter(a => !a.featured)
@@ -221,7 +176,11 @@ export class BlogComponent {
   articleDetail = signal<Article | null>(null);
 
   openArticleDetail(article: Article): void {
-    if (article.source !== 'local') return;
+    // Article externe (Zerofiltre) : on l'ouvre sur son site ; seule une fiche locale s'ouvre en fenêtre.
+    if (article.source !== 'local') {
+      if (article.externalUrl) window.open(article.externalUrl, '_blank', 'noopener,noreferrer');
+      return;
+    }
     this.articleDetail.set(article);
     document.body.style.overflow = 'hidden';
   }

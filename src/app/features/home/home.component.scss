@@ -132,44 +132,72 @@
     }
   }
 
-  // Photo de profil
+  // Personnage (avatar 3D + poses)
   &__deco {
     display: flex;
     justify-content: center;
+    // Mobile / tablette : le personnage passe AVANT le texte, en grand
+    order: -1;
 
-    &-card {
-      background: var(--color-card-bg);
-      border: 1px solid var(--color-border);
-      border-radius: $radius-xl;
-      padding: $space-3;
-      width: 180px;
-      // Shadow discret — pas de $shadow-xl qui surcharge le rendu
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
-      position: relative;
-      animation: float 4s ease-in-out infinite;
+    @include lg { order: 0; }
+  }
 
-      @include sm {
-        width: 210px;
-        padding: $space-4;
-      }
+  &__stage {
+    position: relative;
+    display: block;
+    width: min(100%, 360px);
+    height: min(46svh, 400px);
+    padding: 0;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 
-      @include lg {
-        width: 260px;
-        padding: $space-5;
-        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.09);
-      }
+    @include lg {
+      width: min(100%, 520px);
+      height: min(68svh, 600px);
     }
 
-    &-photo {
-      width: 100%;
-      height: auto; // les attributs width/height (NgOptimizedImage) ne doivent pas fixer la hauteur
-      aspect-ratio: 3 / 4;
-      object-fit: cover;
-      object-position: top center;
-      border-radius: calc(#{$radius-xl} - #{$space-1});
-      display: block;
+    &:focus-visible { outline: 3px solid $color-accent; outline-offset: 6px; border-radius: $radius-2xl; }
+  }
+
+  // Halo derrière le personnage
+  &__stage-glow {
+    position: absolute;
+    left: 50%;
+    bottom: 4%;
+    width: 78%;
+    aspect-ratio: 1;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--color-accent) 38%, transparent), transparent);
+    pointer-events: none;
+  }
+
+  &__pose {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: auto;
+    max-width: 100%;
+    opacity: 0;
+    transform: translateX(-50%) translateY(14px) scale(0.96);
+    transform-origin: 50% 100%;
+    transition: opacity 450ms $ease-out-cubic, transform 450ms $ease-out-cubic;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+
+    &--full { height: 100%; }
+    &--bust { height: 80%; border-radius: $radius-2xl; }
+
+    &.is-active {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0) scale(1);
     }
   }
+
+  &__stage:hover &__pose.is-active { transform: translateX(-50%) translateY(-4px) scale(1.02); }
 
   // Scroll indicator (masqué sur très petits écrans)
   &__scroll {
@@ -208,116 +236,98 @@
   }
 }
 
-// ===== MOODBOARD =====
-.moodboard {
-  &__header {
-    margin-bottom: $space-10;
+// ===== BANDEAU TECHNOLOGIES =====
+.stack-strip {
+  padding-block: $space-8;
+  border-block: 1px solid var(--color-border);
+
+  &__label {
+    margin: 0 0 $space-5;
+    text-align: center;
+    font-size: $text-xs;
+    font-weight: $font-semibold;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
   }
 
-  &__grid {
-    display: grid;
-    gap: $space-4;
-    grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
-
-    @include lg {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  &__skeleton {
-    padding: $space-6;
-    border-radius: $radius-xl;
-    border: 1px solid var(--color-border);
-  }
-
-  &__cta {
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
     justify-content: center;
-    border: 2px dashed var(--color-border);
-    border-radius: $radius-xl;
-    min-height: 120px;
-    transition:
-      border-color $transition-base,
-      background $transition-base;
+    gap: $space-3 $space-8;
+  }
 
-    &:hover {
-      border-color: $color-accent;
-      background: rgba(255, 222, 89, 0.04);
-    }
+  &__item {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    color: var(--color-text-muted);
+  }
 
-    &-link {
-      display: flex;
-      align-items: center;
-      gap: $space-2;
-      font-weight: $font-semibold;
-      color: var(--color-text-muted);
-      transition:
-        color $transition-fast,
-        gap $transition-base;
-
-      &:hover {
-        color: var(--color-text);
-        gap: $space-3;
-      }
-    }
+  &__logo {
+    width: 22px;
+    height: 22px;
+    background: var(--c);
+    -webkit-mask: var(--logo) center / contain no-repeat;
+    mask: var(--logo) center / contain no-repeat;
   }
 }
 
-// ===== CITATIONS (accueil) : une citation mise en avant + une courte liste =====
+// ===== CITATION (accueil) =====
 .moodboard {
-  &__layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: $space-8;
-    align-items: stretch;
+  &__cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    margin-top: $space-8;
+    font-weight: $font-semibold;
+    color: var(--color-text-muted);
+    transition: color $transition-fast, gap $transition-base;
 
-    @include lg { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: $space-12; }
+    &:hover { color: var(--color-text); gap: $space-3; }
   }
-
-  &__more { margin-top: $space-10; text-align: center; }
 }
 
 .featured-quote {
   position: relative;
-  margin: 0;
-  padding: $space-10 $space-8 $space-8;
-  background: var(--color-card-bg);
-  border: 1px solid var(--color-border);
-  border-radius: $radius-2xl;
-  box-shadow: var(--shadow-card);
+  margin: 0 auto;
+  max-width: 880px;
+  padding: $space-12 $space-4;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-
-  @include corner-dots;
+  align-items: center;
 
   &__label {
     font-size: $text-xs;
     font-weight: $font-semibold;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-text-muted);
-    margin-bottom: $space-5;
+    margin-bottom: $space-6;
   }
 
   &__mark {
-    position: absolute;
-    top: $space-6;
-    right: $space-6;
     color: $color-accent;
-    opacity: 0.35;
     line-height: 1;
+    margin-bottom: $space-4;
     pointer-events: none;
   }
 
   &__text {
     font-family: $font-display;
-    font-size: clamp($text-2xl, 4vw, $text-4xl);
+    font-size: clamp($text-2xl, 4.4vw, $text-4xl);
     font-weight: $font-bold;
-    line-height: 1.25;
+    line-height: 1.2;
     color: var(--color-text);
     margin: 0 0 $space-6;
+    text-wrap: balance;
   }
 
   &__author {
@@ -329,322 +339,57 @@
   }
 }
 
-.quote-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: $space-6;
+// ===== APPEL À L'ACTION =====
+.cta-band {
+  background: $color-primary;
+  color: #fff;
+  padding-block: $space-12;
 
-  // barre jaune à DROITE de chaque citation
-  &__item {
-    padding-right: $space-5;
-    border-right: 3px solid $color-accent;
-  }
-
-  &__text {
-    margin: 0 0 $space-2;
-    font-size: $text-lg;
-    line-height: 1.55;
-    color: var(--color-text);
-    @include line-clamp(3);
-  }
-
-  &__author {
-    font-size: $text-sm;
-    font-style: normal;
-    color: var(--color-text-muted);
-  }
-}
-
-// ===== PAGE PREVIEWS =====
-.discover {
-  background: var(--color-surface);
-  @include chess-spot(100%, 28%);
-
-  &__header {
-    margin-bottom: $space-12;
-  }
-
-  &__grid {
-    display: grid;
-    gap: $space-5;
-    grid-template-columns: 1fr;
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $space-6;
 
     @include md {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    @include lg {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-}
-
-.page-card {
-  display: flex;
-  flex-direction: column;
-  background: var(--color-card-bg);
-  border: 2px solid var(--color-border);
-  border-radius: $radius-2xl;
-  overflow: hidden;
-  transition:
-    border-color $transition-base,
-    transform $transition-base,
-    box-shadow $transition-base;
-  text-decoration: none;
-  color: inherit;
-
-  &:hover,
-  &:focus-visible {
-    border-color: $color-primary;
-    transform: translate(-3px, -3px);
-    box-shadow: 6px 6px 0 $color-primary;
-
-    [data-theme='dark'] & { border-color: $color-accent; box-shadow: 6px 6px 0 $color-accent; }
-
-    .page-card__link {
-      gap: $space-2;
-      color: var(--color-accent-text);
-    }
-    .page-card__visual {
-      filter: brightness(1.08);
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
     }
   }
 
-  // ── Visual area ──
-  &__visual {
-    height: 200px;
-    display: flex;
+  &__title {
+    margin: 0 0 $space-2;
+    font-family: $font-display;
+    font-size: clamp($text-2xl, 4vw, $text-4xl);
+    font-weight: $font-black;
+    line-height: 1.15;
+  }
+
+  &__text { margin: 0; font-size: $text-lg; color: rgba(255, 255, 255, 0.78); }
+
+  &__btn {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    transition: filter $transition-base;
-
-    &.pv--about   { background: #0d0d1a; }
-    &.pv--projects,
-    &.pv--blog,
-    &.pv--quotes  { background: var(--color-surface); }
-    &.pv--contact { background: #0a2e1a; }
-  }
-
-  // Full-bleed photo (About card) : cadré sur le visage, pas sur le haut du crâne.
-  &__cover {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 28%;
-    transition: transform 0.5s ease;
-  }
-  &:hover &__cover { transform: scale(1.06); }
-
-  // Dark gradient overlay
-  &__cover-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-
-    &.pco--about {
-      background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.05) 60%);
-    }
-    &.pco--projects,
-    &.pco--blog,
-    &.pco--quotes { display: none; }
-  }
-
-  // ── About card: identity badges ──
-  &__cover-badges {
-    position: absolute;
-    bottom: $space-3;
-    left: $space-3;
-    z-index: 2;
-    display: flex;
-    gap: $space-2;
-  }
-}
-
-.pcb__badge {
-  padding: 3px 10px;
-  border-radius: $radius-full;
-  font-size: $text-xs;
-  font-weight: $font-semibold;
-  background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(6px);
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.2);
-
-  &--accent {
+    padding: $space-4 $space-8;
+    border-radius: $radius-full;
     background: $color-accent;
     color: $color-primary;
-    border-color: $color-accent;
+    font-weight: $font-bold;
+    transition: transform $transition-base, box-shadow $transition-base;
+
+    &:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25); }
   }
-}
-
-// ── Projects card: vrais projets ──
-.page-card__cover-projects {
-  position: relative;
-  z-index: 2;
-  list-style: none;
-  width: 100%;
-  padding: $space-10 $space-5 $space-4;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.pcp__row {
-  display: flex;
-  align-items: center;
-  gap: $space-3;
-  padding: 4px $space-3;
-  border-radius: $radius-md;
-  background: var(--color-card-bg);
-  color: var(--color-text);
-  font-size: $text-sm;
-  box-shadow: 0 1px 3px rgba(20, 33, 61, 0.08);
-}
-.pcp__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: $color-accent;
-  flex-shrink: 0;
-  &--done { background: #4ade80; }
-}
-.pcp__name { font-weight: $font-semibold; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pcp__tech { font-size: $text-xs; color: var(--color-text-muted); }
-
-// ── Blog card: sujets réels ──
-.page-card__cover-article {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: $space-3;
-  padding: $space-10 $space-5 $space-4;
-}
-.pca__label {
-  font-size: $text-xs;
-  font-weight: $font-semibold;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-}
-.pca__tags { display: flex; flex-wrap: wrap; gap: $space-2; }
-.pca__pill {
-  padding: 4px 12px;
-  border-radius: $radius-full;
-  font-size: $text-xs;
-  font-weight: $font-bold;
-  background: var(--tag-bg);
-  color: var(--color-text);
-}
-
-// ── Quotes card: une vraie citation ──
-.page-card__cover-quote {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  padding: $space-10 $space-5 $space-5;
-  display: flex;
-  flex-direction: column;
-  gap: $space-2;
-}
-.pcq__mark {
-  display: block;
-  color: $color-accent;
-  opacity: 0.8;
-}
-.pcq__text {
-  font-family: $font-display;
-  font-size: $text-xl;
-  font-weight: $font-bold;
-  line-height: 1.3;
-  color: var(--color-text);
-  @include line-clamp(3);
-}
-.pcq__author {
-  font-size: $text-xs;
-  font-weight: $font-medium;
-  color: var(--color-text-muted);
-}
-
-// ── Numéro de la carte ──
-.page-card__index {
-  position: absolute;
-  top: $space-3;
-  left: $space-3;
-  z-index: 3;
-  padding: 2px 8px;
-  border-radius: $radius-full;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: $text-xs;
-  font-weight: $font-bold;
-  color: $color-primary;
-  background: $color-accent;
-}
-
-@keyframes cursorBlink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
-}
-
-// ── Info area (inside .page-card via standalone selectors) ──
-.page-card__body {
-  padding: $space-5 $space-6 $space-6;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.page-card__eyebrow {
-  font-size: $text-xs;
-  font-weight: $font-bold;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-accent-text);
-  margin-bottom: $space-2;
-}
-
-.page-card__title {
-  font-family: $font-display;
-  font-size: $text-lg;
-  font-weight: $font-bold;
-  color: var(--color-text);
-  margin-bottom: $space-2;
-}
-
-.page-card__desc {
-  font-size: $text-sm;
-  color: var(--color-text-muted);
-  line-height: 1.6;
-  flex: 1;
-  margin-bottom: $space-4;
-}
-
-.page-card__link {
-  display: inline-flex;
-  align-items: center;
-  gap: $space-1;
-  font-size: $text-sm;
-  font-weight: $font-semibold;
-  color: var(--color-text-muted);
-  transition:
-    color $transition-fast,
-    gap $transition-base;
 }
 
 // ===== CAMEROON MONTAGE =====
+// Même langage visuel que le reste de la page (fond de la page, titres, cartes arrondies à ombre douce) ;
+// chaque photo se soulève au survol, l'image zoome doucement et la légende glisse vers le haut.
 .montage {
-  padding-block: $space-20;
-  background: $color-primary;
+  padding-block: $space-16;
   position: relative;
-  overflow: hidden;
+
+  @include lg { padding-block: $space-24; }
 
   &__header {
     text-align: center;
@@ -654,11 +399,11 @@
   &__tag {
     display: inline-block;
     padding: $space-1 $space-3;
-    border: 1px solid rgba(255, 222, 89, 0.4);
+    background: var(--tag-bg);
     border-radius: $radius-full;
     font-size: $text-xs;
     font-weight: $font-semibold;
-    color: $color-accent;
+    color: var(--color-text-muted);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     margin-bottom: $space-4;
@@ -668,14 +413,14 @@
     font-family: $font-display;
     font-size: clamp($text-3xl, 5vw, $text-5xl);
     font-weight: $font-black;
-    color: #fff;
+    color: var(--color-text);
     margin-bottom: $space-4;
   }
 
   &__sub {
     font-size: $text-lg;
-    color: rgba(255, 255, 255, 0.55);
-    max-width: 480px;
+    color: var(--color-text-muted);
+    max-width: 520px;
     margin: 0 auto;
     line-height: 1.7;
   }
@@ -683,138 +428,131 @@
   // ── Photo grid ──
   &__grid {
     display: grid;
-    gap: 10px;
-    // Mobile: 2 columns, 3 rows — mp-1 pleine largeur haut, 2+3 côte à côte, 4+5 côte à côte
+    gap: $space-3;
+    // Mobile : mp-1 pleine largeur en haut, puis 2 × 2
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 200px 160px 160px;
+    grid-template-rows: 220px 170px 170px;
 
-    @include md {
-      grid-template-rows: 220px 200px 200px;
-    }
-
-    @include lg {
-      grid-template-columns: 2fr 1fr 1fr;
-      grid-template-rows: 260px 260px;
-    }
+    @include md { grid-template-rows: 260px 220px 220px; gap: $space-4; }
+    @include lg { grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 280px 280px; }
   }
 
   &__photo {
+    position: relative;
     border-radius: $radius-xl;
     overflow: hidden;
-    position: relative;
-    background-size: cover;
-    background-position: center;
-    background-color: rgba(255, 255, 255, 0.05);
-    transition: transform $transition-base;
+    isolation: isolate;
+    background: var(--color-surface);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 350ms $ease-out-cubic, box-shadow 350ms $ease-out-cubic, outline-color 350ms;
+    outline: 2px solid transparent;
+    outline-offset: 3px;
 
-    &:hover {
-      transform: scale(1.02);
-    }
-    &:hover .montage__caption {
-      opacity: 1;
+    @media (hover: hover) {
+      &:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 16px 34px rgba(0, 0, 0, 0.2);
+        outline-color: $color-accent;
+      }
+      &:hover .montage__img { transform: scale(1.09); }
+      &:hover .montage__caption { transform: translateY(0); opacity: 1; }
     }
 
     // Mobile : mp--1 pleine largeur, les 4 autres en 2x2
-    &.mp--1 {
-      grid-column: 1 / 3;
-      grid-row: 1;
-    }
-    &.mp--2 {
-      grid-column: 1;
-      grid-row: 2;
-    }
-    &.mp--3 {
-      grid-column: 2;
-      grid-row: 2;
-    }
-    &.mp--4 {
-      grid-column: 1;
-      grid-row: 3;
-    }
-    &.mp--5 {
-      grid-column: 2;
-      grid-row: 3;
-    }
+    &.mp--1 { grid-column: 1 / 3; grid-row: 1; }
+    &.mp--2 { grid-column: 1; grid-row: 2; }
+    &.mp--3 { grid-column: 2; grid-row: 2; }
+    &.mp--4 { grid-column: 1; grid-row: 3; }
+    &.mp--5 { grid-column: 2; grid-row: 3; }
 
     @include lg {
-      // Desktop : P1 tall left, P2/P3 top right, P4/P5 bottom right
-      &.mp--1 {
-        grid-column: 1;
-        grid-row: 1 / 3;
-      }
-      &.mp--2 {
-        grid-column: 2;
-        grid-row: 1;
-      }
-      &.mp--3 {
-        grid-column: 3;
-        grid-row: 1;
-      }
-      &.mp--4 {
-        grid-column: 2;
-        grid-row: 2;
-      }
-      &.mp--5 {
-        grid-column: 3;
-        grid-row: 2;
-      }
+      // Desktop : P1 haute à gauche, P2/P3 en haut à droite, P4/P5 en bas à droite
+      &.mp--1 { grid-column: 1; grid-row: 1 / 3; }
+      &.mp--2 { grid-column: 2; grid-row: 1; }
+      &.mp--3 { grid-column: 3; grid-row: 1; }
+      &.mp--4 { grid-column: 2; grid-row: 2; }
+      &.mp--5 { grid-column: 3; grid-row: 2; }
     }
   }
 
+  // Calque image : c'est lui qui zoome, le cadre reste net
+  &__img {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-size: cover;
+    background-position: center;
+    transition: transform 700ms $ease-out-cubic;
+  }
+
+  // Légende : toujours visible sur les écrans tactiles (pas de survol) ; sur souris elle glisse au survol
   &__caption {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: $space-3 $space-4;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-    opacity: 0;
-    transition: opacity $transition-base;
+    inset: auto 0 0 0;
+    display: flex;
+    align-items: baseline;
+    gap: $space-3;
+    padding: $space-8 $space-4 $space-3;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.72), transparent);
+    color: #fff;
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    letter-spacing: 0.03em;
 
-    span {
-      font-size: $text-sm;
-      font-weight: $font-semibold;
-      color: #fff;
-      letter-spacing: 0.04em;
+    @media (hover: hover) {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 350ms $ease-out-cubic, transform 350ms $ease-out-cubic;
     }
+  }
+
+  &__num {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: $text-xs;
+    color: $color-accent;
   }
 
   &__credit {
     margin-top: $space-6;
     text-align: center;
     font-size: $text-xs;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--color-text-muted);
 
     a {
-      color: rgba(255, 222, 89, 0.6);
-      text-decoration: none;
-      &:hover {
-        color: $color-accent;
-      }
+      color: var(--color-text);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      &:hover { color: var(--color-accent-text); }
     }
   }
 }
 
-// Background images — Cameroun (Unsplash fallback, remplaçable par photos locales).
-// Appliquées seulement une fois la grille révélée (classe .visible, posée à l'approche de l'écran) :
-// sinon le navigateur télécharge ces 5 photos externes dès le chargement de la page.
-// P1 : Yaoundé — capitale, vue urbaine
-.montage__grid.visible .mp--1 {
+// Photos de remplacement (Unsplash) pour Yaoundé et Buea tant que `MONTAGE_PHOTOS[].file` est vide
+// (images.config.ts). Appliquées seulement une fois la grille révélée (.visible) : sinon le navigateur
+// télécharge ces photos externes dès le chargement de la page.
+// TODO(israel): vraies photos de Yaoundé et de Buea.
+.montage__grid.visible .mp--1 .montage__img {
   background-image: url("https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=900&q=80&fit=crop");
 }
-// P2 : Buea / Mont Cameroun — volcan et forêt tropicale
-.montage__grid.visible .mp--2 {
+.montage__grid.visible .mp--2 .montage__img {
   background-image: url("https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80&fit=crop");
 }
-// P3 : Douala — ville économique, port
-.montage__grid.visible .mp--3 {
-  background-image: url("https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=600&q=80&fit=crop");
+
+// ===== ALTERNANCE DES FONDS =====
+// Rythme de la page : fond de page → bandeau teinté (projets) → fond de page → dégradé doré très léger (citation)
+// → fond de page (Cameroun, sans couleur) → marine (appel à l'action).
+// Les bandes teintées ont un filet fin en haut et en bas : les sections restent nettement séparées sans bloc sombre.
+app-featured-projects,
+app-shop-section {
+  display: block;
 }
-// P4 : Kribi — plage, mer atlantique
-.montage__grid.visible .mp--4 {
-  background-image: url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80&fit=crop");
+
+app-featured-projects {
+  background: var(--color-surface);
+  border-block: 1px solid var(--color-border);
 }
-// P5 : Limbé — baie volcanique, paysage côtier
-.montage__grid.visible .mp--5 {
-  background-image: url("https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=900&q=80&fit=crop");
+
+.moodboard {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-accent) 11%, var(--color-bg)) 0%, var(--color-bg) 100%);
 }
+

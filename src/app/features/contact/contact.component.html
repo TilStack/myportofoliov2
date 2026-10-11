@@ -16,6 +16,8 @@
         {{ email }}
       </a>
 
+      <app-presenter class="contact-presenter" pose="contact" [label]="i18n.t('contact.presenter')" />
+
       <div class="contact-socials">
         @for (s of socials; track s.href) {
           <a [href]="s.href" target="_blank" rel="noopener noreferrer"

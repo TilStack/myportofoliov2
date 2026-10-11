@@ -16,7 +16,7 @@
           <span class="product__kind">{{ i18n.t('shop.kind.' + p.kind) }}</span>
           <h3 class="product__name">{{ p.name }}</h3>
           <p class="product__desc">{{ i18n.lang() === 'fr' ? p.descriptionFr : p.descriptionEn }}</p>
-          <app-price [price]="p.price" />
+          <app-price [price]="p.price" [euro]="euro()" />
           <a class="cta product__cta" [href]="p.url" target="_blank" rel="noopener">
             {{ i18n.t('shop.cta') }}
             <span class="sr-only"> — {{ p.name }}</span>

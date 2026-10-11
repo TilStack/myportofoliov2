@@ -1,3 +1,4 @@
+import { OWNER_AVATAR, isOwnerAuthor } from './quote-author';
 import { Component, afterNextRender, computed, HostListener, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
@@ -174,6 +175,9 @@ export class QuotesComponent {
     this.currentPage.set(page);
     scrollToTop();
   }
+
+  readonly ownerAvatar = OWNER_AVATAR;
+  isOwner(author: string): boolean { return isOwnerAuthor(author); }
 
   initials(author: string): string {
     return author.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);

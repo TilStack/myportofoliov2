@@ -2,12 +2,13 @@
 
   <!-- ===== PAGE HEADER ===== -->
   <header class="projects-page__header">
-    <div class="container">
+    <div class="container projects-page__header-inner">
       <div class="fade-up" appFadeOnScroll>
         <span class="projects-page__eyebrow">{{ i18n.t('projects.eyebrow') }}</span>
         <h1 class="projects-page__title">{{ i18n.t('projects.title') }}</h1>
         <p class="projects-page__subtitle">{{ i18n.t('projects.subtitle') }}</p>
       </div>
+      <app-presenter class="projects-page__presenter" pose="projects" [label]="i18n.t('projects.presenter')" />
     </div>
   </header>
 

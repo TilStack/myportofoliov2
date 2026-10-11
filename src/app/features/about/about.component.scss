@@ -222,22 +222,42 @@ $accent: $color-accent;
 }
 
 // ── Mon Stack : couches empilées, lignes fines et tons gris ─────────────────────
+// Stack : présentateur 3D à gauche (sticky sur grand écran), couches en cartes à droite
+.skills-section__layout {
+  display: grid;
+  gap: $space-8;
+  grid-template-columns: minmax(0, 1fr);
+
+  @include lg { grid-template-columns: 240px minmax(0, 1fr); gap: $space-12; align-items: start; }
+}
+
+.skills-section__presenter {
+  @include lg { position: sticky; top: calc(#{$navbar-height} + #{$space-8}); }
+}
+
 .stack {
   list-style: none;
   margin: 0;
   padding: 0;
-  border-top: 1px solid var(--color-border);
+  display: grid;
+  gap: $space-4;
 
   &__row {
     display: grid;
-    gap: $space-3 $space-8;
-    padding: $space-6 $space-3;
-    border-bottom: 1px solid var(--color-border);
-    transition: background $transition-base;
+    gap: $space-4 $space-8;
+    padding: $space-5 $space-5;
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: $radius-xl;
+    transition: border-color $transition-base, transform $transition-base, box-shadow $transition-base;
 
-    @include md { grid-template-columns: minmax(200px, 260px) 1fr; align-items: center; }
+    @include md { grid-template-columns: minmax(170px, 210px) 1fr; align-items: center; }
 
-    &:hover { background: var(--tag-bg); }
+    &:hover {
+      border-color: color-mix(in srgb, var(--color-accent) 70%, var(--color-border));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+    }
   }
 
   &__head { display: flex; align-items: center; gap: $space-4; }

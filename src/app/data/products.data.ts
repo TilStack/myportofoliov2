@@ -23,7 +23,7 @@ export interface DigitalProduct {
   id: string;
   name: string;
   /** Nature de l'offre, pour l'étiquette affichée sur la carte. */
-  kind: 'prompts' | 'course';
+  kind: 'prompts' | 'course' | 'skill';
   descriptionFr: string;
   descriptionEn: string;
   url: string;
@@ -34,6 +34,18 @@ export interface DigitalProduct {
 export function discountPercent(price: Price): number | null {
   if (!price.compareAt || price.compareAt <= price.amount) return null;
   return Math.round((1 - price.amount / price.compareAt) * 100);
+}
+
+/** Parité fixe officielle : 1 € = 655,957 F CFA (XAF). Les prix de la boutique restent en XAF ; l'euro est indicatif. */
+export const XAF_PER_EUR = 655.957;
+
+/**
+ * « ≈ 11,43 € » (FR) / « ≈ €11.43 » (EN) : montant XAF converti en euros, 2 décimales. Écrit à la main (pas d'Intl)
+ * pour un rendu identique au pré-rendu serveur.
+ */
+export function formatEuro(amountXaf: number, lang: 'fr' | 'en' = 'fr'): string {
+  const eur = (Math.round((amountXaf / XAF_PER_EUR) * 100) / 100).toFixed(2);
+  return lang === 'fr' ? `≈\u00A0${eur.replace('.', ',')}\u00A0€` : `≈\u00A0€${eur}`;
 }
 
 /**
@@ -62,6 +74,15 @@ export const PRODUCTS: DigitalProduct[] = [
     descriptionEn: 'Online course on educational AI for teachers.',
     url: 'https://store.tilstack.me/prd_ehy1y5',
     price: { amount: 6000, currency: 'XAF', compareAt: 15000, updatedAt: '2026-09-24' },
+  },
+  {
+    id: 'prd_t6xzuw62',
+    name: 'Remotion Video Studio — le skill Claude qui fabrique tes vidéos animées',
+    kind: 'skill',
+    descriptionFr: "Un skill Claude qui crée des vidéos animées à partir d'une simple description : personnages, voix off et sous-titres, exportées en MP4.",
+    descriptionEn: 'A Claude skill that creates animated videos from a plain description: characters, voice-over and subtitles, exported as MP4.',
+    url: 'https://store.tilstack.me/prd_t6xzuw62',
+    price: { amount: 7500, currency: 'XAF', compareAt: 12000, updatedAt: '2026-10-11' },
   },
 ];
 

@@ -1,3 +1,4 @@
+import { PresenterComponent } from '../../shared/components/presenter/presenter.component';
 import { NgOptimizedImage } from '@angular/common';
 import { Component, HostListener, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -10,7 +11,7 @@ import { responsiveImage } from '../../shared/utils/responsive-image';
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [RouterLink, NgOptimizedImage, FadeOnScrollDirective, ProjectIconComponent],
+  imports: [RouterLink, NgOptimizedImage, FadeOnScrollDirective, ProjectIconComponent, PresenterComponent],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss',
 })

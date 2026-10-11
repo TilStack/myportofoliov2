@@ -55,20 +55,32 @@
       </div>
     </div>
 
-    <!-- Profile photo -->
+    <!-- Personnage : avatar 3D en vedette ; survol / tap = changement de pose (voir HomeComponent.poses) -->
     <div class="hero__deco">
-      <div class="hero__deco-card">
-        <img
-          class="hero__deco-photo"
-          [ngSrc]="heroPhoto.src"
-          [width]="heroPhoto.width"
-          [height]="heroPhoto.height"
-          [ngSrcset]="heroPhoto.srcset"
-          sizes="(min-width: 1024px) 220px, 178px"
-          priority
-          alt="Israel Tientcheu — développeur Full-Stack passionné, créateur de TilStack"
-        />
-      </div>
+      <button
+        type="button"
+        class="hero__stage"
+        [attr.aria-label]="i18n.t('hero.changePose')"
+        (pointerenter)="onPoseEnter($event)"
+        (pointerdown)="onPoseDown($event)"
+        (click)="onPoseClick($event)"
+      >
+        <span class="hero__stage-glow" aria-hidden="true"></span>
+        @for (p of poses; track p.src; let i = $index) {
+          <img
+            class="hero__pose"
+            [class.hero__deco-photo]="i === 0"
+            [class.hero__pose--full]="p.kind === 'full'"
+            [class.hero__pose--bust]="p.kind === 'bust'"
+            [class.is-active]="pose() === i"
+            [ngSrc]="p.src"
+            [width]="p.width"
+            [height]="p.height"
+            [priority]="i === 0"
+            [alt]="p.alt"
+          />
+        }
+      </button>
     </div>
   </div>
 
@@ -83,6 +95,21 @@
   </a>
 </section>
 
+<!-- ===== TECHNOLOGIES ===== -->
+<section class="stack-strip" [attr.aria-label]="i18n.t('home.stackEyebrow')">
+  <div class="container">
+    <p class="stack-strip__label">{{ i18n.t('home.stackEyebrow') }}</p>
+    <ul class="stack-strip__list" role="list">
+      @for (t of stack; track t.name) {
+        <li class="stack-strip__item">
+          <span class="stack-strip__logo" [style.--logo]="'url(/images/tech/' + t.file + '.svg)'" [style.--c]="t.color ?? 'var(--color-text)'" aria-hidden="true"></span>
+          <span>{{ t.name }}</span>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
 <!-- ===== PROJETS PHARES ===== -->
 @defer (on viewport; hydrate on viewport) {
   <app-featured-projects />
@@ -90,36 +117,22 @@
   <div class="defer-ph"></div>
 }
 
-<!-- ===== MOODBOARD — Quote Grid ===== -->
+<!-- ===== BOUTIQUE (produits digitaux) ===== -->
+@defer (on viewport; hydrate on viewport) {
+  <app-shop-section [showAllLink]="true" [euro]="true" />
+} @placeholder {
+  <div class="defer-ph"></div>
+}
+
+<!-- ===== CITATION ===== -->
 @defer (on viewport; hydrate on viewport) {
   <section class="moodboard section" id="moodboard">
     <div class="container">
-      <div class="moodboard__header fade-up" appFadeOnScroll>
-        <h2 class="section__title">{{ i18n.t("quotes.title") }}</h2>
-        <p class="section__subtitle">{{ i18n.t("quotes.subtitle") }}</p>
-      </div>
-
-      <div class="moodboard__layout">
-        <!-- Citation mise en avant -->
-        <figure class="featured-quote fade-up" appFadeOnScroll>
-          <span class="featured-quote__label">{{ i18n.t("home.latestQuote") }}</span>
-          <span class="featured-quote__mark" aria-hidden="true"><app-icon name="quote" [size]="64" /></span>
-          <blockquote class="featured-quote__text">{{ featuredQuote.text }}</blockquote>
-          <figcaption class="featured-quote__author">{{ featuredQuote.author }}</figcaption>
-        </figure>
-
-        <!-- Quelques autres citations, sobres -->
-        <ul class="quote-list" role="list">
-          @for (quote of quotes(); track quote.id; let i = $index) {
-            <li class="quote-list__item fade-up" appFadeOnScroll [delay]="(i + 1) * 100">
-              <blockquote class="quote-list__text">{{ quote.text }}</blockquote>
-              <cite class="quote-list__author">{{ quote.author }}</cite>
-            </li>
-          }
-        </ul>
-      </div>
-
-      <p class="moodboard__more fade-up" appFadeOnScroll>
+      <figure class="featured-quote fade-up" appFadeOnScroll>
+        <span class="featured-quote__label">{{ i18n.t("home.quoteEyebrow") }}</span>
+        <span class="featured-quote__mark" aria-hidden="true"><app-icon name="quote" [size]="64" /></span>
+        <blockquote class="featured-quote__text">{{ featuredQuote.text }}</blockquote>
+        <figcaption class="featured-quote__author">{{ featuredQuote.author }}</figcaption>
         <a routerLink="/quotes" class="moodboard__cta-link">
           {{ i18n.t("home.seeAllQuotes") }}
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -127,141 +140,9 @@
             <polyline points="12 5 19 12 12 19"></polyline>
           </svg>
         </a>
-      </p>
+      </figure>
     </div>
   </section>
-} @placeholder {
-  <div class="defer-ph"></div>
-}
-
-<!-- ===== PAGE PREVIEWS ===== -->
-@defer (on viewport; hydrate on viewport) {
-  <section class="discover section">
-    <div class="container">
-      <div class="discover__header fade-up" appFadeOnScroll>
-        <h2 class="section__title">{{ i18n.t("home.discoverTitle") }}</h2>
-        <p class="section__subtitle">{{ i18n.t("home.discoverSub") }}</p>
-      </div>
-
-      <div class="discover__grid">
-        <!-- About card -->
-        <a
-          routerLink="/about"
-          class="page-card fade-up"
-          appFadeOnScroll
-          [delay]="0"
-        >
-          <div class="page-card__visual pv--about">
-            <span class="page-card__index" aria-hidden="true">01</span>
-            <img
-              class="page-card__cover"
-              [ngSrc]="cardPhoto.src"
-              [ngSrcset]="cardPhoto.srcset"
-              sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
-              fill
-              alt="Israel Tientcheu"
-            />
-            <div class="page-card__cover-overlay pco--about"></div>
-            <div class="page-card__cover-badges">
-              <span class="pcb__badge">{{ i18n.t('home.badgeDev') }}</span>
-              <span class="pcb__badge pcb__badge--accent">{{ i18n.t('home.badgeAI') }}</span>
-              <span class="pcb__badge">{{ i18n.t('home.badgeTeacher') }}</span>
-            </div>
-          </div>
-          <div class="page-card__body">
-            <span class="page-card__eyebrow">{{ i18n.t("nav.about") }}</span>
-            <h3 class="page-card__title">{{ i18n.t("home.aboutCard") }}</h3>
-            <p class="page-card__desc">{{ i18n.t("home.aboutCardDesc") }}</p>
-            <span class="page-card__link">{{ i18n.t("home.explore") }} →</span>
-          </div>
-        </a>
-
-        <!-- Projects card -->
-        <a
-          routerLink="/projects"
-          class="page-card fade-up"
-          appFadeOnScroll
-          [delay]="80"
-        >
-          <div class="page-card__visual pv--projects">
-            <span class="page-card__index" aria-hidden="true">02</span>
-            <div class="page-card__cover-overlay pco--projects"></div>
-            <ul class="page-card__cover-projects" aria-hidden="true">
-              @for (p of previewProjects; track p.slug) {
-                <li class="pcp__row">
-                  <span class="pcp__dot" [class.pcp__dot--done]="p.status === 'finished'"></span>
-                  <span class="pcp__name">{{ p.name }}</span>
-                  <span class="pcp__tech">{{ p.tech[0] }}</span>
-                </li>
-              }
-            </ul>
-          </div>
-          <div class="page-card__body">
-            <span class="page-card__eyebrow">{{ i18n.t("nav.projects") }}</span>
-            <h3 class="page-card__title">{{ i18n.t("home.projectsCard") }}</h3>
-            <p class="page-card__desc">{{ i18n.t("home.projectsCardDesc") }}</p>
-            <span class="page-card__link">{{ i18n.t("home.explore") }} →</span>
-          </div>
-        </a>
-
-        <!-- Blog card -->
-        <a
-          routerLink="/blog"
-          class="page-card fade-up"
-          appFadeOnScroll
-          [delay]="160"
-        >
-          <div class="page-card__visual pv--blog">
-            <span class="page-card__index" aria-hidden="true">03</span>
-            <div class="page-card__cover-overlay pco--blog"></div>
-            <div class="page-card__cover-article" aria-hidden="true">
-              <span class="pca__label">{{ i18n.t('home.blogTopics') }}</span>
-              <div class="pca__tags">
-                @for (t of blogTopics; track t) { <span class="pca__pill">{{ t }}</span> }
-              </div>
-            </div>
-          </div>
-          <div class="page-card__body">
-            <span class="page-card__eyebrow">{{ i18n.t("nav.blog") }}</span>
-            <h3 class="page-card__title">{{ i18n.t("home.blogCard") }}</h3>
-            <p class="page-card__desc">{{ i18n.t("home.blogCardDesc") }}</p>
-            <span class="page-card__link">{{ i18n.t("home.explore") }} →</span>
-          </div>
-        </a>
-
-        <!-- Quotes card -->
-        <a
-          routerLink="/quotes"
-          class="page-card fade-up"
-          appFadeOnScroll
-          [delay]="240"
-        >
-          <div class="page-card__visual pv--quotes">
-            <span class="page-card__index" aria-hidden="true">04</span>
-            <div class="page-card__cover-overlay pco--quotes"></div>
-            <div class="page-card__cover-quote" aria-hidden="true">
-              <span class="pcq__mark"><app-icon name="quote" [size]="30" /></span>
-              <p class="pcq__text">{{ previewQuote.text }}</p>
-              <span class="pcq__author">— {{ previewQuote.author }}</span>
-            </div>
-          </div>
-          <div class="page-card__body">
-            <span class="page-card__eyebrow">{{ i18n.t("nav.quotes") }}</span>
-            <h3 class="page-card__title">{{ i18n.t("home.quotesCard") }}</h3>
-            <p class="page-card__desc">{{ i18n.t("home.quotesCardDesc") }}</p>
-            <span class="page-card__link">{{ i18n.t("home.explore") }} →</span>
-          </div>
-        </a>
-      </div>
-    </div>
-  </section>
-} @placeholder {
-  <div class="defer-ph"></div>
-}
-
-<!-- ===== BOUTIQUE (produits digitaux) ===== -->
-@defer (on viewport; hydrate on viewport) {
-  <app-shop-section [showAllLink]="true" />
 } @placeholder {
   <div class="defer-ph"></div>
 }
@@ -271,73 +152,49 @@
   <section class="montage" id="cameroon">
     <div class="container">
       <div class="montage__header fade-up" appFadeOnScroll>
+        <span class="montage__tag">{{ i18n.t("home.montageTag") }}</span>
         <h2 class="montage__title">{{ i18n.t("home.montageTitle") }}</h2>
         <p class="montage__sub">{{ i18n.t("home.montageSub") }}</p>
       </div>
 
       <div class="montage__grid fade-up" appFadeOnScroll [delay]="80">
         <!-- P1: Yaoundé — large, spans 2 rows on left -->
-        <div
-          class="montage__photo mp--1"
-          [style.background-image]="
-            montagePhotos[0].file ? 'url(/' + montagePhotos[0].file + ')' : null
-          "
-          role="img"
-          [attr.aria-label]="montagePhotos[0].caption"
-        >
+        <div class="montage__photo mp--1" role="img" [attr.aria-label]="montagePhotos[0].caption">
+          <span class="montage__img" [style.background-image]="montagePhotos[0].file ? 'url(/' + montagePhotos[0].file + ')' : null"></span>
           <div class="montage__caption">
+            <span class="montage__num" aria-hidden="true">01</span>
             <span>{{ montagePhotos[0].caption }}</span>
           </div>
         </div>
         <!-- P2: Bansoa — top middle -->
-        <div
-          class="montage__photo mp--2"
-          [style.background-image]="
-            montagePhotos[1].file ? 'url(/' + montagePhotos[1].file + ')' : null
-          "
-          role="img"
-          [attr.aria-label]="montagePhotos[1].caption"
-        >
+        <div class="montage__photo mp--2" role="img" [attr.aria-label]="montagePhotos[1].caption">
+          <span class="montage__img" [style.background-image]="montagePhotos[1].file ? 'url(/' + montagePhotos[1].file + ')' : null"></span>
           <div class="montage__caption">
+            <span class="montage__num" aria-hidden="true">02</span>
             <span>{{ montagePhotos[1].caption }}</span>
           </div>
         </div>
         <!-- P3: Douala — top right -->
-        <div
-          class="montage__photo mp--3"
-          [style.background-image]="
-            montagePhotos[2].file ? 'url(/' + montagePhotos[2].file + ')' : null
-          "
-          role="img"
-          [attr.aria-label]="montagePhotos[2].caption"
-        >
+        <div class="montage__photo mp--3" role="img" [attr.aria-label]="montagePhotos[2].caption">
+          <span class="montage__img" [style.background-image]="montagePhotos[2].file ? 'url(/' + montagePhotos[2].file + ')' : null"></span>
           <div class="montage__caption">
+            <span class="montage__num" aria-hidden="true">03</span>
             <span>{{ montagePhotos[2].caption }}</span>
           </div>
         </div>
         <!-- P4: Kribi — bottom middle -->
-        <div
-          class="montage__photo mp--4"
-          [style.background-image]="
-            montagePhotos[3].file ? 'url(/' + montagePhotos[3].file + ')' : null
-          "
-          role="img"
-          [attr.aria-label]="montagePhotos[3].caption"
-        >
+        <div class="montage__photo mp--4" role="img" [attr.aria-label]="montagePhotos[3].caption">
+          <span class="montage__img" [style.background-image]="montagePhotos[3].file ? 'url(/' + montagePhotos[3].file + ')' : null"></span>
           <div class="montage__caption">
+            <span class="montage__num" aria-hidden="true">04</span>
             <span>{{ montagePhotos[3].caption }}</span>
           </div>
         </div>
         <!-- P5: Lagdo — bottom right large -->
-        <div
-          class="montage__photo mp--5"
-          [style.background-image]="
-            montagePhotos[4].file ? 'url(/' + montagePhotos[4].file + ')' : null
-          "
-          role="img"
-          [attr.aria-label]="montagePhotos[4].caption"
-        >
+        <div class="montage__photo mp--5" role="img" [attr.aria-label]="montagePhotos[4].caption">
+          <span class="montage__img" [style.background-image]="montagePhotos[4].file ? 'url(/' + montagePhotos[4].file + ')' : null"></span>
           <div class="montage__caption">
+            <span class="montage__num" aria-hidden="true">05</span>
             <span>{{ montagePhotos[4].caption }}</span>
           </div>
         </div>
@@ -368,3 +225,14 @@
 } @placeholder {
   <div class="defer-ph"></div>
 }
+
+<!-- ===== CONTACT ===== -->
+<section class="cta-band">
+  <div class="container cta-band__inner">
+    <div>
+      <h2 class="cta-band__title">{{ i18n.t("home.ctaTitle") }}</h2>
+      <p class="cta-band__text">{{ i18n.t("home.ctaText") }}</p>
+    </div>
+    <a routerLink="/contact" class="cta-band__btn">{{ i18n.t("home.ctaButton") }}</a>
+  </div>
+</section>

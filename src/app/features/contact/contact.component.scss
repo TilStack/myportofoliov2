@@ -175,3 +175,5 @@
   text-align: center;
   margin-top: $space-2;
 }
+
+.contact-presenter { display: none; --h: 170px; margin-block: $space-6; @include lg { display: block; } }

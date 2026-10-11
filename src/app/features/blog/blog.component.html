@@ -22,30 +22,6 @@
     </div>
   </header>
 
-  <!-- ═══════════════════════════════════ FILTERS ═══ -->
-  <div class="container">
-    <div class="blog-filters fade-up" appFadeOnScroll [delay]="120">
-      <button
-        class="blog-filter-btn"
-        [class.active]="activeFilter() === 'all'"
-        (click)="setFilter('all')"
-      >{{ i18n.t('blog.filterAll') }}</button>
-      <button
-        class="blog-filter-btn"
-        [class.active]="activeFilter() === 'mine'"
-        (click)="setFilter('mine')"
-      >{{ i18n.t('blog.filterMine') }}</button>
-      <button
-        class="blog-filter-btn blog-filter-btn--external"
-        [class.active]="activeFilter() === 'zerofiltre'"
-        (click)="setFilter('zerofiltre')"
-      >
-        <span class="zf-dot" aria-hidden="true"></span>
-        {{ i18n.t('blog.filterZerofiltre') }}
-      </button>
-    </div>
-  </div>
-
   <!-- ═══════════════════════════════════ FEATURED SKELETON ═══ -->
   @if (loading()) {
     <div class="container">
@@ -84,16 +60,10 @@
                 <span>{{ featured.coverIcon }}</span>
               </div>
             }
-            <span class="blog-featured__badge">{{ i18n.t('blog.featured') }}</span>
           </div>
 
           <!-- Content -->
           <div class="blog-featured__body">
-            <div class="blog-featured__tags">
-              @for (tag of featured.tags; track tag) {
-                <span class="btag">{{ tag }}</span>
-              }
-            </div>
 
             <h2 class="blog-featured__title">{{ featured.title }}</h2>
             <p class="blog-featured__excerpt">{{ featured.excerpt }}</p>
@@ -169,23 +139,10 @@
                     <span>{{ article.coverIcon }}</span>
                   </div>
                 }
-
-                <!-- Zerofiltre badge -->
-                @if (article.source === 'zerofiltre') {
-                  <span class="blog-card__source-badge">
-                    <span class="zf-dot zf-dot--sm" aria-hidden="true"></span>
-                    {{ i18n.t('blog.external') }}
-                  </span>
-                }
               </div>
 
               <!-- Body -->
               <div class="blog-card__body">
-                <div class="blog-card__tags">
-                  @for (tag of article.tags.slice(0, 3); track tag) {
-                    <span class="btag">{{ tag }}</span>
-                  }
-                </div>
 
                 <h3 class="blog-card__title">{{ article.title }}</h3>
                 <p class="blog-card__excerpt">{{ article.excerpt }}</p>

@@ -23,6 +23,10 @@ export class NavbarComponent {
 
   scrolled  = signal(false);
 
+  /** Accueil : actif seulement sur « / » (les paramètres d'URL comme ?utm_source ou ?fbclid sont ignorés). */
+  readonly exactPath = { paths: 'exact', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored' } as const;
+  readonly subsetPath = { paths: 'subset', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored' } as const;
+
   links: NavLink[] = [
     { key: 'nav.home',     path: '/', icon: 'home'         },
     { key: 'nav.about',    path: '/about', icon: 'user'    },

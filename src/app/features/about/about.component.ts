@@ -1,3 +1,4 @@
+import { PresenterComponent } from '../../shared/components/presenter/presenter.component';
 import {
   Component,
   HostListener,
@@ -47,7 +48,7 @@ interface TravelImage {
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [FadeOnScrollDirective, NgOptimizedImage, CareerSectionComponent, TeachingSectionComponent, IconComponent],
+  imports: [FadeOnScrollDirective, NgOptimizedImage, CareerSectionComponent, TeachingSectionComponent, IconComponent, PresenterComponent],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss',
 })

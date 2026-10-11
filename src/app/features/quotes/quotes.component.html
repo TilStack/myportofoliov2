@@ -101,7 +101,13 @@
             <blockquote class="qcard__text">{{ quote.text }}</blockquote>
 
             <div class="qcard__meta">
-              <div class="qcard__author-avatar" aria-hidden="true">{{ initials(quote.author) }}</div>
+              <div class="qcard__author-avatar" [class.qcard__author-avatar--logo]="isOwner(quote.author)" aria-hidden="true">
+                @if (isOwner(quote.author)) {
+                  <img [src]="ownerAvatar" alt="Logo TilStack" width="40" height="40" loading="lazy" />
+                } @else {
+                  {{ initials(quote.author) }}
+                }
+              </div>
               <div>
                 <cite class="qcard__author">{{ quote.author }}</cite>
                 <span class="qcard__date">{{ quote.date | date:'dd/MM/yyyy' }}</span>

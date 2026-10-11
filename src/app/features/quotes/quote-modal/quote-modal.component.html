@@ -33,7 +33,13 @@
 
     <!-- Author row -->
     <div class="qmodal__author-row">
-      <div class="qmodal__avatar" aria-hidden="true">{{ initials }}</div>
+      <div class="qmodal__avatar" [class.qmodal__avatar--logo]="isOwner" aria-hidden="true">
+        @if (isOwner) {
+          <img [src]="ownerAvatar" alt="Logo TilStack" width="48" height="48" />
+        } @else {
+          {{ initials }}
+        }
+      </div>
       <div class="qmodal__author-info">
         <span class="qmodal__author-name">{{ quote.author }}</span>
         <span class="qmodal__date">{{ formattedDate }}</span>
