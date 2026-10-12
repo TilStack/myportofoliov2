@@ -31,6 +31,8 @@ export interface Project {
   slug: string;
   name: string;
   icon: string;
+  /** Logo du projet (carré, fond blanc) : remplace le croquis sur la carte et la fenêtre. */
+  logo?: string;
   company: string;
   status: 'finished' | 'in-progress' | 'coming-soon';
   /** Début du projet, « AAAA-MM » (affiché « Depuis … » sur la carte). Absent : rien n'est affiché. */
@@ -192,6 +194,7 @@ export const PROJECTS: Project[] = [
     category: 'personal',
     name: 'Otadex',
     icon: '⚡',
+    logo: 'images/projects/otadex-logo.webp',
     company: 'Personal',
     status: 'coming-soon', // « Bientôt sur le Play Store »
     featured: true,
@@ -259,6 +262,7 @@ export const PROJECTS: Project[] = [
     category: 'team',
     name: 'Nuvel',
     icon: '✝️',
+    logo: 'images/projects/nuvel-logo.webp',
     company: 'Collaboration',
     status: 'in-progress',
     featured: true,
@@ -272,6 +276,26 @@ export const PROJECTS: Project[] = [
       "Nuvel est une application sociale chrétienne qui réunit les croyants dans un réseau communautaire. Le projet a été conçu par Daniel ; j'en suis le partenaire et nous le construisons ensemble. Il est en cours de développement et n'est pas encore sorti ni en ligne.",
     contributors: [DANIEL, { ...ISRAEL, roleEn: 'Partner', roleFr: 'Partenaire' }],
     images: ['images/projects/nuvel-cover.svg'], // illustration en attendant les vraies captures — TODO(israel)
+  },
+  {
+    id: 9,
+    slug: 'ouestinvest237',
+    category: 'team',
+    name: 'OuestInvest237',
+    icon: '🤝',
+    logo: 'images/projects/ouestinvest-logo.webp',
+    company: 'Collaboration',
+    status: 'in-progress',
+    // TODO(israel): date de début (startedAt), équipe/partenaires à citer et captures réelles.
+    tech: ['Angular', 'FastAPI', 'Python', 'Docker'],
+    descEn: 'A B2B platform connecting businesses and investors in the West region of Cameroon — in development, not yet online.',
+    descFr: "Une plateforme B2B qui met en relation les entreprises et les investisseurs de la région de l'Ouest du Cameroun — en cours de développement, pas encore en ligne.",
+    detailEn:
+      'OuestInvest237 is a B2B platform that connects businesses of the West region of Cameroon with investors (pilot: Bafoussam). Companies publish a profile that is progressively verified; investors describe what they are looking for, and the platform suggests matches and helps start the conversation. It is built in collaboration with the region\'s businesses and investors. It is under development and is not yet online.',
+    detailFr:
+      "OuestInvest237 est une plateforme B2B qui met en relation les entreprises de la région de l'Ouest du Cameroun et les investisseurs (pilote : Bafoussam). Les entreprises publient un profil vérifié progressivement ; les investisseurs décrivent ce qu'ils recherchent, et la plateforme suggère des correspondances et facilite la prise de contact. Elle est construite en collaboration avec les entreprises et les investisseurs de la région. Elle est en cours de développement et n'est pas encore en ligne.",
+    contributors: [{ ...ISRAEL, roleEn: 'Developer', roleFr: 'Développeur' }],
+    images: ['images/projects/ouestinvest-logo.webp'], // logo en attendant les vraies captures — TODO(israel)
   },
 ];
 

@@ -12,6 +12,9 @@ let nextId = 0;
   selector: 'app-project-icon',
   standalone: true,
   template: `
+    @if (logo()) {
+      <img class="project-logo" [src]="logo()" [alt]="name()" [attr.width]="size()" [attr.height]="size()" loading="lazy" />
+    } @else {
     <svg
       class="sketch"
       viewBox="0 0 48 48"
@@ -109,9 +112,11 @@ let nextId = 0;
         }
       }
     </svg>
+    }
   `,
   styles: `
     :host { display: inline-flex; line-height: 0; }
+    .project-logo { display: block; border-radius: 12px; background: #fff; object-fit: contain; }
     .marker { fill: var(--sketch-marker, #ffde59); stroke: none; opacity: 0.85; }
   `,
 })
@@ -124,4 +129,8 @@ export class ProjectIconComponent {
   /** Emoji de repli si le slug n'a pas de croquis. */
   readonly fallback = input('•');
   readonly size = input(34);
+  /** Logo du projet (chemin public) : s'il existe, il remplace le croquis. */
+  readonly logo = input<string | undefined>(undefined);
+  /** Nom du projet : texte alternatif du logo. */
+  readonly name = input('');
 }

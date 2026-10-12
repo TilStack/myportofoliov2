@@ -47,7 +47,7 @@
           <div class="pcard__top">
             <!-- Icon badge (croquis) -->
             <div class="pcard__icon" aria-hidden="true">
-              <app-project-icon [slug]="p.slug" [fallback]="p.icon" [size]="34" />
+              <app-project-icon [slug]="p.slug" [fallback]="p.icon" [size]="p.logo ? 52 : 34" [logo]="p.logo" [name]="'Logo ' + p.name" />
             </div>
             @if (since(p); as when) {
               <span class="pcard__since">
@@ -137,7 +137,7 @@
 
         <!-- Large icon -->
         <div class="pmodal__hero-icon" aria-hidden="true">
-          <app-project-icon [slug]="selected()!.slug" [fallback]="selected()!.icon" [size]="72" />
+          <app-project-icon [slug]="selected()!.slug" [fallback]="selected()!.icon" [size]="72" [logo]="selected()!.logo" [name]="'Logo ' + selected()!.name" />
         </div>
 
         <!-- Floating tech pills -->
