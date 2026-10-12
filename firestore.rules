@@ -20,7 +20,7 @@ service cloud.firestore {
     // ── Fonctions ────────────────────────────────────────────────────────────
     function isAdmin() {
       return request.auth != null
-        && request.auth.uid == '__ADMIN_UID__'
+        && request.auth.uid == 'XBWrMM6uudW4uuFezVpmP1pKGa73'
         && request.auth.token.email_verified == true;
     }
 

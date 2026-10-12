@@ -29,7 +29,6 @@ export const DEVPEA_LINKEDIN_URL = 'https://www.linkedin.com/company/devpea/';
 /**
  * UID Firebase Auth du compte admin (connexion Google sur /admin).
  * Public par nature : la vraie protection est dans firestore.rules (isAdmin()).
- * TODO(israel): après ta première connexion sur /admin, copie ici l'UID affiché,
- *   ET dans firestore.rules (remplacer __ADMIN_UID__) avant le déploiement.
+ * Renseigné après la première connexion de l'admin sur /admin ; la même valeur est dans firestore.rules.
  */
-export const ADMIN_UID = '';
+export const ADMIN_UID = 'XBWrMM6uudW4uuFezVpmP1pKGa73';
