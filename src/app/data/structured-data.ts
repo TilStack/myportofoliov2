@@ -50,7 +50,6 @@ export function websiteSchema(): JsonLd {
 /**
  * Un Product par produit Chariow, avec son `offers` (prix actuel en XAF, en stock).
  * Branché sur l'accueil et /boutique, les deux pages qui affichent ces produits (nom, prix et lien visibles).
- * TODO(israel): ajouter `image` (visuel de chaque produit) : Google le recommande pour les extraits Product.
  * Google exige que le balisage corresponde à du contenu visible, et le prix à celui de la boutique
  * (à tenir à jour dans products.data.ts).
  */
@@ -62,6 +61,7 @@ export function productSchemas(): JsonLd[] {
     name: p.name,
     description: p.descriptionFr,
     url: p.url,
+    image: p.image,
     brand: { '@type': 'Brand', name: PERSON_ALIAS },
     offers: {
       '@type': 'Offer',

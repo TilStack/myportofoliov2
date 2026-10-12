@@ -27,6 +27,8 @@ export interface DigitalProduct {
   descriptionFr: string;
   descriptionEn: string;
   url: string;
+  /** Visuel du produit (couverture Chariow) : exigé par Google pour les extraits Product (balisage JSON-LD). */
+  image: string;
   price: Price;
 }
 
@@ -64,6 +66,7 @@ export const PRODUCTS: DigitalProduct[] = [
     descriptionFr: 'Prompts IA pour générer des épreuves (BEPC, Probatoire, BAC) avec leurs barèmes.',
     descriptionEn: 'AI prompts to generate exams (BEPC, Probatoire, BAC) together with their marking schemes.',
     url: 'https://store.tilstack.me/prd_1bt9cd',
+    image: 'https://assets.chariowcdn.com/assets/store_tz6ccxi35nkx/mqrwNdiSGECJ3a2SB0nAOvO3uGhGOjNbZ8zhDqT2.jpg',
     price: { amount: 1500, currency: 'XAF', compareAt: 3000, updatedAt: '2026-09-24' },
   },
   {
@@ -73,6 +76,7 @@ export const PRODUCTS: DigitalProduct[] = [
     descriptionFr: 'Formation en ligne sur l\'IA pédagogique pour les enseignants.',
     descriptionEn: 'Online course on educational AI for teachers.',
     url: 'https://store.tilstack.me/prd_ehy1y5',
+    image: 'https://assets.chariowcdn.com/assets/store_tz6ccxi35nkx/atACgIBr1AMpzY2XjiqXBFCIyou6QhErq8gMxy2D.jpg',
     price: { amount: 6000, currency: 'XAF', compareAt: 15000, updatedAt: '2026-09-24' },
   },
   {
@@ -82,6 +86,7 @@ export const PRODUCTS: DigitalProduct[] = [
     descriptionFr: "Un skill Claude qui crée des vidéos animées à partir d'une simple description : personnages, voix off et sous-titres, exportées en MP4.",
     descriptionEn: 'A Claude skill that creates animated videos from a plain description: characters, voice-over and subtitles, exported as MP4.',
     url: 'https://store.tilstack.me/prd_t6xzuw62',
+    image: 'https://images.chariowcdn.com/cdn-cgi/image/format=jpeg,quality=85,width=1200/https://assets.chariowcdn.com/assets/store_tz6ccxi35nkx/nC2cc0HysLeSTVNGmpv0BIwv3iFbJ4GPZOkNanJP.png',
     price: { amount: 7500, currency: 'XAF', compareAt: 12000, updatedAt: '2026-10-11' },
   },
 ];

@@ -92,8 +92,8 @@ await check('JSON-LD : chaque bloc est du JSON parsable avec @context schema.org
 const home = pages.find(p => p.route === '/');
 // Produits et prix lus dans la source (products.data.ts) : le balisage et le texte visible doivent en dériver.
 const productsSrc = read('src/app/data/products.data.ts');
-const products = [...productsSrc.matchAll(/id: '(prd_\w+)',\s*name: '((?:[^'\\]|\\.)*)',[\s\S]*?url: '([^']+)',\s*price: \{ amount: (\d+), currency: 'XAF', compareAt: (\d+)/g)]
-  .map(m => ({ id: m[1], name: m[2].replace(/\\'/g, "'"), url: m[3], amount: Number(m[4]), compareAt: Number(m[5]) }));
+const products = [...productsSrc.matchAll(/id: '(prd_\w+)',\s*name: '((?:[^'\\]|\\.)*)',[\s\S]*?url: '([^']+)',\s*image: '([^']+)',\s*price: \{ amount: (\d+), currency: 'XAF', compareAt: (\d+)/g)]
+  .map(m => ({ id: m[1], name: m[2].replace(/\\'/g, "'"), url: m[3], image: m[4], amount: Number(m[5]), compareAt: Number(m[6]) }));
 // Prix tel qu'affiché, comparé sur du texte décodé où l'espace insécable (&nbsp;) est normalisée en espace.
 const fmt = n => `${String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} XAF`;
 const text = html => unescape(html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ')).replace(/\s+/g, ' ');
@@ -124,6 +124,7 @@ for (const page of [home, boutique]) {
       const o = ps.find(x => x.url === expected.url);
       assert.ok(o, `Product manquant : ${expected.id}`);
       assert.equal(o.name, expected.name);
+      assert.equal(o.image, expected.image, `image manquante : ${expected.id}`);
       assert.deepEqual(o.offers, { '@type': 'Offer', price: String(expected.amount), priceCurrency: 'XAF', availability: 'https://schema.org/InStock', url: expected.url });
       assert.ok(visible.includes(expected.name), `nom non visible : ${expected.name}`);
       assert.ok(visible.includes(fmt(expected.amount)), `prix non visible : ${fmt(expected.amount)}`);
