@@ -25,11 +25,11 @@
           }
           d.setAttribute('data-theme', t);
         } catch (e) {}
-        // Fond du site : un motif toutes les 5 heures (échiquier, damier, pions d'échecs, Bible). ?bg=… pour le forcer.
+        // Fond du site : un motif toutes les 2 h 30 (échiquier, damier, pions d'échecs, Bible). ?bg=… pour le forcer.
         try {
           var BG = ['echecs', 'damier', 'pions', 'bible'];
           var m = /[?&]bg=(echecs|damier|pions|bible)(&|$)/.exec(location.search);
-          var bg = m ? m[1] : BG[Math.floor(Date.now() / 18000000) % BG.length];
+          var bg = m ? m[1] : BG[Math.floor(Date.now() / 9000000) % BG.length];
           d.setAttribute('data-bg', bg);
         } catch (e) {}
       })();
