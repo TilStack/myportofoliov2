@@ -9,6 +9,7 @@ import { LINKEDIN_URL } from '../../data/site.data';
 import { ShopSectionComponent } from '../../shared/components/shop-section/shop-section.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { TECH_LOGOS } from '../../data/skills.data';
+import { FEATURED_QUOTE } from '../quotes/featured-quote';
 import { FeaturedProjectsComponent } from './featured-projects/featured-projects.component';
 
 interface HeroPose {
@@ -51,14 +52,8 @@ export class HomeComponent {
   readonly montageCredits = MONTAGE_CREDITS;
   /** `true` seulement si toutes les photos du montage sont des fichiers locaux (pas de placeholder Unsplash). */
   readonly montagePhotosAreLocal = MONTAGE_PHOTOS.every(p => !!p.file);
-  /**
-   * Citation mise en avant sur l'accueil (texte donné par Israel). TODO(israel): si elle doit aussi figurer sur
-   * /quotes, l'ajouter à QUOTES avec sa date et son explication.
-   */
-  readonly featuredQuote = {
-    text: "Être l'exception parmi les exceptions afin d'être exceptionnellement exceptionnel.",
-    author: 'Israel Tientcheu',
-  };
+  /** Citation mise en avant sur l'accueil (partagée avec /quotes). */
+  readonly featuredQuote = FEATURED_QUOTE;
   /** Passe à la pose suivante. */
   nextPose(): void {
     this.pose.update(i => (i + 1) % this.poses.length);

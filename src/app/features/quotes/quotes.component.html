@@ -1,5 +1,12 @@
 <div class="quotes-page">
 
+  <!-- Orbes d'ambiance (décoratifs) -->
+  <div class="quotes-orbs" aria-hidden="true">
+    <span class="quotes-orbs__orb quotes-orbs__orb--1"></span>
+    <span class="quotes-orbs__orb quotes-orbs__orb--2"></span>
+    <span class="quotes-orbs__orb quotes-orbs__orb--3"></span>
+  </div>
+
   <!-- Header -->
   <header class="quotes-page__header section">
     <div class="container">
@@ -36,27 +43,43 @@
           }
         </div>
       </div>
-
-      <!-- Category filter -->
-      <div class="quotes-filter fade-up" appFadeOnScroll [delay]="100">
-        <button
-          class="quotes-filter__btn"
-          [class.active]="activeCategory() === null"
-          (click)="setCategory(null)"
-        >{{ i18n.t('quotes.filterAll') }}</button>
-        @for (cat of dataCategories(); track cat) {
-          <button
-            class="quotes-filter__btn"
-            [class.active]="activeCategory() === cat"
-            (click)="setCategory(cat)"
-          >{{ cat }}</button>
-        }
-      </div>
     </div>
   </header>
 
+  <!-- Citation phare -->
+  <section class="container qhero-wrap" [attr.aria-label]="i18n.t('quotes.featuredLabel')">
+    <figure class="qhero fade-up" appFadeOnScroll (pointermove)="trackGlow($event)">
+      <span class="qhero__orb qhero__orb--a" aria-hidden="true"></span>
+      <span class="qhero__orb qhero__orb--b" aria-hidden="true"></span>
+      <span class="qhero__glow" aria-hidden="true"></span>
+      <span class="qhero__label">{{ i18n.t('quotes.featuredLabel') }}</span>
+      <div class="qhero__mark" aria-hidden="true"><app-icon name="quote" [size]="72" /></div>
+      <blockquote class="qhero__text">{{ featured.text }}</blockquote>
+      <figcaption class="qhero__author">
+        <img class="qhero__logo" [src]="ownerAvatar" alt="Logo TilStack" width="44" height="44" />
+        <span>{{ featured.author }}</span>
+      </figcaption>
+    </figure>
+  </section>
+
   <!-- Grid -->
   <main class="container quotes-page__main">
+
+    <!-- Category filter -->
+    <div class="quotes-filter fade-up" appFadeOnScroll [delay]="100">
+      <button
+        class="quotes-filter__btn"
+        [class.active]="activeCategory() === null"
+        (click)="setCategory(null)"
+      >{{ i18n.t('quotes.filterAll') }}</button>
+      @for (cat of dataCategories(); track cat) {
+        <button
+          class="quotes-filter__btn"
+          [class.active]="activeCategory() === cat"
+          (click)="setCategory(cat)"
+        >{{ cat }}</button>
+      }
+    </div>
 
     <!-- Skeleton loading -->
     @if (loading()) {
@@ -88,6 +111,7 @@
             appFadeOnScroll
             [delay]="i * 60"
             (click)="openModal(quote)"
+            (pointermove)="trackGlow($event)"
             role="button"
             tabindex="0"
             (keyup.enter)="openModal(quote)"

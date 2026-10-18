@@ -272,6 +272,7 @@ const EN: Translations = {
     editSubmit:  'Save changes',
     editSuccess: 'Quote updated successfully!',
     // Public suggestion
+    featuredLabel:       'Featured quote',
     suggestBtn:          'Suggest a quote',
     suggestTitle:        'Share a Quote',
     suggestSub:          'Submit a quote and your reading. It will be reviewed before going live.',
@@ -595,6 +596,7 @@ const FR: Translations = {
     editSubmit:  'Enregistrer',
     editSuccess: 'Citation mise à jour avec succès !',
     // Soumission publique
+    featuredLabel:       'Citation phare',
     suggestBtn:          'Proposer une citation',
     suggestTitle:        'Partager une citation',
     suggestSub:          'Soumettez une citation et votre lecture. Elle sera vérifiée avant publication.',

@@ -2,20 +2,184 @@
 @use '../../../assets/styles/mixins'    as *;
 
 .quotes-page {
+  position: relative;
+  overflow-x: clip;
   min-height: 100svh;
   padding-top: $navbar-height;
 
   &__header { padding-bottom: $space-4; }
   &__main    { padding-bottom: $space-20; }
+
+  // Le contenu passe au-dessus des orbes
+  &__header, &__main, .qhero-wrap { position: relative; z-index: 1; }
+}
+
+// ── Orbes d'ambiance : grands cercles flous qui dérivent lentement (décor, jamais cliquables) ──
+.quotes-orbs {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  &__orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0.38;
+    will-change: transform;
+
+    &--1 {
+      width: 460px; height: 460px; top: -80px; left: -120px;
+      background: radial-gradient(circle at 40% 40%, rgba($color-accent, 0.95), rgba($color-accent, 0) 70%);
+      animation: orbDrift1 22s ease-in-out infinite alternate;
+    }
+    &--2 {
+      width: 520px; height: 520px; top: 28%; right: -160px;
+      background: radial-gradient(circle at 50% 50%, rgba(#3b5bdb, 0.85), rgba(#3b5bdb, 0) 70%);
+      animation: orbDrift2 28s ease-in-out infinite alternate;
+    }
+    &--3 {
+      width: 400px; height: 400px; bottom: 6%; left: 18%;
+      background: radial-gradient(circle at 50% 50%, rgba($color-accent, 0.8), rgba(#e8590c, 0) 70%);
+      animation: orbDrift3 34s ease-in-out infinite alternate;
+    }
+  }
+
+  // Sombre : un peu plus lumineux pour rester visibles sur fond noir
+  :root[data-theme='dark'] & &__orb { opacity: 0.3; }
+
+  @media (max-width: 767px) {
+    &__orb { filter: blur(50px); }
+    &__orb--3 { display: none; } // un orbe en moins sur mobile : plus léger
+  }
+}
+
+@keyframes orbDrift1 { to { transform: translate(120px, 90px) scale(1.15); } }
+@keyframes orbDrift2 { to { transform: translate(-140px, 70px) scale(0.9); } }
+@keyframes orbDrift3 { to { transform: translate(110px, -80px) scale(1.2); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .quotes-orbs__orb, .qhero__orb { animation: none !important; }
+}
+
+// ── Citation phare ────────────────────────────────────
+.qhero-wrap { margin-bottom: $space-10; }
+
+.qhero {
+  --mx: 50%;
+  --my: 0%;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin: 0;
+  padding: $space-8 $space-6;
+  text-align: center;
+  color: #fff;
+  border-radius: $radius-2xl;
+  border: 1px solid rgba($color-accent, 0.35);
+  background: linear-gradient(145deg, $color-primary 0%, #0b1428 100%);
+  box-shadow: 0 24px 60px -24px rgba($color-primary, 0.65);
+
+  @include md { padding: $space-12 $space-12; }
+
+  // Orbes internes
+  &__orb {
+    position: absolute;
+    z-index: -1;
+    border-radius: 50%;
+    filter: blur(48px);
+    pointer-events: none;
+
+    &--a {
+      width: 320px; height: 320px; top: -110px; left: -70px;
+      background: radial-gradient(circle, rgba($color-accent, 0.55), rgba($color-accent, 0) 70%);
+      animation: orbDrift1 16s ease-in-out infinite alternate;
+    }
+    &--b {
+      width: 360px; height: 360px; bottom: -150px; right: -90px;
+      background: radial-gradient(circle, rgba(#4c6ef5, 0.55), rgba(#4c6ef5, 0) 70%);
+      animation: orbDrift2 19s ease-in-out infinite alternate;
+    }
+  }
+
+  // Reflet qui suit la souris
+  &__glow {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(420px circle at var(--mx) var(--my), rgba($color-accent, 0.16), transparent 60%);
+  }
+
+  &__label {
+    display: inline-block;
+    padding: $space-1 $space-4;
+    border-radius: $radius-full;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba($color-accent, 0.4);
+    color: $color-accent;
+    font-size: $text-xs;
+    font-weight: $font-bold;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  &__mark {
+    margin: $space-4 auto 0;
+    color: $color-accent;
+    opacity: 0.55;
+    line-height: 1;
+  }
+
+  &__text {
+    max-width: 22ch;
+    margin: $space-2 auto 0;
+    font-family: $font-display;
+    font-size: clamp(1.6rem, 5.2vw, 2.9rem);
+    font-weight: $font-bold;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    color: #fff;
+  }
+
+  &__author {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-3;
+    margin-top: $space-6;
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  &__logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 0 2px rgba($color-accent, 0.6);
+  }
 }
 
 .quotes-grid {
   display: grid;
+  grid-auto-flow: dense;
   gap: $space-5;
   grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
 
   @include lg {
     grid-template-columns: repeat(3, 1fr);
+
+    // Bento : une carte sur cinq occupe deux colonnes, avec un texte plus grand
+    .qcard:nth-child(5n + 1) {
+      grid-column: span 2;
+
+      .qcard__text { font-size: $text-xl; line-height: 1.6; }
+    }
   }
 }
 
@@ -139,10 +303,15 @@
   transition: border-color $transition-base, box-shadow $transition-base,
               transform $transition-base;
 
+  // Reflet doré qui suit la souris (--mx / --my posés par trackGlow) ; le texte reste sur fond quasi opaque
+  --mx: 50%;
+  --my: 0%;
+
   &:hover {
     border-color: $color-accent;
     box-shadow: var(--shadow-card);
     transform: translateY(-3px);
+    background-image: radial-gradient(260px circle at var(--mx) var(--my), rgba($color-accent, 0.13), transparent 65%);
   }
 
   &--expanded {
@@ -679,7 +848,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: $space-2;
-  margin-top: $space-8;
+  margin-bottom: $space-6;
 
   &__btn {
     padding: $space-2 $space-4;

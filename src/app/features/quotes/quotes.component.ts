@@ -12,6 +12,7 @@ import { I18nService } from '../../core/services/i18n.service';
 import { QuoteService } from '../../core/services/quote.service';
 import { AdminAuthService } from '../../core/services/admin-auth.service';
 import { QUOTES } from './quotes.data';
+import { FEATURED_QUOTE } from './featured-quote';
 import { scrollToTop } from '../../shared/utils/motion';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 
@@ -174,6 +175,17 @@ export class QuotesComponent {
   goToPage(page: number): void {
     this.currentPage.set(page);
     scrollToTop();
+  }
+
+  readonly featured = FEATURED_QUOTE;
+
+  /** Reflet qui suit la souris : positionne --mx / --my (en %) sur la carte ou le bloc survolé. */
+  trackGlow(e: PointerEvent): void {
+    if (e.pointerType !== 'mouse') return;
+    const el = e.currentTarget as HTMLElement;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
+    el.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
   }
 
   readonly ownerAvatar = OWNER_AVATAR;
