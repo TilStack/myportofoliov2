@@ -34,7 +34,16 @@ export interface DigitalProduct {
    * reste telle quelle. Fichiers dans public/videos/ (MP4 H.264 compressé + image d'aperçu).
    * TODO(israel): fournir un extrait par produit (ex. le skill Remotion) puis renseigner `preview`.
    */
-  preview?: { video: string; poster: string; altFr: string; altEn: string };
+  preview?: {
+    video: string;
+    poster: string;
+    altFr: string;
+    altEn: string;
+    /** Proportions du cadre sur la carte (défaut 16 / 9). */
+    ratio?: string;
+    /** Zone de la vidéo gardée quand le cadre la recadre (object-position CSS, défaut centre). */
+    focus?: string;
+  };
   price: Price;
 }
 
@@ -93,6 +102,15 @@ export const PRODUCTS: DigitalProduct[] = [
     descriptionEn: 'A Claude skill that creates animated videos from a plain description: characters, voice-over and subtitles, exported as MP4.',
     url: 'https://store.tilstack.me/prd_t6xzuw62',
     image: 'https://images.chariowcdn.com/cdn-cgi/image/format=jpeg,quality=85,width=1200/https://assets.chariowcdn.com/assets/store_tz6ccxi35nkx/nC2cc0HysLeSTVNGmpv0BIwv3iFbJ4GPZOkNanJP.png',
+    // Extrait de 7 s de l'histoire « La paresse », réalisée avec ce skill (sans le son).
+    preview: {
+      video: 'videos/remotion-teaser.mp4',
+      poster: 'videos/remotion-teaser-poster.jpg',
+      altFr: 'Extrait d\'une vidéo animée réalisée avec le skill Remotion Video Studio',
+      altEn: 'Excerpt of an animated video made with the Remotion Video Studio skill',
+      ratio: '4 / 5',
+      focus: '50% 50%',
+    },
     price: { amount: 7500, currency: 'XAF', compareAt: 12000, updatedAt: '2026-10-11' },
   },
 ];
