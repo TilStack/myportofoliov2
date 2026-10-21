@@ -13,6 +13,14 @@
     <ul class="shop__grid">
       @for (p of products; track p.id) {
         <li class="product">
+          @if (p.preview; as pv) {
+            <a class="product__preview" [href]="p.url" target="_blank" rel="noopener"
+               [attr.aria-label]="(i18n.lang() === 'fr' ? pv.altFr : pv.altEn) + ' — ' + i18n.t('shop.cta')">
+              <video appTeaserVideo [src]="pv.video" [poster]="pv.poster" muted loop playsinline preload="none"
+                     width="640" height="360" aria-hidden="true"></video>
+              <span class="product__play" aria-hidden="true">▶</span>
+            </a>
+          }
           <span class="product__kind">{{ i18n.t('shop.kind.' + p.kind) }}</span>
           <h3 class="product__name">{{ p.name }}</h3>
           <p class="product__desc">{{ i18n.lang() === 'fr' ? p.descriptionFr : p.descriptionEn }}</p>

@@ -4,6 +4,7 @@ import { I18nService } from '../../../core/services/i18n.service';
 import { PRODUCTS } from '../../../data/products.data';
 import { STORE_URL } from '../../../data/site.data';
 import { PriceComponent } from '../price/price.component';
+import { TeaserVideoDirective } from '../../directives/teaser-video.directive';
 
 /**
  * Produits digitaux (boutique Chariow) : nom, description, prix actuel, prix barré et CTA vers l'URL du produit.
@@ -12,7 +13,7 @@ import { PriceComponent } from '../price/price.component';
 @Component({
   selector: 'app-shop-section',
   standalone: true,
-  imports: [RouterLink, PriceComponent],
+  imports: [RouterLink, PriceComponent, TeaserVideoDirective],
   templateUrl: './shop-section.component.html',
   styleUrl: './shop-section.component.scss',
 })
