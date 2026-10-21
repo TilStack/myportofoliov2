@@ -29,6 +29,12 @@ export interface DigitalProduct {
   url: string;
   /** Visuel du produit (couverture Chariow) : exigé par Google pour les extraits Product (balisage JSON-LD). */
   image: string;
+  /**
+   * Extrait vidéo muet (5–8 s) affiché en tête de carte, cliquable vers `url`. Optionnel : sans lui, la carte
+   * reste telle quelle. Fichiers dans public/videos/ (MP4 H.264 compressé + image d'aperçu).
+   * TODO(israel): fournir un extrait par produit (ex. le skill Remotion) puis renseigner `preview`.
+   */
+  preview?: { video: string; poster: string; altFr: string; altEn: string };
   price: Price;
 }
 
