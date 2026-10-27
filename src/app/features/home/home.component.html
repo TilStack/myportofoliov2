@@ -65,7 +65,8 @@
         (pointerdown)="onPoseDown($event)"
         (click)="onPoseClick($event)"
       >
-        <span class="hero__stage-glow" aria-hidden="true"></span>
+        <span class="hero__word" aria-hidden="true">{{ i18n.t("hero.word") }}</span>
+        <span class="hero__board" aria-hidden="true"></span>
         @for (p of poses; track p.src; let i = $index) {
           <img
             class="hero__pose"

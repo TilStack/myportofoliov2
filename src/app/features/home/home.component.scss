@@ -151,6 +151,7 @@
     background: none;
     border: 0;
     cursor: pointer;
+    container-type: inline-size;
     -webkit-tap-highlight-color: transparent;
 
     @include lg {
@@ -161,16 +162,40 @@
     &:focus-visible { outline: 3px solid $color-accent; outline-offset: 6px; border-radius: $radius-2xl; }
   }
 
-  // Halo derrière le personnage
-  &__stage-glow {
+  // Mot d'ordre : « EXCEPTIONNEL » en grand, contour seul, derrière le personnage (sa devise : « Être exceptionnel »)
+  &__word {
+    position: absolute;
+    top: 3%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: $font-display;
+    font-size: 13.5cqw; // proportionnel à la largeur du cadre (voir container-type sur __stage) : le mot tient toujours
+    font-weight: $font-black;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    white-space: nowrap;
+    color: transparent;
+    -webkit-text-stroke: 1.5px color-mix(in srgb, var(--color-accent-text) 70%, transparent);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  // Échiquier en perspective sous les pieds du personnage : le motif du fond du site devient son terrain
+  &__board {
     position: absolute;
     left: 50%;
-    bottom: 4%;
-    width: 78%;
+    bottom: -2%;
+    width: 150%;
     aspect-ratio: 1;
-    transform: translateX(-50%);
-    border-radius: 50%;
-    background: radial-gradient(closest-side, color-mix(in srgb, var(--color-accent) 38%, transparent), transparent);
+    transform: translateX(-50%) perspective(620px) rotateX(64deg);
+    transform-origin: 50% 100%;
+    background: repeating-conic-gradient(
+        color-mix(in srgb, var(--color-text) 16%, transparent) 0 25%,
+        transparent 0 50%
+      )
+      0 0 / 25% 25%;
+    -webkit-mask-image: radial-gradient(closest-side, #000 55%, transparent 100%);
+    mask-image: radial-gradient(closest-side, #000 55%, transparent 100%);
     pointer-events: none;
   }
 
@@ -188,7 +213,7 @@
     user-select: none;
     -webkit-user-drag: none;
 
-    &--full { height: 100%; }
+    &--full { height: 88%; } // laisse de la place au mot d'ordre au-dessus de la tête
     &--bust { height: 80%; border-radius: $radius-2xl; }
 
     &.is-active {

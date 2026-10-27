@@ -42,6 +42,7 @@ const EN: Translations = {
     cta:        'Download CV',
     scroll:     'Scroll down',
     changePose: 'Change my pose',
+    word:       'EXCEPTIONAL',
     openToWork: 'Open to work',
   },
   home: {
@@ -366,6 +367,7 @@ const FR: Translations = {
     cta:        'Télécharger le CV',
     scroll:     'Défiler vers le bas',
     changePose: 'Changer ma pose',
+    word:       'EXCEPTIONNEL',
     openToWork: 'Disponible',
   },
   home: {
