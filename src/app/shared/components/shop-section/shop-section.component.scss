@@ -44,7 +44,7 @@
     margin: (-$space-6) (-$space-6) 0;
     overflow: hidden;
     border-radius: $radius-xl $radius-xl 0 0;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: var(--ratio, 16 / 9);
     background: $color-primary;
 
     video { display: block; width: 100%; height: 100%; object-fit: cover; object-position: var(--focus, 50% 50%); }
@@ -87,4 +87,34 @@
 
   // CTA en bas de carte : alignés d'une carte à l'autre.
   &__cta { margin-top: auto; }
+
+  // Produit avec extrait vidéo : carte pleine largeur (vidéo à gauche, texte à droite) pour ne pas laisser
+  // un trou à côté d'elle dans la grille à deux colonnes. Sur mobile, elle reste empilée.
+  @include md {
+    &--feature {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: minmax(240px, 340px) 1fr;
+      column-gap: $space-8;
+      align-content: center;
+      align-items: start;
+      justify-items: start;
+
+      > * { grid-column: 2; }
+
+      .product__preview {
+        grid-column: 1;
+        grid-row: 1 / span 6;
+        align-self: stretch;
+        justify-self: stretch;
+        margin: (-$space-6) 0 (-$space-6) (-$space-6);
+        border-radius: $radius-xl 0 0 $radius-xl;
+        aspect-ratio: auto;
+        min-height: 320px;
+      }
+
+      .product__desc { flex: none; }
+      .product__cta { margin-top: $space-2; }
+    }
+  }
 }
