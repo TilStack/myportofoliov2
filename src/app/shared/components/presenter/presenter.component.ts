@@ -16,7 +16,6 @@ import { PRESENTER_POSES, PresenterPose } from './presenter.poses';
         <p class="presenter__bubble">{{ label() }}</p>
       }
       <div class="presenter__figure">
-        <span class="presenter__glow" aria-hidden="true"></span>
         <img class="presenter__img" [ngSrc]="image().src" [width]="image().width" [height]="image().height" alt="Avatar 3D d'Israel Tientcheu (TilStack)" />
       </div>
     </div>

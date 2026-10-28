@@ -14,30 +14,15 @@
 
   &__figure {
     position: relative;
-    overflow: clip; // le halo ne doit jamais élargir la page
-    overflow-clip-margin: 0;
     height: var(--h);
     aspect-ratio: 336 / 900;
     flex-shrink: 0;
-  }
-
-  &__glow {
-    position: absolute;
-    left: 50%;
-    bottom: 2%;
-    width: 100%;
-    aspect-ratio: 1;
-    transform: translateX(-50%);
-    border-radius: 50%;
-    background: radial-gradient(closest-side, color-mix(in srgb, var(--color-accent) 34%, transparent), transparent);
-    pointer-events: none;
   }
 
   &__img {
     position: relative;
     height: 100%;
     width: auto;
-    animation: presenterFloat 5s ease-in-out infinite alternate;
     user-select: none;
     -webkit-user-drag: none;
   }
@@ -81,9 +66,4 @@
       &::after { right: auto; left: 50%; bottom: -7px; transform: translateX(-50%) rotate(45deg); }
     }
   }
-}
-
-@keyframes presenterFloat {
-  from { transform: translateY(0); }
-  to   { transform: translateY(-8px); }
 }

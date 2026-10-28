@@ -179,15 +179,6 @@ export class QuotesComponent {
 
   readonly featured = FEATURED_QUOTE;
 
-  /** Reflet qui suit la souris : positionne --mx / --my (en %) sur la carte ou le bloc survolé. */
-  trackGlow(e: PointerEvent): void {
-    if (e.pointerType !== 'mouse') return;
-    const el = e.currentTarget as HTMLElement;
-    const r = el.getBoundingClientRect();
-    el.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
-    el.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
-  }
-
   readonly ownerAvatar = OWNER_AVATAR;
   isOwner(author: string): boolean { return isOwnerAuthor(author); }
 
