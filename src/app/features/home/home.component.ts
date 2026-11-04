@@ -4,8 +4,6 @@ import { RouterLink } from '@angular/router';
 import { I18nService } from '../../core/services/i18n.service';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
-import { MONTAGE_CREDITS, MONTAGE_PHOTOS } from '../../core/config/images.config';
-import { LINKEDIN_URL } from '../../data/site.data';
 import { ShopSectionComponent } from '../../shared/components/shop-section/shop-section.component';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 import { TECH_LOGOS } from '../../data/skills.data';
@@ -47,11 +45,6 @@ export class HomeComponent {
   readonly stack = ['Flutter', 'Angular', 'TypeScript', 'Dart', 'FastAPI', 'Python', 'NestJS', 'Firebase', 'Docker', 'Claude']
     .map(name => ({ name, file: TECH_LOGOS[name].file, color: TECH_LOGOS[name].color }));
 
-  readonly linkedinUrl = LINKEDIN_URL;
-  readonly montagePhotos = MONTAGE_PHOTOS;
-  readonly montageCredits = MONTAGE_CREDITS;
-  /** `true` seulement si toutes les photos du montage sont des fichiers locaux (pas de placeholder Unsplash). */
-  readonly montagePhotosAreLocal = MONTAGE_PHOTOS.every(p => !!p.file);
   /** Citation mise en avant sur l'accueil (partagée avec /quotes). */
   readonly featuredQuote = FEATURED_QUOTE;
   /** Passe à la pose suivante. */

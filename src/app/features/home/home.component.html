@@ -120,7 +120,7 @@
 
 <!-- ===== BOUTIQUE (produits digitaux) ===== -->
 @defer (on viewport; hydrate on viewport) {
-  <app-shop-section [showAllLink]="true" [euro]="true" />
+  <app-shop-section [showAllLink]="true" [euro]="true" [compact]="true" />
 } @placeholder {
   <div class="defer-ph"></div>
 }
@@ -142,85 +142,6 @@
           </svg>
         </a>
       </figure>
-    </div>
-  </section>
-} @placeholder {
-  <div class="defer-ph"></div>
-}
-
-<!-- ===== CAMEROON PHOTO MONTAGE ===== -->
-@defer (on viewport; hydrate on viewport) {
-  <section class="montage" id="cameroon">
-    <div class="container">
-      <div class="montage__header fade-up" appFadeOnScroll>
-        <span class="montage__tag">{{ i18n.t("home.montageTag") }}</span>
-        <h2 class="montage__title">{{ i18n.t("home.montageTitle") }}</h2>
-        <p class="montage__sub">{{ i18n.t("home.montageSub") }}</p>
-      </div>
-
-      <div class="montage__grid fade-up" appFadeOnScroll [delay]="80">
-        <!-- P1: Yaoundé — large, spans 2 rows on left -->
-        <div class="montage__photo mp--1" role="img" [attr.aria-label]="montagePhotos[0].caption">
-          <span class="montage__img" [style.background-image]="montagePhotos[0].file ? 'url(/' + montagePhotos[0].file + ')' : null"></span>
-          <div class="montage__caption">
-            <span class="montage__num" aria-hidden="true">01</span>
-            <span>{{ montagePhotos[0].caption }}</span>
-          </div>
-        </div>
-        <!-- P2: Bansoa — top middle -->
-        <div class="montage__photo mp--2" role="img" [attr.aria-label]="montagePhotos[1].caption">
-          <span class="montage__img" [style.background-image]="montagePhotos[1].file ? 'url(/' + montagePhotos[1].file + ')' : null"></span>
-          <div class="montage__caption">
-            <span class="montage__num" aria-hidden="true">02</span>
-            <span>{{ montagePhotos[1].caption }}</span>
-          </div>
-        </div>
-        <!-- P3: Douala — top right -->
-        <div class="montage__photo mp--3" role="img" [attr.aria-label]="montagePhotos[2].caption">
-          <span class="montage__img" [style.background-image]="montagePhotos[2].file ? 'url(/' + montagePhotos[2].file + ')' : null"></span>
-          <div class="montage__caption">
-            <span class="montage__num" aria-hidden="true">03</span>
-            <span>{{ montagePhotos[2].caption }}</span>
-          </div>
-        </div>
-        <!-- P4: Kribi — bottom middle -->
-        <div class="montage__photo mp--4" role="img" [attr.aria-label]="montagePhotos[3].caption">
-          <span class="montage__img" [style.background-image]="montagePhotos[3].file ? 'url(/' + montagePhotos[3].file + ')' : null"></span>
-          <div class="montage__caption">
-            <span class="montage__num" aria-hidden="true">04</span>
-            <span>{{ montagePhotos[3].caption }}</span>
-          </div>
-        </div>
-        <!-- P5: Lagdo — bottom right large -->
-        <div class="montage__photo mp--5" role="img" [attr.aria-label]="montagePhotos[4].caption">
-          <span class="montage__img" [style.background-image]="montagePhotos[4].file ? 'url(/' + montagePhotos[4].file + ')' : null"></span>
-          <div class="montage__caption">
-            <span class="montage__num" aria-hidden="true">05</span>
-            <span>{{ montagePhotos[4].caption }}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Attribution : tant qu'aucune photo locale n'est configurée (images.config.ts), les visuels sont des
-           placeholders Unsplash — on ne prétend pas qu'ils sont d'Israel. -->
-      <p class="montage__credit fade-up" appFadeOnScroll [delay]="200">
-        @if (montagePhotosAreLocal) {
-          {{ i18n.t("home.montageCreditBy") }}
-          <a [href]="linkedinUrl" target="_blank" rel="noopener noreferrer">TIENTCHEU Israel</a>,
-          {{ i18n.t("home.montageCreditYears") }}
-        } @else {
-          {{ i18n.t("home.montageCreditPlaceholder") }}
-          <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>.
-        }
-        @if (montageCredits.length) {
-          <br />
-          {{ i18n.t("home.montageCreditCommons") }}
-          @for (c of montageCredits; track c.place; let last = $last) {
-            {{ c.place }} —
-            <a [href]="c.url" target="_blank" rel="noopener noreferrer">{{ c.author }}</a>{{ last ? "." : ";" }}
-          }
-        }
-      </p>
     </div>
   </section>
 } @placeholder {

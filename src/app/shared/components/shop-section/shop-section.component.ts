@@ -26,4 +26,6 @@ export class ShopSectionComponent {
   readonly showAllLink = input(false);
   /** Prix affichés en euros (indicatif, avec le prix XAF réel dessous). */
   readonly euro = input(false);
+  /** Version réduite (accueil) : sans sous-titre, sans vidéo d'aperçu ni description — nom, prix et lien seulement. */
+  readonly compact = input(false);
 }

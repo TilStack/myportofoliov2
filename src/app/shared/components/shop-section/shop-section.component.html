@@ -4,7 +4,9 @@
       <div class="shop__header">
         <span class="shop__eyebrow">{{ i18n.t('shop.eyebrow') }}</span>
         <h2 id="shop-title" class="section__title">{{ i18n.t('shop.title') }}</h2>
-        <p class="section__subtitle">{{ i18n.t('shop.subtitle') }}</p>
+        @if (!compact()) {
+          <p class="section__subtitle">{{ i18n.t('shop.subtitle') }}</p>
+        }
       </div>
     } @else {
       <h2 id="shop-title" class="sr-only">{{ i18n.t('shop.title') }}</h2>
@@ -12,8 +14,8 @@
 
     <ul class="shop__grid">
       @for (p of products; track p.id) {
-        <li class="product" [class.product--feature]="!!p.preview">
-          @if (p.preview; as pv) {
+        <li class="product" [class.product--feature]="!compact() && !!p.preview">
+          @if (!compact() && p.preview; as pv) {
             <a class="product__preview" [href]="p.url" target="_blank" rel="noopener"
                [style.--ratio]="pv.ratio ?? '16 / 9'" [style.--focus]="pv.focus ?? '50% 50%'"
                [attr.aria-label]="(i18n.lang() === 'fr' ? pv.altFr : pv.altEn) + ' — ' + i18n.t('shop.cta')">
@@ -24,7 +26,9 @@
           }
           <span class="product__kind">{{ i18n.t('shop.kind.' + p.kind) }}</span>
           <h3 class="product__name">{{ p.name }}</h3>
-          <p class="product__desc">{{ i18n.lang() === 'fr' ? p.descriptionFr : p.descriptionEn }}</p>
+          @if (!compact()) {
+            <p class="product__desc">{{ i18n.lang() === 'fr' ? p.descriptionFr : p.descriptionEn }}</p>
+          }
           <app-price [price]="p.price" [euro]="euro()" />
           <a class="cta product__cta" [href]="p.url" target="_blank" rel="noopener">
             {{ i18n.t('shop.cta') }}
