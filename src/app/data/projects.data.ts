@@ -41,6 +41,8 @@ export interface Project {
   liveUrl?: string;
   /** Fiche Google Play (bouton « Télécharger sur Google Play »). */
   playStoreUrl?: string;
+  /** QR code (image) qui mène à la fiche Google Play : affiché sur la page détail, sur ordinateur. */
+  playStoreQr?: string;
   youtubeUrl?: string;
   descEn: string;
   descFr: string;
@@ -204,6 +206,7 @@ export const PROJECTS: Project[] = [
     tech: ['Flutter', 'Firebase', 'Claude Code'],
     liveUrl: 'https://otadex.tilstack.me',
     playStoreUrl: 'https://play.google.com/store/apps/details?id=com.otadex.otadex',
+    playStoreQr: 'images/projects/otadex-qr.png',
     descEn: 'An anime character encyclopedia for French-speaking fans in Africa — available on the Play Store.',
     descFr:
       "Une encyclopédie de personnages d'animés pour les fans francophones d'Afrique — disponible sur le Play Store.",

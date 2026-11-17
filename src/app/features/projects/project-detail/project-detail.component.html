@@ -101,6 +101,12 @@
               Live demo
             </a>
             }
+            @if (project()!.playStoreQr) {
+              <figure class="detail-qr">
+                <img [src]="project()!.playStoreQr" width="120" height="120" loading="lazy" [alt]="i18n.t('projects.scanAlt')" />
+                <figcaption>{{ i18n.t('projects.scanToInstall') }}</figcaption>
+              </figure>
+            }
           </div>
           }
         </div>
