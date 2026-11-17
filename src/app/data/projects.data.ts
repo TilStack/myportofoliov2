@@ -34,11 +34,13 @@ export interface Project {
   /** Logo du projet (carré, fond blanc) : remplace le croquis sur la carte et la fenêtre. */
   logo?: string;
   company: string;
-  status: 'finished' | 'in-progress' | 'coming-soon';
+  status: 'finished' | 'in-progress' | 'coming-soon' | 'on-play-store';
   /** Début du projet, « AAAA-MM » (affiché « Depuis … » sur la carte). Absent : rien n'est affiché. */
   startedAt?: string;
   tech: string[];
   liveUrl?: string;
+  /** Fiche Google Play (bouton « Télécharger sur Google Play »). */
+  playStoreUrl?: string;
   youtubeUrl?: string;
   descEn: string;
   descFr: string;
@@ -57,6 +59,7 @@ export const STATUS_KEY: Record<Project['status'], string> = {
   finished: 'projects.finished',
   'in-progress': 'projects.inProgress',
   'coming-soon': 'projects.comingSoonPlay',
+  'on-play-store': 'projects.availablePlay',
 };
 
 export const ISRAEL: Contributor = {
@@ -196,22 +199,22 @@ export const PROJECTS: Project[] = [
     icon: '⚡',
     logo: 'images/projects/otadex-logo.webp',
     company: 'Personal',
-    status: 'coming-soon', // « Bientôt sur le Play Store »
+    status: 'on-play-store',
     featured: true,
     tech: ['Flutter', 'Firebase', 'Claude Code'],
     liveUrl: 'https://otadex.tilstack.me',
-    descEn: 'An anime encyclopedia mobile app — my first personal project building a mobile application.',
+    playStoreUrl: 'https://play.google.com/store/apps/details?id=com.otadex.otadex',
+    descEn: 'An anime character encyclopedia for French-speaking fans in Africa — available on the Play Store.',
     descFr:
-      "Une encyclopédie anime sur mobile — mon premier projet personnel de construction d'une application mobile.",
-    // TODO(israel): valider ou réécrire cette description (tirée de l'état du projet Otadex_v1).
+      "Une encyclopédie de personnages d'animés pour les fans francophones d'Afrique — disponible sur le Play Store.",
     detailEn:
-      'Otadex is a Flutter and Firebase mobile app built as a solo project: an anime encyclopedia with character, anime and creator pages, a personal collection and rank-based plans (Genin, Jonin, Kage). Coming soon on the Play Store.',
+      'Otadex is a Flutter and Firebase mobile app built as a solo project, now live on the Google Play Store. It is an encyclopedia of anime characters: full profiles (powers, backstory, personality, iconic quotes, original work and creator), immersive galleries, a personal collection, quizzes with a fan score, community rankings and instant search. Rank-based plans (Genin, Jonin, Kage) unlock more features, and the app has its own website.',
     detailFr:
-      "Otadex est une application mobile Flutter et Firebase, développée seul : une encyclopédie anime avec des fiches de personnages, d'animés et de créateurs, une collection personnelle et des formules par rang (Genin, Jonin, Kage). Bientôt sur le Play Store.",
+      "Otadex est une application mobile Flutter et Firebase, développée seul et désormais disponible sur le Google Play Store. C'est une encyclopédie de personnages d'animés : fiches complètes (pouvoirs, histoire, personnalité, citations cultes, œuvre d'origine et créateur), galeries immersives, collection personnelle, quiz avec score de fan, classements communautaires et recherche instantanée. Des formules par rang (Genin, Jonin, Kage) débloquent davantage de fonctionnalités, et l'application a son propre site web.",
     contributors: [
       { ...ISRAEL, roleEn: 'Solo Developer', roleFr: 'Développeur Solo' },
     ],
-    images: ['images/projects/otadex-cover.svg'], // illustration en attendant les vraies captures — TODO(israel)
+    images: [1, 2, 3, 4, 5].map(n => `images/projects/otadex-${n}.webp`), // captures de la fiche Google Play
   },
   {
     id: 6,

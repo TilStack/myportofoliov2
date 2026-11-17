@@ -86,8 +86,12 @@
             <div class="detail-meta__desc">{{ body() }}</div>
           </div>
 
-          @if (project()!.liveUrl) {
+          @if (project()!.liveUrl || project()!.playStoreUrl) {
           <div class="detail-meta__links">
+            @if (project()!.playStoreUrl) {
+              <a [href]="project()!.playStoreUrl" target="_blank" rel="noopener" class="cta">{{ i18n.t('projects.playStore') }}</a>
+            }
+            @if (project()!.liveUrl) {
             <a [href]="project()!.liveUrl" target="_blank" rel="noopener" class="cta">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
@@ -96,6 +100,7 @@
               </svg>
               Live demo
             </a>
+            }
           </div>
           }
         </div>

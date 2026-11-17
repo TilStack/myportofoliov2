@@ -274,6 +274,12 @@
               </a>
             }
 
+            @if (selected()!.playStoreUrl) {
+              <a [href]="selected()!.playStoreUrl" class="pmodal__btn pmodal__btn--primary" target="_blank" rel="noopener noreferrer">
+                {{ i18n.t('projects.playStore') }}
+              </a>
+            }
+
             @if (selected()!.liveUrl) {
               <a
                 [href]="selected()!.liveUrl"
