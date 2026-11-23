@@ -270,16 +270,16 @@ export const PROJECTS: Project[] = [
     icon: '✝️',
     logo: 'images/projects/nuvel-logo.webp',
     company: 'Collaboration',
-    status: 'in-progress',
+    status: 'coming-soon', // « Bientôt sur le Play Store »
     featured: true,
-    // TODO(israel): date de début (startedAt), stack technique et captures réelles.
-    tech: [],
-    descEn: 'A social network for Christians, designed by Daniel — currently in development, not yet released.',
-    descFr: "Un réseau social chrétien conçu par Daniel — en cours de développement, pas encore sorti.",
+    // TODO(israel): date de début (startedAt) et captures réelles.
+    tech: ['React Native', 'Cloudflare'],
+    descEn: 'A mobile social network for Christians, designed by Daniel — in development, coming soon on the Play Store.',
+    descFr: "Un réseau social mobile chrétien conçu par Daniel — en cours de développement, bientôt sur le Play Store.",
     detailEn:
-      'Nuvel is a Christian social app that brings believers together as a community network. The project was designed by Daniel; I am his partner on it and we are building it together. It is currently under development and is not yet released or online.',
+      'Nuvel is a mobile Christian social app, built with React Native and Cloudflare, that brings believers together as a community network. The project was designed by Daniel; I am his partner on it and we are building it together. It is currently under development and will soon be available on the Play Store.',
     detailFr:
-      "Nuvel est une application sociale chrétienne qui réunit les croyants dans un réseau communautaire. Le projet a été conçu par Daniel ; j'en suis le partenaire et nous le construisons ensemble. Il est en cours de développement et n'est pas encore sorti ni en ligne.",
+      "Nuvel est une application mobile sociale chrétienne, développée avec React Native et Cloudflare, qui réunit les croyants dans un réseau communautaire. Le projet a été conçu par Daniel ; j'en suis le partenaire et nous le construisons ensemble. Il est en cours de développement et sera bientôt disponible sur le Play Store.",
     contributors: [DANIEL, { ...ISRAEL, roleEn: 'Partner', roleFr: 'Partenaire' }],
     images: ['images/projects/nuvel-cover.svg'], // illustration en attendant les vraies captures — TODO(israel)
   },
@@ -292,14 +292,15 @@ export const PROJECTS: Project[] = [
     logo: 'images/projects/ouestinvest-logo.webp',
     company: 'Collaboration',
     status: 'in-progress',
+    // Pas de liveUrl : le site est en ligne mais son lien reste privé (voulu par Israel).
     // TODO(israel): date de début (startedAt), équipe/partenaires à citer et captures réelles.
-    tech: ['Angular', 'FastAPI', 'Python', 'Docker'],
-    descEn: 'A B2B platform connecting businesses and investors in the West region of Cameroon — in development, not yet online.',
-    descFr: "Une plateforme B2B qui met en relation les entreprises et les investisseurs de la région de l'Ouest du Cameroun — en cours de développement, pas encore en ligne.",
+    tech: ['Angular', 'Python', 'Claude', 'Docker', 'PostgreSQL'],
+    descEn: 'A B2B platform connecting businesses and investors in the West region of Cameroon — in development, already online (private link).',
+    descFr: "Une plateforme B2B qui met en relation les entreprises et les investisseurs de la région de l'Ouest du Cameroun — en cours de développement, déjà en ligne (lien privé).",
     detailEn:
-      'OuestInvest237 is a B2B platform that connects businesses of the West region of Cameroon with investors (pilot: Bafoussam). Companies publish a profile that is progressively verified; investors describe what they are looking for, and the platform suggests matches and helps start the conversation. It is built in collaboration with the region\'s businesses and investors. It is under development and is not yet online.',
+      'OuestInvest237 is a B2B platform that connects businesses of the West region of Cameroon with investors (pilot: Bafoussam). Companies publish a profile that is progressively verified; investors describe what they are looking for, and the platform suggests matches and helps start the conversation. It is built in collaboration with the region\'s businesses and investors. It is under development; a version is already online, but its link is private and not shared publicly.',
     detailFr:
-      "OuestInvest237 est une plateforme B2B qui met en relation les entreprises de la région de l'Ouest du Cameroun et les investisseurs (pilote : Bafoussam). Les entreprises publient un profil vérifié progressivement ; les investisseurs décrivent ce qu'ils recherchent, et la plateforme suggère des correspondances et facilite la prise de contact. Elle est construite en collaboration avec les entreprises et les investisseurs de la région. Elle est en cours de développement et n'est pas encore en ligne.",
+      "OuestInvest237 est une plateforme B2B qui met en relation les entreprises de la région de l'Ouest du Cameroun et les investisseurs (pilote : Bafoussam). Les entreprises publient un profil vérifié progressivement ; les investisseurs décrivent ce qu'ils recherchent, et la plateforme suggère des correspondances et facilite la prise de contact. Elle est construite en collaboration avec les entreprises et les investisseurs de la région. Elle est en cours de développement ; une version est déjà en ligne, mais son lien est privé et n'est pas diffusé publiquement.",
     contributors: [{ ...ISRAEL, roleEn: 'Developer', roleFr: 'Développeur' }],
     images: ['images/projects/ouestinvest-logo.webp'], // logo en attendant les vraies captures — TODO(israel)
   },
