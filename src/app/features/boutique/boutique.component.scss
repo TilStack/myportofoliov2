@@ -36,4 +36,43 @@
     line-height: 1.7;
     color: var(--color-text-muted);
   }
+
+  // Application Otadex : bouton Play Store + QR code (le QR n'a d'intérêt que sur grand écran)
+  &__app {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-8;
+    margin-block: $space-12;
+    padding: $space-6;
+    border: 1px solid var(--color-border);
+    border-radius: $radius-xl;
+    background: var(--color-surface);
+  }
+
+  &__app-title {
+    margin: 0 0 $space-2;
+    font-family: $font-display;
+    font-size: $text-2xl;
+    font-weight: $font-black;
+    color: var(--color-text);
+  }
+
+  &__app-desc {
+    margin: 0 0 $space-4;
+    max-width: 440px;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  &__qr {
+    display: none;
+    margin: 0;
+    text-align: center;
+
+    @media (min-width: 768px) { display: block; }
+
+    img { display: block; width: 140px; height: 140px; border-radius: $radius-md; background: #fff; border: 1px solid var(--color-border); }
+    figcaption { margin-top: $space-2; font-size: $text-xs; font-weight: $font-semibold; color: var(--color-text-muted); }
+  }
 }
