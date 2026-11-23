@@ -4,6 +4,7 @@
 .boutique {
   min-height: 100svh;
   padding-top: $navbar-height;
+  padding-bottom: $space-16;
 
   &__hero {
     padding-block: $space-16 $space-8;
@@ -38,12 +39,21 @@
   }
 
   // Application Otadex : bouton Play Store + QR code (le QR n'a d'intérêt que sur grand écran)
+  &__cat { padding-top: $space-8; }
+
+  &__cat-title {
+    margin: 0 0 $space-6;
+    font-family: $font-display;
+    font-size: $text-2xl;
+    font-weight: $font-black;
+    color: var(--color-text);
+  }
+
   &__app {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: $space-8;
-    margin-block: $space-12;
     padding: $space-6;
     border: 1px solid var(--color-border);
     border-radius: $radius-xl;
@@ -53,7 +63,7 @@
   &__app-title {
     margin: 0 0 $space-2;
     font-family: $font-display;
-    font-size: $text-2xl;
+    font-size: $text-xl;
     font-weight: $font-black;
     color: var(--color-text);
   }

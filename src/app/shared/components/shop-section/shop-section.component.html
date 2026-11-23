@@ -1,4 +1,4 @@
-<section class="shop section" aria-labelledby="shop-title">
+<section class="shop section" [class.shop--category]="!!categoryTitle()" [attr.aria-labelledby]="titleId()">
   <div class="container">
     @if (showHeader()) {
       <div class="shop__header">
@@ -8,12 +8,14 @@
           <p class="section__subtitle">{{ i18n.t('shop.subtitle') }}</p>
         }
       </div>
+    } @else if (categoryTitle(); as cat) {
+      <h2 [id]="titleId()" class="shop__category">{{ cat }}</h2>
     } @else {
       <h2 id="shop-title" class="sr-only">{{ i18n.t('shop.title') }}</h2>
     }
 
     <ul class="shop__grid">
-      @for (p of products; track p.id) {
+      @for (p of products(); track p.id) {
         <li class="product" [class.product--feature]="!compact() && !!p.preview">
           @if (!compact() && p.preview; as pv) {
             <a class="product__preview" [href]="p.url" target="_blank" rel="noopener"

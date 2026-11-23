@@ -12,6 +12,17 @@
     color: var(--color-accent-text);
   }
 
+  // Catégorie de /boutique : titre visible, espacement resserré entre deux catégories
+  &--category { padding-block: $space-8 0; }
+
+  &__category {
+    margin: 0 0 $space-6;
+    font-family: $font-display;
+    font-size: $text-2xl;
+    font-weight: $font-black;
+    color: var(--color-text);
+  }
+
   &__grid {
     display: grid;
     gap: $space-6;

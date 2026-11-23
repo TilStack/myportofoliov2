@@ -1,7 +1,7 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { I18nService } from '../../../core/services/i18n.service';
-import { PRODUCTS } from '../../../data/products.data';
+import { DigitalProduct, PRODUCTS } from '../../../data/products.data';
 import { STORE_URL } from '../../../data/site.data';
 import { PriceComponent } from '../price/price.component';
 import { TeaserVideoDirective } from '../../directives/teaser-video.directive';
@@ -19,7 +19,16 @@ import { TeaserVideoDirective } from '../../directives/teaser-video.directive';
 })
 export class ShopSectionComponent {
   readonly i18n = inject(I18nService);
-  readonly products = PRODUCTS;
+  /** Limite la liste à certaines natures de produit (catégories de /boutique) ; sans valeur : tous les produits. */
+  readonly kinds = input<DigitalProduct['kind'][] | null>(null);
+  /** Titre de catégorie visible (h2) à la place du titre masqué ; resserre aussi l'espacement vertical. */
+  readonly categoryTitle = input<string | null>(null);
+  /** Id du titre : unique par catégorie (plusieurs sections sur /boutique). */
+  readonly titleId = computed(() => 'shop-title' + (this.kinds() ? '-' + this.kinds()!.join('-') : ''));
+  readonly products = computed(() => {
+    const k = this.kinds();
+    return k ? PRODUCTS.filter(p => k.includes(p.kind)) : PRODUCTS;
+  });
   readonly storeUrl = STORE_URL;
   /** Sur l'accueil : titre en h2 et lien « Voir la boutique ». Sur /boutique la page porte déjà le h1. */
   readonly showHeader = input(true);

@@ -7,22 +7,25 @@
     </div>
   </header>
 
-  <app-shop-section [showHeader]="false" />
-
   @if (app; as a) {
-    <div class="container">
-    <section class="boutique__app" aria-labelledby="boutique-app-title">
-      <div class="boutique__app-text">
-        <span class="boutique__eyebrow">{{ i18n.t('shop.appEyebrow') }}</span>
-        <h2 id="boutique-app-title" class="boutique__app-title">{{ a.name }}</h2>
-        <p class="boutique__app-desc">{{ i18n.t('shop.appText') }}</p>
-        <a class="cta" [href]="a.playStoreUrl" target="_blank" rel="noopener">{{ i18n.t('projects.playStore') }}</a>
+    <section class="boutique__cat" aria-labelledby="boutique-app-title">
+      <div class="container">
+        <h2 id="boutique-app-title" class="boutique__cat-title">{{ i18n.t('shop.catApp') }}</h2>
+        <div class="boutique__app">
+          <div class="boutique__app-text">
+            <h3 class="boutique__app-title">{{ a.name }}</h3>
+            <p class="boutique__app-desc">{{ i18n.t('shop.appText') }}</p>
+            <a class="cta" [href]="a.playStoreUrl" target="_blank" rel="noopener">{{ i18n.t('projects.playStore') }}</a>
+          </div>
+          <figure class="boutique__qr">
+            <img [src]="a.playStoreQr" width="140" height="140" loading="lazy" [alt]="i18n.t('projects.scanAlt')" />
+            <figcaption>{{ i18n.t('projects.scanToInstall') }}</figcaption>
+          </figure>
+        </div>
       </div>
-      <figure class="boutique__qr">
-        <img [src]="a.playStoreQr" width="140" height="140" loading="lazy" [alt]="i18n.t('projects.scanAlt')" />
-        <figcaption>{{ i18n.t('projects.scanToInstall') }}</figcaption>
-      </figure>
     </section>
-    </div>
   }
+
+  <app-shop-section [showHeader]="false" [kinds]="['skill']" [categoryTitle]="i18n.t('shop.catSkill')" />
+  <app-shop-section [showHeader]="false" [kinds]="['prompts', 'course']" [categoryTitle]="i18n.t('shop.catTeachers')" />
 </div>
