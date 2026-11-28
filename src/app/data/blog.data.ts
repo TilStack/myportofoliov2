@@ -96,7 +96,7 @@ const otadex: BlogPost = {
     {"type": "p", "content": [{"t": "Du 15 avril au 27 novembre 2026 : "}, {"t": "228 commits", "b": true}, {"t": ", "}, {"t": "18 animés", "b": true}, {"t": ", "}, {"t": "334 personnages", "b": true}, {"t": ", un site web, "}, {"t": "otadex.tilstack.me", "href": "https://otadex.tilstack.me"}, {"t": ", et une newsletter qui se prépare. 📬"}]},
     {"type": "p", "content": [{"t": "Et OTADEX n'est qu'une première porte. 🚪 Son ouverture va me permettre d'en ouvrir d'autres : de nouvelles applications, aussi intéressantes les unes que les autres. 🚀"}]},
     {"type": "p", "content": [{"t": "L'histoire n'est pas finie, et c'est tant mieux. Si tu aimes les animés, essaie OTADEX 🌀 et dis-moi ce qui manque. La dernière fois qu'un testeur l'a fait, la recherche a changé pour toujours. 😉"}]},
-    {"type": "p", "content": [{"t": "Et toi, quel a été ton boss final sur un projet ? Raconte-le en commentaire.", "i": true}, {"t": " 👇"}]},
+    {"type": "p", "content": [{"t": "Et toi, quel a été ton boss final sur un projet ? Raconte-le-moi ", "i": true}, {"t": "sur LinkedIn", "href": "https://www.linkedin.com/in/israel-tientcheu/"}, {"t": ". 👇"}]},
   ],
 };
 
