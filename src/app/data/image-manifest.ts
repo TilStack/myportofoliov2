@@ -8,6 +8,50 @@ export interface ImageInfo {
 }
 
 export const IMAGE_MANIFEST: Record<string, ImageInfo> = {
+  "images/blog/accueil-otadex.webp": {
+    "w": 1068,
+    "h": 1186,
+    "widths": [
+      480,
+      800,
+      1068
+    ]
+  },
+  "images/blog/barre-du-bas.webp": {
+    "w": 960,
+    "h": 880,
+    "widths": [
+      480,
+      960
+    ]
+  },
+  "images/blog/couverture-otadex.webp": {
+    "w": 1600,
+    "h": 900,
+    "widths": [
+      480,
+      960,
+      1600
+    ]
+  },
+  "images/blog/recherche-avant-apres.webp": {
+    "w": 1068,
+    "h": 1256,
+    "widths": [
+      480,
+      800,
+      1068
+    ]
+  },
+  "images/blog/trois-rangs.webp": {
+    "w": 1284,
+    "h": 823,
+    "widths": [
+      480,
+      800,
+      1284
+    ]
+  },
   "images/formateur.webp": {
     "w": 1280,
     "h": 720,

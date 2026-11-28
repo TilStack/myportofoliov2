@@ -4,6 +4,8 @@ import { ButtonComponent } from '../../shared/components/button/button.component
 import { FadeOnScrollDirective } from '../../shared/directives/fade-on-scroll.directive';
 import { I18nService } from '../../core/services/i18n.service';
 import { AdminAuthService } from '../../core/services/admin-auth.service';
+import { Router } from '@angular/router';
+import { BLOG_POSTS } from '../../data/blog.data';
 import { scrollToTop } from '../../shared/utils/motion';
 
 const PAGE_SIZE = 6;
@@ -35,8 +37,20 @@ export interface Article {
 }
 
 // ── Static data ────────────────────────────────────────────────────────────
-// Uniquement des articles réellement publiés par Israel (Zerofiltre). Les articles d'exemple fictifs ont été retirés.
+// Uniquement des articles réellement écrits par Israel. Les articles d'exemple fictifs ont été retirés.
 const ARTICLES: Article[] = [
+  // ── Articles publiés sur ce site (texte : data/blog.data.ts) ──
+  ...BLOG_POSTS.map((p): Article => ({
+    id: p.slug,
+    title: p.title,
+    excerpt: p.description,
+    coverUrl: p.cover.src,
+    tags: [],
+    date: new Date(p.date),
+    source: 'local',
+    featured: true,
+    readTime: p.readTime,
+  })),
   // ── Zerofiltre articles (real, published externally) ──
   {
     id: 'zerofiltre-docker-debian',
@@ -48,7 +62,6 @@ const ARTICLES: Article[] = [
     tags: ['Docker', 'Débutant', 'DevOps'],
     date: new Date('2024-03-27'),
     source: 'zerofiltre',
-    featured: true,
     externalUrl:
       'https://zerofiltre.tech/articles/287-conqu%C3%A9rir-l-%C3%A9cosysteme-docker-sur-les-distributions-debian',
     readTime: 6,
@@ -109,6 +122,7 @@ export class BlogComponent {
   readonly i18n = inject(I18nService);
   readonly fb   = inject(FormBuilder);
   readonly admin = inject(AdminAuthService);
+  private readonly router = inject(Router);
 
   // ── Loading state ─────────────────────────────────────
   // Les articles sont locaux : rien à attendre, le contenu est déjà dans le HTML pré-rendu.
@@ -181,8 +195,7 @@ export class BlogComponent {
       if (article.externalUrl) window.open(article.externalUrl, '_blank', 'noopener,noreferrer');
       return;
     }
-    this.articleDetail.set(article);
-    document.body.style.overflow = 'hidden';
+    this.router.navigate(['/blog', article.id]);
   }
 
   closeArticleDetail(): void {

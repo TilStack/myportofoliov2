@@ -42,7 +42,9 @@ const PROJECT_SOURCES = [`${APP}/features/projects/project-detail`, `${APP}/data
 
 const today = new Date().toISOString().slice(0, 10);
 function lastmod(route) {
-  const paths = route.startsWith('/projects/') ? PROJECT_SOURCES : SOURCES[route] ?? [APP];
+  const paths = route.startsWith('/projects/') ? PROJECT_SOURCES
+    : route.startsWith('/blog/') ? [`${APP}/features/blog`, `${APP}/data/blog.data.ts`]
+    : SOURCES[route] ?? [APP];
   try {
     const date = execFileSync('git', ['log', '-1', '--format=%cs', '--', ...paths],
       { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();

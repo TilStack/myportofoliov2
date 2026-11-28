@@ -43,6 +43,11 @@ export const routes: Routes = [
     data: { seo: SEO.blog },
   },
   {
+    path: 'blog/:slug',
+    loadComponent: () =>
+      import('./features/blog/blog-article/blog-article.component').then((m) => m.BlogArticleComponent),
+  },
+  {
     path: 'quotes',
     loadComponent: () =>
       import('./features/quotes/quotes.component').then(

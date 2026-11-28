@@ -48,6 +48,12 @@ const JOBS = [
   { src: 'images/projects/levefly-1.png', widths: [400], q: 80, og: 'levefly' },
   { src: 'images/projects/cagnotte-1.png', widths: [640, 1200], q: 74, og: 'mycagnotte' },
   { src: 'images/projects/pokemon-1.png', widths: [640, 1200], q: 74, og: 'mypokemon' },
+  // Article de blog OTADEX (captures avec du texte : qualité un peu plus haute)
+  { src: 'images/blog/couverture-otadex.png', widths: [480, 960, 1600], q: 78 },
+  { src: 'images/blog/accueil-otadex.png', widths: [480, 800, 1068], q: 78 },
+  { src: 'images/blog/trois-rangs.png', widths: [480, 800, 1284], q: 78 },
+  { src: 'images/blog/recherche-avant-apres.png', widths: [480, 800, 1068], q: 78 },
+  { src: 'images/blog/barre-du-bas.png', widths: [480, 960], q: 78 },
 ];
 
 const NAVY = '#14213D';
@@ -83,6 +89,13 @@ for (const job of JOBS) {
       .composite([{ input: shot, gravity: 'center' }]).jpeg({ quality: 82, mozjpeg: true }).toFile(join(PUBLIC, out));
     report.push({ file: out, kB: Math.round(statSync(join(PUBLIC, out)).size / 1024) });
   }
+}
+
+// Images de partage fournies déjà en 1200×630 : simple conversion JPEG.
+for (const [src, out] of [['images/blog/couverture-otadex-partage-1200x630.png', 'assets/og/blog/otadex.jpg']]) {
+  mkdirSync(dirname(join(PUBLIC, out)), { recursive: true });
+  await sharp(join(SRC, src)).resize(1200, 630).jpeg({ quality: 84, mozjpeg: true }).toFile(join(PUBLIC, out));
+  report.push({ file: out, kB: Math.round(statSync(join(PUBLIC, out)).size / 1024) });
 }
 
 const sorted = Object.fromEntries(Object.entries(manifest).sort(([a], [b]) => a.localeCompare(b)));

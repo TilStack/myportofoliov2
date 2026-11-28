@@ -1,3 +1,4 @@
+import { BlogPost } from './blog.data';
 import { PRODUCTS } from './products.data';
 import { Project } from './projects.data';
 import {
@@ -88,5 +89,19 @@ export function projectSchema(project: Project, image: string): JsonLd {
     keywords: project.tech.join(', '),
     creator: personRef(),
     ...(project.liveUrl ? { sameAs: project.liveUrl } : {}),
+  };
+}
+
+export function articleSchema(post: BlogPost): JsonLd {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    inLanguage: 'fr',
+    image: absoluteUrl(post.ogImage),
+    url: absoluteUrl(`blog/${post.slug}`),
+    author: personRef(),
   };
 }

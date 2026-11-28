@@ -53,7 +53,7 @@ for (const p of pages) {
     assert.ok(metaProp(p.html, 'og:image:alt'));
     assert.equal(metaProp(p.html, 'og:locale'), 'fr_FR');
     assert.equal(metaProp(p.html, 'og:locale:alternate'), 'en_US');
-    assert.equal(metaProp(p.html, 'og:type'), 'website');
+    assert.equal(metaProp(p.html, 'og:type'), p.route.startsWith('/blog/') ? 'article' : 'website');
     assert.equal(metaName(p.html, 'twitter:card'), 'summary_large_image');
     assert.equal(metaName(p.html, 'twitter:title'), p.title);
     assert.equal(metaName(p.html, 'twitter:image'), metaProp(p.html, 'og:image'));
@@ -187,7 +187,7 @@ await check('pages projet : CreativeWork cohérent avec le canonical', () => {
   }
 });
 await check('les autres pages n\'ont aucun JSON-LD superflu', () => {
-  for (const p of pages.filter(p => !['/', '/about', '/boutique'].includes(p.route) && !p.route.startsWith('/projects/'))) assert.equal(p.ld.length, 0, p.route);
+  for (const p of pages.filter(p => !['/', '/about', '/boutique'].includes(p.route) && !p.route.startsWith('/projects/') && !p.route.startsWith('/blog/'))) assert.equal(p.ld.length, 0, p.route);
 });
 
 // --- Projets masqués, admin, sitemap, robots -----------------------------------------------

@@ -1,4 +1,5 @@
 import { SeoConfig } from '../core/services/seo.service';
+import { BlogPost } from './blog.data';
 import { IMAGE_MANIFEST } from './image-manifest';
 import { Project } from './projects.data';
 import { SITE_NAME } from './site.data';
@@ -80,5 +81,16 @@ export function projectSeo(project: Project): SeoConfig {
     path: `/projects/${project.slug}`,
     image: projectImage(project),
     imageAlt: `${project.name} — capture du projet`,
+  };
+}
+
+export function articleSeo(post: BlogPost): SeoConfig {
+  return {
+    title: titled(post.title),
+    description: post.description,
+    path: `/blog/${post.slug}`,
+    image: post.ogImage,
+    imageAlt: post.cover.alt,
+    type: 'article',
   };
 }

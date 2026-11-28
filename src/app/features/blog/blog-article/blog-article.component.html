@@ -1,0 +1,54 @@
+<ng-template #line let-parts>
+  @for (s of parts; track $index) {
+    @if (s.href) {<a [href]="s.href" target="_blank" rel="noopener">{{ s.t }}</a>}
+    @else if (s.b) {<strong>{{ s.t }}</strong>}
+    @else if (s.i) {<em>{{ s.t }}</em>}
+    @else if (s.code) {<code>{{ s.t }}</code>}
+    @else {<ng-container>{{ s.t }}</ng-container>}
+  }
+</ng-template>
+
+<div class="post-page">
+  <div class="container post-page__inner">
+    <a routerLink="/blog" class="post-page__back">← Blog</a>
+
+    @if (post; as p) {
+      <article class="post" lang="fr">
+        <h1 class="post__title">{{ p.title }}</h1>
+        <p class="post__meta">TIENTCHEU Israel · <time [attr.datetime]="p.date">{{ dateLabel }}</time> · {{ p.readTime }} min de lecture</p>
+
+        @let cover = image(p.cover.src);
+        <img class="post__cover" [src]="cover.src" [attr.srcset]="cover.srcset" sizes="(min-width: 800px) 720px, 100vw"
+             [width]="cover.width" [height]="cover.height" [alt]="p.cover.alt" fetchpriority="high" />
+
+        @for (block of p.blocks; track $index) {
+          @switch (block.type) {
+            @case ('h2') { <h2><ng-container *ngTemplateOutlet="line; context: { $implicit: $any(block).content }" /></h2> }
+            @case ('p') { <p><ng-container *ngTemplateOutlet="line; context: { $implicit: $any(block).content }" /></p> }
+            @case ('ol') {
+              <ol>
+                @for (item of $any(block).items; track $index) {
+                  <li><ng-container *ngTemplateOutlet="line; context: { $implicit: item }" /></li>
+                }
+              </ol>
+            }
+            @case ('ul') {
+              <ul>
+                @for (item of $any(block).items; track $index) {
+                  <li><ng-container *ngTemplateOutlet="line; context: { $implicit: item }" /></li>
+                }
+              </ul>
+            }
+            @case ('img') {
+              @let shot = image($any(block).src);
+              <img class="post__img" [src]="shot.src" [attr.srcset]="shot.srcset" sizes="(min-width: 800px) 720px, 100vw"
+                   [width]="shot.width" [height]="shot.height" [alt]="$any(block).alt" loading="lazy" />
+            }
+          }
+        }
+      </article>
+    } @else {
+      <h1>Article introuvable</h1>
+    }
+  </div>
+</div>
